@@ -1,110 +1,72 @@
 # SPDX-License-Identifier: MIT
-"""Build a portable static reader from freshly exported book chapters."""
+"""Prepare source-order illustrations and build the reader with MkDocs Material."""
 from html import escape
+from hashlib import sha256
 import json
 from pathlib import Path
 import re
 import shutil
 from urllib.parse import quote
 
-import markdown
+from mkdocs.commands.build import build as mkdocs_build
+from mkdocs.config import load_config
 from PIL import Image
-from illustration_data import ART, FRONT_ART, ART_LABELS
+
+from illustration_data import ART, FRONT_ART, ART_LABELS, LEAF_PANELS
 
 ROOT = Path(__file__).resolve().parent
-PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
 OUT = ROOT / 'output'
 SITE = ROOT / 'site'
+DOCS = ROOT / 'work' / 'web-docs'
+PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
 
+# Navigation, tables, search and responsive layout use Material.
 CSS = """
-:root { color-scheme: light; --ink: #222; --muted: #626762; --accent: #526852; }
-* { box-sizing: border-box; }
-body { margin: 0; color: var(--ink); background: #f8f5ee;
-  font: 17px/1.85 system-ui, -apple-system, "Noto Sans SC", sans-serif; }
-a { color: var(--accent); text-underline-offset: .2em; overflow-wrap: anywhere; }
-a:hover { color: #263c26; }
-header, main, footer { max-width: 900px; margin: auto; padding: 24px; }
-header { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
-header a { text-decoration: none; }
-header .brand { font-weight: 700; margin-right: auto; }
-h1, h2, h3 { line-height: 1.5; }
-h1 { font-size: 2rem; }
-h2 { margin-top: 2em; font-size: 1.4rem; }
-.intro, footer, .note { color: var(--muted); }
-.downloads, .pager { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
-.downloads a { padding: 8px 16px; border: 1px solid #ccd5cc; border-radius: 6px; }
-.contents { padding-left: 1.5em; }
-.contents li { margin: 12px 0; padding-left: 8px; }
-.contents .pdf { margin-left: 12px; font-size: .85em; }
-article { padding: 24px; background: #fff; border-radius: 8px; }
-article p { overflow-wrap: anywhere; }
-article img { display: block; max-width: 100%; height: auto; margin: 24px auto; }
-figure { margin: 24px 0; }
-figcaption { margin-top: 8px; color: var(--muted); font-size: .85em; text-align: center; }
-.art-viewport { position: relative; overflow: hidden; }
-.art-viewport img { position: absolute; display: block; max-width: none;
-  height: auto; margin: 0; }
-.composition svg { display: block; width: 100%; height: auto; }
-article ul { padding-left: 1.5em; }
-.table-scroll { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: .9em; }
-th, td { padding: 10px; border: 1px solid #d9d9d9; min-width: 100px; text-align: left; }
-th { background: #e9eeea; }
-hr { border: 0; border-top: 1px solid #d9d9d9; margin: 36px 0; }
-.pager { justify-content: space-between; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-@media (max-width: 600px) { header, main, footer { padding: 16px; }
-  article { padding: 16px; } h1 { font-size: 1.6rem; } }
-@media print { header, .downloads, .pager, footer { display: none; }
-  body, article { background: white; } main { max-width: none; padding: 0; } }
+:root { --md-text-font: system-ui, -apple-system, "Noto Sans SC", sans-serif; }
+.md-typeset { font-size: .85rem; line-height: 1.9; }
+.md-typeset figure { width: 100%; margin: 1.5em 0; }
+.md-typeset figure img { display: block; width: 100%; height: auto; margin: 0 auto; }
+.md-typeset figure figcaption { max-width: none; margin: .6em 0 0;
+  font-size: .75rem; color: var(--md-default-fg-color--light); font-style: normal; }
+.md-typeset .downloads { display: flex; flex-wrap: wrap; gap: 1em; }
 """
 
+DIAGRAMS = {
+    'kinship': '饮品|材料与主要变化|饮用前的呈现\n酒|糖的准备 发酵 部分再蒸馏熟成|温度 稀释或调配\n茶|叶子加工 控制氧化及其他变化|以水冲泡或煮饮\n咖啡|果实处理 种子干燥与烘焙|研磨后冲煮',
+    'evidence': '年代线索|地点与研究解释\n约一万三千年前|Raqefet 洞穴 石臼遗存与谷物酿造解释 [04]\n约公元前第七千纪|河南贾湖 米 蜂蜜与水果混合饮品 [02]\n约公元前 6000—5800 年|格鲁吉亚 葡萄酒相关证据 [03]',
+    'tea': '茶类|入门观察方向\n绿茶|较早控制酶相关变化\n白茶 黄茶|分别关注萎凋干燥与闷黄\n乌龙 红茶|关注氧化与其他工序的安排\n黑茶|关注微生物相关加工过程',
+}
 
-def document(title, content, prefix=''):
-    return f'''<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="杯中世界：酒、茶、咖啡的起源、发展、制作与风味。">
-<title>{escape(title)} · 杯中世界</title>
-<link rel="stylesheet" href="{prefix}style.css">
-</head>
-<body>
-<header><a class="brand" href="{prefix}index.html">杯中世界</a>
-<a href="{prefix}index.html#contents">章节目录</a>
-<a href="{prefix}downloads/{quote('杯中世界.pdf')}">全书 PDF</a></header>
-<main>{content}</main>
-<footer>{escape(PUBLICATION['credit'])} · {escape(PUBLICATION['ai_disclosure'])}
-<a href="{escape(PUBLICATION['content_license_url'], quote=True)}">{escape(PUBLICATION['content_license'])}</a> ·
-<a href="{prefix}downloads/NOTICE.md">署名与许可说明</a> · 资料出处见正文。
-当页排版与参考资料总目见全书 PDF。</footer>
-</body>
-</html>
-'''
+
+def export_image(key, filename, rect):
+    """Export a self-contained web asset from the PDF's source region."""
+    with Image.open(ROOT / 'assets' / filename) as source:
+        iw, ih = source.size
+        box = tuple(round(value * scale) for value, scale in zip(
+            rect, (iw / 1536, ih / 1024, iw / 1536, ih / 1024)))
+        image = source.crop(box).convert('RGB')
+        image.thumbnail((1400, 1400), Image.Resampling.LANCZOS)
+        image.save(DOCS / 'assets' / f'{key}.webp', quality=92, method=6)
 
 
 def illustration(key, prefix='../', eager=False):
-    filename, rect = (ART | FRONT_ART)[key]
-    with Image.open(ROOT / 'assets' / filename) as image:
-        iw, ih = image.size
-    x0, y0, x1, y1 = rect
-    width, height = x1 - x0, y1 - y0
-    ratio = (width * iw / 1536) / (height * ih / 1024)
-    label = escape(ART_LABELS[key], quote=True)
-    loading = 'eager' if eager else 'lazy'
-    # Match PDF viewports with CSS; preserve the original image bytes.
+    if key.startswith('leaf-'):
+        label = LEAF_PANELS[key.removeprefix('leaf-')][2]
+        caption = label + ' · AI 教学示意，不按实际尺寸绘制。'
+        if key != 'leaf-fresh':
+            caption = label + '：左为加工后的干茶，右为冲泡后的叶底。AI 教学示意，不同样本，不按实际尺寸绘制。'
+    else:
+        label = ART_LABELS[key]
+        caption = label + ' · AI 阅读情境插画；具体分类与制作以正文资料为准。'
+    with Image.open(DOCS / 'assets' / f'{key}.webp') as image:
+        width, height = image.size
     return (f'<figure data-art="{key}">'
-            f'<div class="art-viewport" style="aspect-ratio:{ratio:.8f}">'
-            f'<img src="{prefix}assets/{filename}" alt="{label}（AI 生成）" '
-            f'width="{iw}" height="{ih}" loading="{loading}" decoding="async" '
-            f'style="width:{1536 / width * 100:.8f}%;'
-            f'left:{-x0 / width * 100:.8f}%;top:{-y0 / height * 100:.8f}%">'
-            f'</div><figcaption>{label} · AI 阅读情境插画；'
-            '具体分类与制作以正文资料为准。</figcaption></figure>')
+            f'<img src="{prefix}assets/{key}.webp" alt="{escape(label, quote=True)}（AI 生成）" '
+            f'width="{width}" height="{height}" loading="{"eager" if eager else "lazy"}" '
+            f'decoding="async"><figcaption>{escape(caption)}</figcaption></figure>')
 
 
-def composition():
+def export_composition():
     parts = []
     for i, (name, extra, color) in enumerate((
             ('浓缩', '咖啡基底', None), ('美式', '咖啡加水', '#DEEAF0'),
@@ -118,40 +80,62 @@ def composition():
                      f'fill="none" stroke="#626762"/>'
                      f'<text x="{x + 21}" y="94" text-anchor="middle" '
                      f'font-size="12">{extra}</text>')
-    return ('<figure class="composition"><svg xmlns="http://www.w3.org/2000/svg" '
-            'viewBox="0 0 342 108" role="img" aria-label="咖啡组成示意：浓缩、美式、奶咖">'
-            '<title>咖啡组成示意：浓缩为咖啡基底，美式加水，奶咖加奶</title>'
-            + ''.join(parts) + '</svg><figcaption>只示意组成关系；'
-            '色块不表示标准配方比例。</figcaption></figure>')
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="684" height="216" '
+           'viewBox="0 0 342 108" font-family="system-ui,sans-serif">'
+           '<title>咖啡组成示意：浓缩为咖啡基底，美式加水，奶咖加奶</title>'
+           + ''.join(parts) + '</svg>')
+    (DOCS / 'assets' / 'composition-coffee.svg').write_text(svg, encoding='utf-8')
 
 
-def chapter_html(text, sources):
-    text = re.sub(r'^（配图 (\w+) 见 PDF 与写作工程中的图像资源）$',
-                  lambda match: illustration(match.group(1)), text, flags=re.M)
-    text = text.replace('| 成杯方向 | 组成关系 |',
-                        composition() + '\n\n| 成杯方向 | 组成关系 |')
-    # Link numbered citations as well as the existing page-local source lists.
-    def citation(match):
-        ident = match.group(1)
-        if ident not in sources:
-            return match.group(0)
-        url = sources[ident]['url']
-        return f'<sup><a href="{escape(url, quote=True)}">[{ident}]</a></sup>'
-
-    text = re.sub(r'\[(\d{2})\](?!\()', citation, text)
-    body = markdown.markdown(text, extensions=['tables', 'sane_lists'])
-    return body.replace('<table>', '<div class="table-scroll"><table>').replace(
-        '</table>', '</table></div>')
+def table(text):
+    rows = [row.strip() for row in text.strip().splitlines()]
+    columns = len(rows[0].split('|'))
+    return '\n'.join(['| ' + rows[0] + ' |',
+                      '| ' + ' | '.join(['---'] * columns) + ' |']
+                     + ['| ' + row + ' |' for row in rows[1:]])
 
 
-def build():
-    manifest = json.loads((OUT / 'chapter-manifest.json').read_text(encoding='utf-8'))
-    sources = {s['id']: s for s in json.loads(
-        (ROOT / 'research/sources.json').read_text(encoding='utf-8'))}
-    # Rebuild from scratch so deleted/renamed chapters cannot remain on the site.
-    if SITE.exists():
-        shutil.rmtree(SITE)
-    (SITE / 'chapters').mkdir(parents=True)
+def chapter_markdown(chapter, sources):
+    raw = (ROOT / 'chapters' / f'{chapter["id"]}.md').read_text(encoding='utf-8')
+    pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', raw)
+    bodies = [pieces[i + 3].strip() for i in range(1, len(pieces), 4)]
+    text = '\n\n'.join(bodies)
+    text = re.sub(r'^@table\n(.*?)\n@endtable$', lambda m: table(m.group(1)),
+                  text, flags=re.S | re.M)
+    text = re.sub(r'^@diagram (\w+)$', lambda m: table(DIAGRAMS[m.group(1)]), text, flags=re.M)
+    text = re.sub(r'^@art (\w+) [\d.]+$', lambda m: illustration(m.group(1)), text, flags=re.M)
+    text = re.sub(r'^@leaf (\w+) [\d.]+$', lambda m: illustration('leaf-' + m.group(1)), text, flags=re.M)
+    text = text.replace('@composition coffee',
+        '<figure class="composition"><img src="../assets/composition-coffee.svg" '
+        'alt="咖啡组成示意：浓缩、美式、奶咖" width="684" height="216" loading="lazy">'
+        '<figcaption>只示意组成关系；色块不表示标准配方比例。</figcaption></figure>')
+    refs = set(re.findall(r'\[(\d{2})\]', text))
+    extra_refs = {'15', '34', '37'} - refs if '@diagram kinship' in raw else set()
+    text = re.sub(r'\[(\d{2})\]', r'[^\1]', text)
+    if extra_refs:
+        text += '\n\n补充资料：' + ' '.join(f'[^{ident}]' for ident in sorted(extra_refs))
+    refs |= extra_refs
+    if refs:
+        text += '\n\n## 资料与原文\n\n'
+        for ident in sorted(refs):
+            source = sources[ident]
+            text += (f'[^{ident}]: {source["publisher"]}，《{source["title"]}》，'
+                     f'{source["year"]}。[原文]({source["url"]})\n\n')
+    heading = re.search(r'^# .+$', text, re.M)
+    if not heading:
+        text = f'# {chapter["title"]}\n\n' + text
+        heading = re.search(r'^# .+$', text, re.M)
+    pdf = '../downloads/' + quote('逐章阅读/' + chapter['pdf'], safe='/')
+    intro = (f'\n\n<p class="downloads"><a href="{pdf}">下载本章 PDF</a>'
+             f'<a href="../downloads/{quote("杯中世界.pdf")}">下载全书 PDF</a></p>\n\n')
+    opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(chapter['id'])
+    if opener:
+        intro += illustration(opener, eager=True) + '\n\n'
+    text = text[:heading.end()] + intro + text[heading.end():]
+    return text, pieces[2]
+
+
+def copy_downloads():
     downloads = SITE / 'downloads'
     downloads.mkdir()
     for filename in ('杯中世界.pdf', '杯中世界可编辑稿.md', '杯中世界逐章阅读.zip'):
@@ -161,46 +145,53 @@ def build():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / filename, target)
     shutil.copytree(OUT / '逐章阅读', downloads / '逐章阅读')
-    shutil.copytree(OUT / '逐章阅读' / 'assets', SITE / 'assets')
-    for filename in {filename for filename, _ in (ART | FRONT_ART).values()}:
-        shutil.copy2(ROOT / 'assets' / filename, SITE / 'assets' / filename)
-    (SITE / '.nojekyll').touch()
-    (SITE / 'style.css').write_text(CSS, encoding='utf-8')
 
-    entries = []
-    for index, chapter in enumerate(manifest):
-        ident, title = chapter['id'], chapter['title']
-        pdf_url = 'downloads/' + quote('逐章阅读/' + chapter['pdf'], safe='/')
-        entries.append(f'<li><a href="chapters/{ident}.html">{escape(title)}</a>'
-                       f'<a class="pdf" href="{pdf_url}">PDF</a></li>')
-        text = (OUT / '逐章阅读' / chapter['markdown']).read_text(encoding='utf-8')
-        text = text.replace('(assets/', '(../assets/')
-        heading = '' if re.search(r'^# ', text, re.M) else f'<h1>{escape(title)}</h1>'
-        previous = (f'<a href="{manifest[index - 1]["id"]}.html">← 上一章</a>'
-                    if index else '<a href="../index.html">← 返回目录</a>')
-        following = (f'<a href="{manifest[index + 1]["id"]}.html">下一章 →</a>'
-                     if index + 1 < len(manifest) else '<a href="../index.html">返回目录 →</a>')
-        opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(ident)
-        art = illustration(opener, eager=True) if opener else ''
-        content = (f'<div class="downloads"><a href="../{pdf_url}">下载本章 PDF</a></div>{art}'
-                   f'<article>{heading}{chapter_html(text, sources)}</article>'
-                   f'<nav class="pager" aria-label="章节翻页">{previous}{following}</nav>')
-        (SITE / 'chapters' / f'{ident}.html').write_text(
-            document(title, content, '../'), encoding='utf-8')
 
+def build():
+    manifest = json.loads((OUT / 'chapter-manifest.json').read_text(encoding='utf-8'))
+    sources = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text(encoding='utf-8'))}
+    if DOCS.exists():
+        shutil.rmtree(DOCS)
+    for directory in ('chapters', 'assets', 'stylesheets'):
+        (DOCS / directory).mkdir(parents=True, exist_ok=True)
+    stylesheet = f'stylesheets/reader.{sha256(CSS.encode()).hexdigest()[:12]}.css'
+    (DOCS / stylesheet).write_text(CSS, encoding='utf-8')
+    for key, (filename, rect) in (ART | FRONT_ART).items():
+        export_image(key, filename, rect)
+    for key, (filename, rect, _) in LEAF_PANELS.items():
+        export_image('leaf-' + key, filename, rect)
+    export_composition()
+
+    groups = {}
+    contents = []
+    for chapter in manifest:
+        path = f'chapters/{chapter["id"]}.md'
+        text, part = chapter_markdown(chapter, sources)
+        (DOCS / path).write_text(text, encoding='utf-8')
+        groups.setdefault(part, []).append({chapter['title']: path})
+        contents.append(f'- [{chapter["title"]}]({path})')
     links = ''.join(f'<a href="downloads/{quote(filename)}">{label}</a>' for filename, label in (
         ('杯中世界.pdf', '全书 PDF'), ('杯中世界逐章阅读.zip', '逐章阅读 ZIP'),
         ('杯中世界可编辑稿.md', '可编辑 Markdown')))
-    content = f'''<h1>杯中世界</h1>
-<p class="intro">酒、茶、咖啡的起源与风味 · 个人兴趣阅读与学习</p>
-<p>从原料与加工开始，读懂一杯饮料。可以顺读，也可以先挑喜欢的一章。</p>
-{illustration('cover', prefix='', eager=True)}
-<div class="downloads">{links}</div>
-<p class="note">网页版提供完整文字、插画、图解、表格和原文引用链接；需要当页排版可下载 PDF。</p>
-<h2 id="contents">章节目录</h2>
-<ol class="contents">{''.join(entries)}</ol>'''
-    (SITE / 'index.html').write_text(document('酒、茶、咖啡的起源与风味', content), encoding='utf-8')
-    print(json.dumps({'site': str(SITE), 'chapters': len(manifest)}, ensure_ascii=False))
+    index = ('# 杯中世界\n\n酒、茶、咖啡的起源与风味 · 个人兴趣阅读与学习\n\n'
+             '从原料与加工开始，读懂一杯饮料。可以顺读，也可以先挑喜欢的一章。\n\n'
+             + illustration('cover', prefix='', eager=True)
+             + f'\n\n<p class="downloads">{links}</p>\n\n'
+             '网页版提供完整文字、插画、图解、表格和原文引用链接；需要当页排版可下载 PDF。\n\n'
+             '## 章节目录\n\n' + '\n'.join(contents))
+    (DOCS / 'index.md').write_text(index, encoding='utf-8')
+    credit = (escape(PUBLICATION['credit']) + ' · ' + escape(PUBLICATION['ai_disclosure'])
+              + f' <a href="{PUBLICATION["content_license_url"]}">{PUBLICATION["content_license"]}</a>'
+              + f' · <a href="{PUBLICATION["source_url"]}/blob/main/NOTICE.md">署名与许可说明</a>')
+    config = load_config(str(ROOT / 'mkdocs.yml'), docs_dir=str(DOCS), site_dir=str(SITE),
+                         nav=[{'阅读首页': 'index.md'}] + [{part: entries} for part, entries in groups.items()],
+                         copyright=credit, extra_css=[stylesheet], strict=True)
+    mkdocs_build(config)
+    copy_downloads()
+    (SITE / '.nojekyll').touch()
+    print(json.dumps({'site': str(SITE), 'chapters': len(manifest),
+                      'renderer': 'MkDocs Material', 'illustrations': len(ART | FRONT_ART) + len(LEAF_PANELS)},
+                     ensure_ascii=False))
 
 
 if __name__ == '__main__':
