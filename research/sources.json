@@ -1,46 +1,425 @@
 [
- {"id":"01","publisher":"NIDCD 美国国立耳聋及其他交流障碍研究所","title":"Taste Disorders","short":"味觉与风味的区别","year":"网页","url":"https://www.nidcd.nih.gov/health/taste-disorders","type":"公共研究机构"},
- {"id":"02","publisher":"McGovern 等 PNAS","title":"Fermented beverages of pre- and proto-historic China","short":"贾湖发酵饮品研究","year":"2004","url":"https://doi.org/10.1073/pnas.0407921102","type":"考古研究"},
- {"id":"03","publisher":"McGovern 等 PNAS","title":"Early Neolithic wine of Georgia in the South Caucasus","short":"格鲁吉亚早期葡萄酒证据","year":"2017","url":"https://doi.org/10.1073/pnas.1714728114","type":"考古研究"},
- {"id":"04","publisher":"Liu 等 Journal of Archaeological Science Reports","title":"Fermented beverage and food storage in 13,000 y-old stone mortars at Raqefet Cave, Israel Investigating Natufian ritual feasting","short":"Raqefet 石臼与酿造解释","year":"2018","url":"https://doi.org/10.1016/j.jasrep.2018.08.008","type":"考古研究"},
- {"id":"05","publisher":"WSET 葡萄酒与烈酒教育基金会","title":"What is beer A beginner's guide","short":"啤酒的主要原料","year":"2023","url":"https://www.wsetglobal.com/knowledge-centre/blog/2023/november/what-is-beer-a-beginner-s-guide/","type":"行业教育"},
- {"id":"06","publisher":"WSET","title":"Your beer questions answered","short":"啤酒常见问题","year":"2024","url":"https://www.wsetglobal.com/knowledge-centre/blog/2024/february/our-experts-answer-your-beer-faqs","type":"行业教育"},
- {"id":"07","publisher":"American Homebrewers Association","title":"The Brewing Process","short":"啤酒酿造流程","year":"网页","url":"https://www.homebrewersassociation.org/wp-content/uploads/Ingredient-Signs.pdf","type":"行业教育"},
- {"id":"08","publisher":"Brewers Association","title":"2025 Beer Style Guidelines","short":"啤酒风格指南","year":"2025","url":"https://cdn.brewersassociation.org/wp-content/uploads/2025/06/20143326/2025_BA_Beer_Style_Guidelines.pdf","type":"行业分类"},
- {"id":"09","publisher":"WSET","title":"What determines the colour of wine","short":"葡萄皮与酒色","year":"2021","url":"https://www.wsetglobal.com/knowledge-centre/blog/2021/september/23/what-determines-the-colour-of-wine","type":"行业教育"},
- {"id":"10","publisher":"WSET","title":"What is wine","short":"葡萄酒的组成","year":"2021","url":"https://www.wsetglobal.com/knowledge-centre/blog/2021/december/14/what-is-wine","type":"行业教育"},
- {"id":"11","publisher":"WSET","title":"A guide to wine types and styles","short":"葡萄酒类型与风格","year":"2023","url":"https://www.wsetglobal.com/knowledge-centre/blog/2023/october/03/how-many-wine-types-and-styles-are-there/","type":"行业教育"},
- {"id":"12","publisher":"WSET","title":"A guide to sparkling wine production methods and regional styles","short":"气泡酒的制作方式","year":"2026","url":"https://www.wsetglobal.com/knowledge-centre/blog/2026/a-guide-to-sparkling-wine-production-methods-and-regional-styles","type":"行业教育"},
- {"id":"13","publisher":"Sherry Wines 雪利产区机构","title":"Fortification","short":"雪利酒的加强工艺","year":"网页","url":"https://www.sherry.wine/sherry-wine/production/fortification","type":"产区机构"},
- {"id":"14","publisher":"Frontiers in Microbiology","title":"Flavor Formation in Chinese Rice Wine Huangjiu Impacts of the Flavor-Active Microorganisms Raw Materials and Fermentation Technology","short":"黄酒风味形成综述","year":"2020","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC7691429/","type":"研究综述"},
- {"id":"15","publisher":"日本酒造組合中央会 JSS","title":"How is Sake Made","short":"清酒的糖化与发酵","year":"网页","url":"https://japansake.or.jp/sake/en/basic/how-is-sake-made/","type":"行业机构"},
- {"id":"16","publisher":"日本酒造組合中央会 JSS","title":"Glossary of Sake Terms","short":"清酒术语与精米步合","year":"网页","url":"https://japansake.or.jp/sake/en/basic/glossary/","type":"行业机构"},
- {"id":"17","publisher":"UNESCO","title":"Traditional knowledge and skills of sake-making with koji mold in Japan","short":"日本麴酿酒传统技艺","year":"2024","url":"https://ich.unesco.org/en/RL/traditional-knowledge-and-skills-of-making-sake-with-koji-mold-in-japan-01977","type":"文化遗产档案"},
- {"id":"18","publisher":"Foods","title":"Automatic and Intelligent Technologies of Solid-State Fermentation Process of Baijiu Production Applications Challenges and Prospects","short":"白酒固态发酵与生产工序","year":"2021","url":"https://doi.org/10.3390/foods10030680","type":"研究综述"},
- {"id":"19","publisher":"Journal of Ethnic Foods","title":"Baijiu Chinese liquor History classification and manufacture","short":"白酒分类与制作","year":"2016","url":"https://doi.org/10.1016/j.jef.2016.03.001","type":"研究综述"},
- {"id":"20","publisher":"Scotch Whisky Association","title":"Story of Scotch","short":"苏格兰威士忌历史","year":"网页","url":"https://www.scotch-whisky.org.uk/discover-scotch/story-of-scotch/","type":"行业机构"},
- {"id":"21","publisher":"Scotch Whisky Association","title":"Scotch Whisky FAQs","short":"苏格兰威士忌术语与熟成","year":"网页","url":"https://www.scotch-whisky.org.uk/discover-scotch/faqs/","type":"行业机构"},
- {"id":"22","publisher":"Scotch Whisky Association","title":"Scotch Whisky Categories","short":"单一麦芽与调和类别","year":"网页","url":"https://www.scotch-whisky.org.uk/discover-scotch/enjoying-scotch/scotch-whisky-categories/","type":"行业机构"},
- {"id":"23","publisher":"BNIC 干邑行业机构","title":"Origin and production process","short":"干邑从葡萄到调配","year":"网页","url":"https://www.cognac.fr/en/discover/expertise/production/","type":"产区机构"},
- {"id":"24","publisher":"Smithsonian 美国国家历史博物馆","title":"Rum","short":"朗姆与加勒比制糖贸易","year":"网页","url":"https://americanhistory.si.edu/explore/exhibitions/on-the-water/online/living-atlantic-world/new-tastes-new-trades/rum","type":"博物馆"},
- {"id":"25","publisher":"WSET","title":"History of rum Styles origins and traditions","short":"朗姆原料与地域风格","year":"2025","url":"https://www.wsetglobal.com/knowledge-centre/blog/2025/august/history-of-rum-styles-origins-and-traditions","type":"行业教育"},
- {"id":"26","publisher":"WSET","title":"Understanding flavours in gin","short":"金酒植物香料与闻香","year":"2023","url":"https://www.wsetglobal.com/knowledge-centre/blog/2023/june/08/understanding-flavours-in-gin","type":"行业教育"},
- {"id":"27","publisher":"WSET","title":"WSET Bitesize Celebrating Gin changing tastes attitudes and technology","short":"金酒的发展线索","year":"2024","url":"https://www.wsetglobal.com/news-events/events/2024-events/2024-12-17-wset-bitesize-celebrating-gin-changing-tastes-attitudes-and-technology","type":"行业教育"},
- {"id":"28","publisher":"Consejo Regulador del Tequila CRT","title":"Our Tequila","short":"蓝色龙舌兰与龙舌兰酒","year":"网页","url":"https://www.crt.org.mx/en/our-tequila/","type":"产区监管机构"},
- {"id":"29","publisher":"WSET","title":"Level 2 Award in Spirits Specification","short":"烈酒原料与调味类别","year":"2018","url":"https://www.wsetglobal.com/media/6331/wset_l2spirits_specification_en_jun2018.pdf","type":"教学大纲"},
- {"id":"30","publisher":"International Bartenders Association IBA","title":"Daiquiri","short":"代基里配方","year":"网页","url":"https://iba-world.com/iba-cocktail/daiquiri/","type":"行业配方"},
- {"id":"31","publisher":"UNESCO","title":"Traditional tea processing techniques and associated social practices in China","short":"中国茶加工技艺与社会实践","year":"2022","url":"https://ich.unesco.org/en/RL/traditional-tea-processing-techniques-and-associated-social-practices-in-china-01884","type":"文化遗产档案"},
- {"id":"32","publisher":"V&A 维多利亚与阿尔伯特博物馆","title":"Teapot design through time","short":"茶壶与全球饮茶历史","year":"网页","url":"https://www.vam.ac.uk/articles/teapots-through-time","type":"博物馆"},
- {"id":"33","publisher":"The National Archives 英国国家档案馆","title":"Hong Kong and the Opium Wars","short":"茶贸易与鸦片战争档案","year":"网页","url":"https://www.nationalarchives.gov.uk/education/teaching-resources/hong-kong-and-the-opium-wars/","type":"历史档案"},
- {"id":"34","publisher":"Food Chemistry X","title":"Processing chemical signature and food industry applications of Camellia sinensis teas An overview","short":"茶加工与氧化综述","year":"2021","url":"https://doi.org/10.1016/j.fochx.2021.100160","type":"研究综述"},
- {"id":"35","publisher":"National Coffee Association NCA","title":"History of coffee","short":"咖啡传说与传播历史","year":"网页","url":"https://www.aboutcoffee.org/origins/history-of-coffee/","type":"行业教育"},
- {"id":"36","publisher":"World Coffee Research WCR","title":"Coffee varieties catalog Arabica and Robusta","short":"咖啡物种与栽培品种目录","year":"网页","url":"https://varieties.worldcoffeeresearch.org/","type":"农业研究机构"},
- {"id":"37","publisher":"International Coffee Organization ICO","title":"Coffee Development Report 2022 23","short":"咖啡生产与果实处理","year":"2022/23 报告","url":"https://icocoffee.org/documents/cy2024-25/coffee-development-report-2022-23.pdf","type":"政府间组织报告"},
- {"id":"38","publisher":"Foods","title":"Single Origin Coffee Aroma From Optimized Flavor Protocols and Coffee Customization to Instrumental Volatile Characterization and Chemometrics","short":"烘焙与咖啡香气形成","year":"2021","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC8346979/","type":"研究论文"},
- {"id":"39","publisher":"Specialty Coffee Association SCA","title":"Towards a New Brewing Chart","short":"浓度与萃取率的区别","year":"2020","url":"https://sca.coffee/sca-news/25/issue-13/towards-a-new-brewing-chart-xpj8t","type":"研究团队介绍"},
- {"id":"40","publisher":"Specialty Coffee Association SCA","title":"How Hot is Hot Enough Brew Temperature Sensory Profile and Consumer Acceptance of Brewed Coffee","short":"温度与咖啡冲煮研究","year":"网页","url":"https://sca.coffee/sca-news/25/issue-15/how-hot-is-hot-enough-brew-temperature-sensory-profile-and-consumer-acceptance-of-brewed-coffee-5dj5b","type":"研究团队介绍"},
- {"id":"41","publisher":"National Coffee Association NCA","title":"Storage and shelf life","short":"咖啡保存","year":"网页","url":"https://www.aboutcoffee.org/beans/storage-and-shelf-life/","type":"行业教育"},
- {"id":"42","publisher":"World Coffee Research WCR","title":"Sensory Lexicon version 2.0","short":"咖啡感官词汇与参考物","year":"2017","url":"https://worldcoffeeresearch.org/news/2017/announcing-the-coffee-lexicon-2-0","type":"感官研究"},
- {"id":"43","publisher":"NIAAA 美国国立酒精滥用与酒精中毒研究所","title":"Alcohol Calculators","short":"一杯饮品中的酒精量","year":"网页","url":"https://rethinkingdrinking.niaaa.nih.gov/tools/calculators","type":"公共卫生机构"},
- {"id":"44","publisher":"FDA 美国食品药品监督管理局","title":"Spilling the Beans How Much Caffeine is Too Much","short":"咖啡因与个体差异","year":"网页","url":"https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much","type":"公共卫生机构"}
+  {
+    "id": "01",
+    "publisher": "NIDCD 美国国立耳聋及其他交流障碍研究所",
+    "title": "Taste Disorders",
+    "short": "味觉与风味的区别",
+    "year": "网页",
+    "url": "https://www.nidcd.nih.gov/health/taste-disorders",
+    "type": "公共研究机构"
+  },
+  {
+    "id": "02",
+    "publisher": "McGovern 等 PNAS",
+    "title": "Fermented beverages of pre- and proto-historic China",
+    "short": "贾湖发酵饮品研究",
+    "year": "2004",
+    "url": "https://doi.org/10.1073/pnas.0407921102",
+    "type": "考古研究"
+  },
+  {
+    "id": "03",
+    "publisher": "McGovern 等 PNAS",
+    "title": "Early Neolithic wine of Georgia in the South Caucasus",
+    "short": "格鲁吉亚早期葡萄酒证据",
+    "year": "2017",
+    "url": "https://doi.org/10.1073/pnas.1714728114",
+    "type": "考古研究"
+  },
+  {
+    "id": "04",
+    "publisher": "Liu 等 Journal of Archaeological Science Reports",
+    "title": "Fermented beverage and food storage in 13,000 y-old stone mortars at Raqefet Cave, Israel Investigating Natufian ritual feasting",
+    "short": "Raqefet 石臼与酿造解释",
+    "year": "2018",
+    "url": "https://doi.org/10.1016/j.jasrep.2018.08.008",
+    "type": "考古研究"
+  },
+  {
+    "id": "05",
+    "publisher": "WSET 葡萄酒与烈酒教育基金会",
+    "title": "What is beer A beginner's guide",
+    "short": "啤酒的主要原料",
+    "year": "2023",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2023/november/what-is-beer-a-beginner-s-guide/",
+    "type": "行业教育"
+  },
+  {
+    "id": "06",
+    "publisher": "WSET",
+    "title": "Your beer questions answered",
+    "short": "啤酒常见问题",
+    "year": "2024",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2024/february/our-experts-answer-your-beer-faqs",
+    "type": "行业教育"
+  },
+  {
+    "id": "07",
+    "publisher": "American Homebrewers Association",
+    "title": "The Brewing Process",
+    "short": "啤酒酿造流程",
+    "year": "网页",
+    "url": "https://www.homebrewersassociation.org/wp-content/uploads/Ingredient-Signs.pdf",
+    "type": "行业教育"
+  },
+  {
+    "id": "08",
+    "publisher": "Brewers Association",
+    "title": "2025 Beer Style Guidelines",
+    "short": "啤酒风格指南",
+    "year": "2025",
+    "url": "https://cdn.brewersassociation.org/wp-content/uploads/2025/06/20143326/2025_BA_Beer_Style_Guidelines.pdf",
+    "type": "行业分类"
+  },
+  {
+    "id": "09",
+    "publisher": "WSET",
+    "title": "What determines the colour of wine",
+    "short": "葡萄皮与酒色",
+    "year": "2021",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2021/september/23/what-determines-the-colour-of-wine",
+    "type": "行业教育"
+  },
+  {
+    "id": "10",
+    "publisher": "WSET",
+    "title": "What is wine",
+    "short": "葡萄酒的组成",
+    "year": "2021",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2021/december/14/what-is-wine",
+    "type": "行业教育"
+  },
+  {
+    "id": "11",
+    "publisher": "WSET",
+    "title": "A guide to wine types and styles",
+    "short": "葡萄酒类型与风格",
+    "year": "2023",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2023/october/03/how-many-wine-types-and-styles-are-there/",
+    "type": "行业教育"
+  },
+  {
+    "id": "12",
+    "publisher": "WSET",
+    "title": "A guide to sparkling wine production methods and regional styles",
+    "short": "气泡酒的制作方式",
+    "year": "2026",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2026/a-guide-to-sparkling-wine-production-methods-and-regional-styles",
+    "type": "行业教育"
+  },
+  {
+    "id": "13",
+    "publisher": "Sherry Wines 雪利产区机构",
+    "title": "Fortification",
+    "short": "雪利酒的加强工艺",
+    "year": "网页",
+    "url": "https://www.sherry.wine/sherry-wine/production/fortification",
+    "type": "产区机构"
+  },
+  {
+    "id": "14",
+    "publisher": "Frontiers in Microbiology",
+    "title": "Flavor Formation in Chinese Rice Wine Huangjiu Impacts of the Flavor-Active Microorganisms Raw Materials and Fermentation Technology",
+    "short": "黄酒风味形成综述",
+    "year": "2020",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7691429/",
+    "type": "研究综述"
+  },
+  {
+    "id": "15",
+    "publisher": "日本酒造組合中央会 JSS",
+    "title": "How is Sake Made",
+    "short": "清酒的糖化与发酵",
+    "year": "网页",
+    "url": "https://japansake.or.jp/sake/en/basic/how-is-sake-made/",
+    "type": "行业机构"
+  },
+  {
+    "id": "16",
+    "publisher": "日本酒造組合中央会 JSS",
+    "title": "Glossary of Sake Terms",
+    "short": "清酒术语与精米步合",
+    "year": "网页",
+    "url": "https://japansake.or.jp/sake/en/basic/glossary/",
+    "type": "行业机构"
+  },
+  {
+    "id": "17",
+    "publisher": "UNESCO",
+    "title": "Traditional knowledge and skills of sake-making with koji mold in Japan",
+    "short": "日本麴酿酒传统技艺",
+    "year": "2024",
+    "url": "https://ich.unesco.org/en/RL/traditional-knowledge-and-skills-of-making-sake-with-koji-mold-in-japan-01977",
+    "type": "文化遗产档案"
+  },
+  {
+    "id": "18",
+    "publisher": "Foods",
+    "title": "Automatic and Intelligent Technologies of Solid-State Fermentation Process of Baijiu Production Applications Challenges and Prospects",
+    "short": "白酒固态发酵与生产工序",
+    "year": "2021",
+    "url": "https://doi.org/10.3390/foods10030680",
+    "type": "研究综述"
+  },
+  {
+    "id": "19",
+    "publisher": "Journal of Ethnic Foods",
+    "title": "Baijiu Chinese liquor History classification and manufacture",
+    "short": "白酒分类与制作",
+    "year": "2016",
+    "url": "https://doi.org/10.1016/j.jef.2016.03.001",
+    "type": "研究综述"
+  },
+  {
+    "id": "20",
+    "publisher": "Scotch Whisky Association",
+    "title": "Story of Scotch",
+    "short": "苏格兰威士忌历史",
+    "year": "网页",
+    "url": "https://www.scotch-whisky.org.uk/discover-scotch/story-of-scotch/",
+    "type": "行业机构"
+  },
+  {
+    "id": "21",
+    "publisher": "Scotch Whisky Association",
+    "title": "Scotch Whisky FAQs",
+    "short": "苏格兰威士忌术语与熟成",
+    "year": "网页",
+    "url": "https://www.scotch-whisky.org.uk/discover-scotch/faqs/",
+    "type": "行业机构"
+  },
+  {
+    "id": "22",
+    "publisher": "Scotch Whisky Association",
+    "title": "Scotch Whisky Categories",
+    "short": "单一麦芽与调和类别",
+    "year": "网页",
+    "url": "https://www.scotch-whisky.org.uk/discover-scotch/enjoying-scotch/scotch-whisky-categories/",
+    "type": "行业机构"
+  },
+  {
+    "id": "23",
+    "publisher": "BNIC 干邑行业机构",
+    "title": "Origin and production process",
+    "short": "干邑从葡萄到调配",
+    "year": "网页",
+    "url": "https://www.cognac.fr/en/discover/expertise/production/",
+    "type": "产区机构"
+  },
+  {
+    "id": "24",
+    "publisher": "Smithsonian 美国国家历史博物馆",
+    "title": "Rum",
+    "short": "朗姆与加勒比制糖贸易",
+    "year": "网页",
+    "url": "https://americanhistory.si.edu/explore/exhibitions/on-the-water/online/living-atlantic-world/new-tastes-new-trades/rum",
+    "type": "博物馆"
+  },
+  {
+    "id": "25",
+    "publisher": "WSET",
+    "title": "History of rum Styles origins and traditions",
+    "short": "朗姆原料与地域风格",
+    "year": "2025",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2025/august/history-of-rum-styles-origins-and-traditions",
+    "type": "行业教育"
+  },
+  {
+    "id": "26",
+    "publisher": "WSET",
+    "title": "Understanding flavours in gin",
+    "short": "金酒植物香料与闻香",
+    "year": "2023",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2023/june/08/understanding-flavours-in-gin",
+    "type": "行业教育"
+  },
+  {
+    "id": "27",
+    "publisher": "WSET",
+    "title": "WSET Bitesize Celebrating Gin changing tastes attitudes and technology",
+    "short": "金酒的发展线索",
+    "year": "2024",
+    "url": "https://www.wsetglobal.com/news-events/events/2024-events/2024-12-17-wset-bitesize-celebrating-gin-changing-tastes-attitudes-and-technology",
+    "type": "行业教育"
+  },
+  {
+    "id": "28",
+    "publisher": "Consejo Regulador del Tequila CRT",
+    "title": "Our Tequila",
+    "short": "蓝色龙舌兰与龙舌兰酒",
+    "year": "网页",
+    "url": "https://www.crt.org.mx/en/our-tequila/",
+    "type": "产区监管机构"
+  },
+  {
+    "id": "29",
+    "publisher": "WSET",
+    "title": "Level 2 Award in Spirits Specification",
+    "short": "烈酒原料与调味类别",
+    "year": "2018",
+    "url": "https://www.wsetglobal.com/media/6331/wset_l2spirits_specification_en_jun2018.pdf",
+    "type": "教学大纲"
+  },
+  {
+    "id": "30",
+    "publisher": "International Bartenders Association IBA",
+    "title": "Daiquiri",
+    "short": "代基里配方",
+    "year": "网页",
+    "url": "https://iba-world.com/iba-cocktail/daiquiri/",
+    "type": "行业配方"
+  },
+  {
+    "id": "31",
+    "publisher": "UNESCO",
+    "title": "Traditional tea processing techniques and associated social practices in China",
+    "short": "中国茶加工技艺与社会实践",
+    "year": "2022",
+    "url": "https://ich.unesco.org/en/RL/traditional-tea-processing-techniques-and-associated-social-practices-in-china-01884",
+    "type": "文化遗产档案"
+  },
+  {
+    "id": "32",
+    "publisher": "V&A 维多利亚与阿尔伯特博物馆",
+    "title": "Teapot design through time",
+    "short": "茶壶与全球饮茶历史",
+    "year": "网页",
+    "url": "https://www.vam.ac.uk/articles/teapots-through-time",
+    "type": "博物馆"
+  },
+  {
+    "id": "33",
+    "publisher": "The National Archives 英国国家档案馆",
+    "title": "Hong Kong and the Opium Wars",
+    "short": "茶贸易与鸦片战争档案",
+    "year": "网页",
+    "url": "https://www.nationalarchives.gov.uk/education/teaching-resources/hong-kong-and-the-opium-wars/",
+    "type": "历史档案"
+  },
+  {
+    "id": "34",
+    "publisher": "Food Chemistry X",
+    "title": "Processing chemical signature and food industry applications of Camellia sinensis teas An overview",
+    "short": "茶加工与氧化综述",
+    "year": "2021",
+    "url": "https://doi.org/10.1016/j.fochx.2021.100160",
+    "type": "研究综述"
+  },
+  {
+    "id": "35",
+    "publisher": "National Coffee Association NCA",
+    "title": "History of coffee",
+    "short": "咖啡传说与传播历史",
+    "year": "网页",
+    "url": "https://www.aboutcoffee.org/origins/history-of-coffee/",
+    "type": "行业教育"
+  },
+  {
+    "id": "36",
+    "publisher": "World Coffee Research WCR",
+    "title": "Coffee varieties catalog Arabica and Robusta",
+    "short": "咖啡物种与栽培品种目录",
+    "year": "网页",
+    "url": "https://varieties.worldcoffeeresearch.org/",
+    "type": "农业研究机构"
+  },
+  {
+    "id": "37",
+    "publisher": "International Coffee Organization ICO",
+    "title": "Coffee Development Report 2022 23",
+    "short": "咖啡生产与果实处理",
+    "year": "2022/23 报告",
+    "url": "https://icocoffee.org/documents/cy2024-25/coffee-development-report-2022-23.pdf",
+    "type": "政府间组织报告"
+  },
+  {
+    "id": "38",
+    "publisher": "Foods",
+    "title": "Single Origin Coffee Aroma From Optimized Flavor Protocols and Coffee Customization to Instrumental Volatile Characterization and Chemometrics",
+    "short": "烘焙与咖啡香气形成",
+    "year": "2021",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8346979/",
+    "type": "研究论文"
+  },
+  {
+    "id": "39",
+    "publisher": "Specialty Coffee Association SCA",
+    "title": "Towards a New Brewing Chart",
+    "short": "浓度与萃取率的区别",
+    "year": "2020",
+    "url": "https://sca.coffee/sca-news/25/issue-13/towards-a-new-brewing-chart-xpj8t",
+    "type": "研究团队介绍"
+  },
+  {
+    "id": "40",
+    "publisher": "Specialty Coffee Association SCA",
+    "title": "How Hot is Hot Enough Brew Temperature Sensory Profile and Consumer Acceptance of Brewed Coffee",
+    "short": "温度与咖啡冲煮研究",
+    "year": "网页",
+    "url": "https://sca.coffee/sca-news/25/issue-15/how-hot-is-hot-enough-brew-temperature-sensory-profile-and-consumer-acceptance-of-brewed-coffee-5dj5b",
+    "type": "研究团队介绍"
+  },
+  {
+    "id": "41",
+    "publisher": "National Coffee Association NCA",
+    "title": "Storage and shelf life",
+    "short": "咖啡保存",
+    "year": "网页",
+    "url": "https://www.aboutcoffee.org/beans/storage-and-shelf-life/",
+    "type": "行业教育"
+  },
+  {
+    "id": "42",
+    "publisher": "World Coffee Research WCR",
+    "title": "Sensory Lexicon version 2.0",
+    "short": "咖啡感官词汇与参考物",
+    "year": "2017",
+    "url": "https://worldcoffeeresearch.org/news/2017/announcing-the-coffee-lexicon-2-0",
+    "type": "感官研究"
+  },
+  {
+    "id": "43",
+    "publisher": "NIAAA 美国国立酒精滥用与酒精中毒研究所",
+    "title": "Alcohol Calculators",
+    "short": "一杯饮品中的酒精量",
+    "year": "网页",
+    "url": "https://rethinkingdrinking.niaaa.nih.gov/tools/calculators",
+    "type": "公共卫生机构"
+  },
+  {
+    "id": "44",
+    "publisher": "FDA 美国食品药品监督管理局",
+    "title": "Spilling the Beans How Much Caffeine is Too Much",
+    "short": "咖啡因与个体差异",
+    "year": "网页",
+    "url": "https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much",
+    "type": "公共卫生机构"
+  },
+  {
+    "id": "45",
+    "publisher": "Lu 等 Scientific Reports",
+    "title": "Earliest tea as evidence for one branch of the Silk Road across the Tibetan Plateau",
+    "short": "汉代及西藏西部的茶证据",
+    "year": "2016",
+    "url": "https://www.nature.com/articles/srep18955",
+    "type": "考古研究"
+  },
+  {
+    "id": "46",
+    "publisher": "NIAAA",
+    "title": "The Truth About Holiday Spirits",
+    "short": "咖啡因不能恢复酒精影响下的能力",
+    "year": "网页",
+    "url": "https://www.niaaa.nih.gov/publications/brochures-and-fact-sheets/truth-about-holiday-spirits",
+    "type": "公共卫生机构"
+  },
+  {
+    "id": "47",
+    "publisher": "WSET",
+    "title": "The best ways to preserve wine after opening",
+    "short": "开瓶后葡萄酒的保存",
+    "year": "2023",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2023/march/07/the-best-ways-to-preserve-wine-after-opening",
+    "type": "行业教育"
+  }
 ]
