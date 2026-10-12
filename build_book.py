@@ -102,6 +102,59 @@ class ChapterArt(Flowable):
         c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,7)
         c.drawCentredString(CW/2,3,'阅读情境插画  具体分类与制作以正文资料为准')
 
+
+LEAF_PANELS = {
+    'fresh': ('tea-fresh-details.png', (0, 0, 1536, 1024), '原叶与质感观察'),
+    'green': ('tea-dry-wet-details.png', (14, 14, 756, 330), '绿茶'),
+    'white': ('tea-dry-wet-details.png', (780, 14, 1521, 330), '白茶'),
+    'yellow': ('tea-dry-wet-details.png', (14, 352, 756, 658), '黄茶'),
+    'oolong': ('tea-dry-wet-details.png', (780, 352, 1521, 658), '乌龙'),
+    'black': ('tea-dry-wet-details.png', (14, 680, 756, 1009), '红茶'),
+    'dark': ('tea-dry-wet-details.png', (780, 680, 1521, 1009), '黑茶实例：普洱熟茶'),
+}
+
+class LeafDetail(Flowable):
+    """Show a viewport of the original illustration; do not alter raster bytes."""
+    def __init__(self, key, height):
+        Flowable.__init__(self)
+        self.key = key
+        self.width = CW
+        self.height = float(height) + 30
+
+    def draw(self):
+        filename, rect, label = LEAF_PANELS[self.key]
+        img = ROOT / 'assets' / filename
+        iw, ih = Image.open(img).size
+        x0, y0, x1, y1 = [v*s for v,s in zip(rect, (iw/1536, ih/1024, iw/1536, ih/1024))]
+        h = min(self.height-30, CW*(y1-y0)/(x1-x0))
+        w = h*(x1-x0)/(y1-y0)
+        x = (CW-w)/2
+        scale = w/(x1-x0)
+        c = self.canv
+        c.saveState()
+        path = c.beginPath(); path.rect(x, 30, w, h); c.clipPath(path, stroke=0)
+        c.drawImage(str(img), x-x0*scale, 30-(ih-y1)*scale, iw*scale, ih*scale)
+        c.restoreState()
+        c.setFillColor(INK); c.setFont(FONT, 8)
+        if self.key == 'fresh':
+            c.drawCentredString(CW/2, 17, label)
+        else:
+            c.drawCentredString(CW*.25, 17, '加工后的干茶')
+            c.drawCentredString(CW*.75, 17, '冲泡后的叶底')
+        c.setFillColor(GRAY); c.setFont(FONT, 7)
+        c.drawCentredString(CW/2, 3, 'AI 教学示意  不同样本 不按实际尺寸绘制')
+
+
+def leaf_markdown(match):
+    key = match.group(1)
+    filename, _, label = LEAF_PANELS[key]
+    position = {'green':'上排左', 'white':'上排右', 'yellow':'中排左', 'oolong':'中排右', 'black':'下排左', 'dark':'下排右'}
+    if key == 'fresh':
+        return f'![原叶、嫩叶与成熟叶、失水及干湿质感的 AI 教学示意](../assets/{filename})'
+    if key == 'green':
+        return f'![六类代表形态的干茶与叶底 AI 教学对照](../assets/{filename})\n\n对照图依次为：上排绿茶、白茶；中排黄茶、乌龙；下排红茶、普洱熟茶。每格左侧为干茶，右侧为叶底。本节阅读上排左格；图像不按实际尺寸绘制。'
+    return f'[查看{label}的干茶与叶底教学对照：{position[key]}格，左干右湿](../assets/{filename})'
+
 class CompositionSketch(Flowable):
     def __init__(self):Flowable.__init__(self);self.width=CW;self.height=92
     def draw(self):
@@ -135,6 +188,8 @@ def blocks(body):
     while i<len(lines):
         line=lines[i].strip()
         if not line:i+=1;continue
+        if line.startswith('@leaf '):
+            _,key,height=line.split();result.append(('flow',LeafDetail(key,height)));i+=1;continue
         if line.startswith('@art '):
             _,key,height=line.split();result.append(('flow',ChapterArt(key,height)));i+=1;continue
         if line.startswith('@composition '):
@@ -358,6 +413,7 @@ for p in pages:
         rows=v.splitlines();n=len(rows[0].split('|'))
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
+    body=re.sub(r'@leaf (\w+) [\d.]+',leaf_markdown,body)
     body=re.sub(r'@art (\w+) [\d.]+',lambda m:'（配图 '+m.group(1)+' 见 PDF 与写作工程中的图像资源）',body)
     body=body.replace('@composition coffee','| 成杯方向 | 组成关系 |\n| --- | --- |\n| 浓缩 | 咖啡基底 |\n| 美式 | 浓缩加水 |\n| 奶咖 | 浓缩加奶与相应奶泡 |\n\n仅示意组成，不表示标准比例。')
     allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
