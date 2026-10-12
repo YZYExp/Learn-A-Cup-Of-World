@@ -36,6 +36,7 @@ h2 { margin-top: 2em; font-size: 1.4rem; }
 .contents .pdf { margin-left: 12px; font-size: .85em; }
 article { padding: 24px; background: #fff; border-radius: 8px; }
 article p { overflow-wrap: anywhere; }
+article img { display: block; max-width: 100%; height: auto; margin: 24px auto; }
 article ul { padding-left: 1.5em; }
 .table-scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: .9em; }
@@ -107,6 +108,7 @@ def build():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / filename, target)
     shutil.copytree(OUT / '逐章阅读', downloads / '逐章阅读')
+    shutil.copytree(OUT / '逐章阅读' / 'assets', SITE / 'assets')
     (SITE / '.nojekyll').touch()
     (SITE / 'style.css').write_text(CSS, encoding='utf-8')
 
@@ -117,6 +119,7 @@ def build():
         entries.append(f'<li><a href="chapters/{ident}.html">{escape(title)}</a>'
                        f'<a class="pdf" href="{pdf_url}">PDF</a></li>')
         text = (OUT / '逐章阅读' / chapter['markdown']).read_text(encoding='utf-8')
+        text = text.replace('(assets/', '(../assets/')
         heading = '' if re.search(r'^# ', text, re.M) else f'<h1>{escape(title)}</h1>'
         previous = (f'<a href="{manifest[index - 1]["id"]}.html">← 上一章</a>'
                     if index else '<a href="../index.html">← 返回目录</a>')
