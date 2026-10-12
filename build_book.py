@@ -2,6 +2,7 @@
 """Build an A5 Chinese reader with explicit page-local references."""
 from pathlib import Path
 import re, json, html
+import shutil
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -10,6 +11,7 @@ from reportlab.lib.colors import HexColor, black, white
 from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
 from illustration_data import ART, FRONT_ART, LEAF_PANELS
+import fitz
 
 ROOT = Path(__file__).resolve().parent
 PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
@@ -39,6 +41,7 @@ STYLES = {
        textColor=INK, wordWrap='CJK', spaceAfter=10, splitLongWords=True),
 }
 sources = {s['id']:s for s in json.loads((ROOT/'research/sources.json').read_text())}
+SCENES = json.loads((ROOT/'assets/scene-catalog.json').read_text())
 pages = []
 for file in sorted((ROOT/'chapters').glob('*.md')):
     text = file.read_text()
@@ -78,6 +81,17 @@ def table(rows):
     ]))
     return t
 
+
+class TeachingFigure(Flowable):
+    def __init__(self,path):
+        Flowable.__init__(self)
+        self.path=(ROOT/'chapters'/path).resolve()
+        assert self.path.is_relative_to(ROOT/'assets/figures'), self.path
+        iw,ih=Image.open(self.path).size
+        self.width=CW;self.height=CW*ih/iw
+    def draw(self):
+        self.canv.drawImage(str(self.path),0,0,CW,self.height)
+
 class ChapterArt(Flowable):
     def __init__(self,key,height):
         Flowable.__init__(self);self.key=key;self.height=float(height)+17;self.width=CW
@@ -89,8 +103,9 @@ class ChapterArt(Flowable):
         scale=w/(x1-x0);c=self.canv
         c.saveState();p=c.beginPath();p.rect(x,y,w,h);c.clipPath(p,stroke=0)
         c.drawImage(str(img),x-x0*scale,y-(ih-y1)*scale,iw*scale,ih*scale)
-        c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,7)
-        c.drawCentredString(CW/2,3,'阅读情境插画  具体分类与制作以正文资料为准')
+        c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,6.8)
+        c.drawCentredString(CW/2,10,SCENES[self.key]['caption'])
+        c.drawCentredString(CW/2,1,'AI 阅读情境插画；图中物体和颜色不用于身份、配方或年份鉴定。')
 
 
 class LeafDetail(Flowable):
@@ -146,7 +161,8 @@ class CompositionSketch(Flowable):
             c.setStrokeColor(GRAY);c.rect(x,y,42,45,fill=0,stroke=1)
             c.setFont(FONT,9);c.setFillColor(INK);c.drawCentredString(x+21,78,name)
             c.setFont(FONT,7.4);c.drawCentredString(x+21,15,extra)
-        c.setFont(FONT,7);c.setFillColor(GRAY);c.drawCentredString(CW/2,0,'只示意组成关系  色块不表示标准配方比例')
+        c.setFont(FONT,6.8);c.setFillColor(GRAY)
+        c.drawCentredString(CW/2,0,'图18-C 棕色：咖啡；蓝色：水；米色：奶。只示意组成，不表示配方比例。')
 
 def figure_region(c,key,x,y,w):
     # A PDF viewport into an unmodified generated sheet, not a raster edit.
@@ -167,6 +183,9 @@ def blocks(body):
         if not line:i+=1;continue
         if line.startswith('@leaf '):
             _,key,height=line.split();result.append(('flow',LeafDetail(key,height)));i+=1;continue
+        figure=re.fullmatch(r'!\[([^\]]+)\]\(([^)]+)\)',line)
+        if figure:
+            result.append(('flow',TeachingFigure(figure.group(2))));i+=1;continue
         if line.startswith('@art '):
             _,key,height=line.split();result.append(('flow',ChapterArt(key,height)));i+=1;continue
         if line.startswith('@composition '):
@@ -273,6 +292,8 @@ def cover(c):
     c.setFont(FONT,15);c.drawString(M,H-124,'酒 茶 咖啡的起源与风味')
     c.setFont(FONT,10);c.setFillColor(GRAY);c.drawString(M,H-153,'个人兴趣阅读与学习')
     figure_region(c,'cover',M,174,CW)
+    note=Paragraph('图例：酒杯、茶杯与咖啡杯呈现全书主题；AI 情境插画，不用于身份判定。',STYLES['small'])
+    ww,hh=note.wrap(CW,H);note.drawOn(c,M,164-hh)
     c.setFillColor(INK);c.setFont(FONT,10)
     c.drawString(M,119,'从原料与加工开始，读懂一杯饮料。')
     c.drawString(M,99,'短章阅读  当页资料  日常观察')
@@ -329,7 +350,7 @@ def opener(c,key,title,subtitle):
     c.setFillColor(black);c.setFont(FONT,24);c.drawString(M,H-91,title)
     obj=para(subtitle);ww,hh=obj.wrap(CW,H);obj.drawOn(c,M,H-119-hh)
     figure_region(c,key,M,152,CW)
-    obj=Paragraph('AI 生成的阅读情境插画，不是历史复原、植物鉴定图或工艺操作图。',STYLES['small'])
+    obj=Paragraph('图例：'+SCENES[key]['caption']+' AI 阅读情境插画，不是历史复原或工艺操作图。',STYLES['small'])
     ww,hh=obj.wrap(CW,H);obj.drawOn(c,M,113-hh)
 
 def bibliography(c):
@@ -370,9 +391,16 @@ target=OUT/'杯中世界.pdf'
 count=build(OUT/'first-pass.pdf')
 count=build(target,collect=False)
 (OUT/'first-pass.pdf').unlink()
+# Compress the PDF's raster payload for a practical reading/download size.
+# Original PNGs and vector figure masters remain untouched in assets/.
+optimized=OUT/'optimized.pdf'
+with fitz.open(target) as doc:
+    doc.rewrite_images(dpi_threshold=310,dpi_target=270,quality=88,bitonal=False)
+    doc.save(optimized,garbage=4,deflate=True)
+optimized.replace(target)
 (OUT/'layout-check.json').write_text(json.dumps(dict(total_pages=count,pages=diagnostics),ensure_ascii=False,indent=2))
 
-allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图解修订版\n']
+allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图例增补版\n\n![封面主题插画](assets/figures/scene-cover.png)\n\n图例：'+SCENES['cover']['caption']+' AI 阅读情境插画。\n']
 allmd.append('\n**'+PUBLICATION['credit']+'**\n\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n')
 allmd.append('\n## 署名与许可\n\n['+PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']+']('+PUBLICATION['content_license_url']+')\n\n'+PUBLICATION['license_summary']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n\n作品出处：'+PUBLICATION['source_url']+'\n\n推荐署名：'+PUBLICATION['attribution']+'\n')
 for p in pages:
@@ -391,12 +419,28 @@ for p in pages:
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
     body=re.sub(r'@leaf (\w+) [\d.]+',leaf_markdown,body)
-    body=re.sub(r'@art (\w+) [\d.]+',lambda m:'（配图 '+m.group(1)+' 见 PDF 与写作工程中的图像资源）',body)
-    body=body.replace('@composition coffee','| 成杯方向 | 组成关系 |\n| --- | --- |\n| 浓缩 | 咖啡基底 |\n| 美式 | 浓缩加水 |\n| 奶咖 | 浓缩加奶与相应奶泡 |\n\n仅示意组成，不表示标准比例。')
+    def mdart(m):
+        key=m.group(1);s=SCENES[key]
+        return f'![图{s["number"]} {s["title"]}](assets/figures/scene-{key}.png)\n\n图例：{s["caption"]} AI 阅读情境插画。'
+    body=re.sub(r'@art (\w+) [\d.]+',mdart,body)
+    body=body.replace('@composition coffee','![图18-C 咖啡成杯组成](assets/figures/composition-coffee.png)\n\n图18-C 图例：棕色为咖啡，蓝色为水，米色为奶；仅示意组成，不表示标准比例或实际分层。')
+    body=body.replace('../assets/','assets/')
     allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
     if not p['refs']:allmd.append('本页为原创阅读说明或自拟观察方法。\n')
-allmd.append('\n资料检索日期 2026年10月11日至12日。插画由 AI 生成；完整配图与当页排版见 PDF。\n')
+allmd.append('\n资料检索日期 2026年10月11日至12日。图例已区分 AI 插画与本书绘制的工艺、数量示意；当页排版见 PDF。\n')
 (OUT/'杯中世界可编辑稿.md').write_text('\n'.join(allmd))
+if (OUT/'assets/figures').exists():
+    shutil.rmtree(OUT/'assets/figures')
+shutil.copytree(ROOT/'assets/figures',OUT/'assets/figures',dirs_exist_ok=True)
+for name in ('tea-fresh-details.png','tea-dry-wet-details.png'):
+    shutil.copy2(ROOT/'assets'/name,OUT/'assets'/name)
+# Export the existing composition diagram with exactly the PDF's labels.
+cp=ROOT/'assets/figures/composition-coffee.pdf'
+cc=canvas.Canvas(str(cp),pagesize=(CW,92),invariant=1);CompositionSketch().drawOn(cc,0,0);cc.save()
+with fitz.open(cp) as doc:
+    doc[0].get_pixmap(matrix=fitz.Matrix(4,4)).save(ROOT/'assets/figures/composition-coffee.png')
+for suffix in ('pdf','png'):
+    shutil.copy2(ROOT/f'assets/figures/composition-coffee.{suffix}',OUT/f'assets/figures/composition-coffee.{suffix}')
 print(json.dumps(dict(pdf=str(target),pages=count,chapters=20,source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))
