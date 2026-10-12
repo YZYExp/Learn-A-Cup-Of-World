@@ -53,3 +53,5 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。远端仓�
 克隆后先运行 `python -m pip install -r requirements.txt`，再执行上述重建命令。仓库包含重建所需字体及字体许可。
 
 GitHub 阅读 PDF 保留全部 81 页、正文、引用链接和导航，插画采用高质量 JPEG 压缩以适应上传接口大小限制；从源文件重建可得到原始无损插画版 PDF。独立章节 PDF 可用 `export_chapters.py` 重建。
+
+原始 7 次写作提交已完整恢复到 `original-revision-illustrated` 分支，原始首版保留在 `original-main` 分支；原提交编号、作者、日期与父子关系不变。详见历史说明。
