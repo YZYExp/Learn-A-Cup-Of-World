@@ -27,7 +27,7 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。远端仓�
 
 ## 重建
 
-使用 Python，依赖 reportlab、fonttools、Pillow、pypdf。在项目目录运行 `python build_book.py`。PDF 为 A5 阅读开本，字体嵌入，页码连续，目录与书签可导航。
+使用 Python 3.12，依赖见 `requirements.txt`。在项目目录运行 `python build_book.py`。PDF 为 A5 阅读开本，字体嵌入，页码连续，目录与书签可导航。
 
 之后运行 `python export_chapters.py`，得到 24 组独立 PDF 与 Markdown 以及逐章阅读压缩包。20 章正文之外的读前说明和 3 个附录也单独成文件；每章 PDF 页脚标示本章页码与全书页码。
 
@@ -55,3 +55,29 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。远端仓�
 GitHub 阅读 PDF 保留全部 81 页、正文、引用链接和导航，插画采用高质量 JPEG 压缩以适应上传接口大小限制；从源文件重建可得到原始无损插画版 PDF。独立章节 PDF 可用 `export_chapters.py` 重建。
 
 原始 7 次写作提交已完整恢复到 `original-revision-illustrated` 分支，原始首版保留在 `original-main` 分支；原提交编号、作者、日期与父子关系不变。详见历史说明。
+
+## 自动构建与 GitHub Pages
+
+`.github/workflows/build-and-deploy.yml` 在分支推送、Pull Request 和手动触发时，从 `chapters/`、`research/` 和 `assets/` 重建全书与网页。只有默认分支的推送或手动运行会部署 GitHub Pages；其他分支与 PR 只构建、校验并上传产物。
+
+首次启用时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。之后默认分支每次更新会自动部署，无需额外配置密钥。默认地址为 <https://yzyexp.github.io/Learn-A-Cup-Of-World/>，实际部署地址见 Actions 的 `github-pages` environment。
+
+在 Actions 的 **Build book and deploy Pages** 运行详情下载：
+
+- `cup-world-books`：全书 PDF、可编辑稿、24 组逐章 PDF/Markdown、逐章 ZIP 和排版检查记录。
+- `cup-world-site`：可直接部署的静态网站，包含章节目录、逐章文字与表格、引用链接和 PDF/ZIP 下载。全部链接为相对路径，可部署到仓库子路径。
+
+构建产物保留 30 天；已部署网页上的下载文件随网站持续可用。网页与 PDF 均来自本次源码构建，不依赖 `books/` 中保存的旧版本。网页版提供文字阅读，完整插画及当页排版见 PDF。
+
+本地生成和验证同样的产物：
+
+```bash
+python -m pip install -r requirements.txt
+python build_book.py
+python export_chapters.py
+python build_site.py
+python scripts/check_build.py
+python -m http.server 8000 --directory site
+```
+
+打开 <http://localhost:8000/> 预览。`output/` 为 PDF 与逐章产物，`site/` 为部署目录，均不提交到 Git。校验会检查全书和逐章页数、书签、排版空间、压缩包完整性及所有网页本地链接；任一检查失败都会阻止部署。
