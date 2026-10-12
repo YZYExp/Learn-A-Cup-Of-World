@@ -6,7 +6,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import HexColor, black, white
-from reportlab.platypus import Paragraph, Table, TableStyle
+from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
@@ -75,6 +75,44 @@ def table(rows):
     ]))
     return t
 
+ART={
+ 'craft':('menu-scenes.png',(18,15,750,474)),
+ 'cocktails':('menu-scenes.png',(786,15,1518,474)),
+ 'mixedtea':('menu-scenes.png',(18,499,750,1001)),
+ 'cafemenu':('menu-scenes.png',(786,499,1518,1001)),
+ 'senses':('process-scenes.png',(20,18,756,497)),
+ 'origins':('process-scenes.png',(781,18,1516,497)),
+ 'rice':('process-scenes.png',(20,515,756,1001)),
+ 'barrels':('process-scenes.png',(781,515,1516,1001)),
+}
+
+class ChapterArt(Flowable):
+    def __init__(self,key,height):
+        Flowable.__init__(self);self.key=key;self.height=float(height)+17;self.width=CW
+    def draw(self):
+        filename,rect=ART[self.key];img=ROOT/'assets'/filename
+        iw,ih=Image.open(img).size
+        x0,y0,x1,y1=[v*s for v,s in zip(rect,(iw/1536,ih/1024,iw/1536,ih/1024))]
+        h=self.height-17;w=h*(x1-x0)/(y1-y0);x=(CW-w)/2;y=17
+        scale=w/(x1-x0);c=self.canv
+        c.saveState();p=c.beginPath();p.rect(x,y,w,h);c.clipPath(p,stroke=0)
+        c.drawImage(str(img),x-x0*scale,y-(ih-y1)*scale,iw*scale,ih*scale)
+        c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,7)
+        c.drawCentredString(CW/2,3,'阅读情境插画  具体分类与制作以正文资料为准')
+
+class CompositionSketch(Flowable):
+    def __init__(self):Flowable.__init__(self);self.width=CW;self.height=92
+    def draw(self):
+        c=self.canv
+        for i,(name,extra,col) in enumerate([('浓缩','咖啡基底',None),('美式','咖啡加水','#DEEAF0'),('奶咖','咖啡加奶','#F0E5D2')]):
+            x=26+i*112;y=28
+            c.setFillColor(HexColor('#865936'));c.rect(x,y,42,14 if col else 45,fill=1,stroke=0)
+            if col:c.setFillColor(HexColor(col));c.rect(x,y+14,42,31,fill=1,stroke=0)
+            c.setStrokeColor(GRAY);c.rect(x,y,42,45,fill=0,stroke=1)
+            c.setFont(FONT,9);c.setFillColor(INK);c.drawCentredString(x+21,78,name)
+            c.setFont(FONT,7.4);c.drawCentredString(x+21,15,extra)
+        c.setFont(FONT,7);c.setFillColor(GRAY);c.drawCentredString(CW/2,0,'只示意组成关系  色块不表示标准配方比例')
+
 def figure_region(c,key,x,y,w):
     # A PDF viewport into an unmodified generated sheet, not a raster edit.
     img=ROOT/'assets/illustrations.png'
@@ -95,6 +133,10 @@ def blocks(body):
     while i<len(lines):
         line=lines[i].strip()
         if not line:i+=1;continue
+        if line.startswith('@art '):
+            _,key,height=line.split();result.append(('flow',ChapterArt(key,height)));i+=1;continue
+        if line.startswith('@composition '):
+            result.append(('flow',CompositionSketch()));i+=1;continue
         if line=='@table':
             rows=[];i+=1
             while lines[i].strip()!='@endtable':
@@ -200,7 +242,7 @@ def cover(c):
     c.drawString(M,119,'从原料与加工开始，读懂一杯饮料。')
     c.drawString(M,99,'短章阅读  当页资料  日常观察')
     c.setFillColor(GRAY);c.setFont(FONT,8)
-    c.drawString(M,55,'完整首版  2026年10月')
+    c.drawString(M,55,'图解修订版  2026年10月')
     c.drawString(M,39,'AI 辅助写作与插画  资料出处见各页及书末')
 
 def contents(c):
@@ -232,7 +274,7 @@ def opener(c,key,title,subtitle):
 
 def bibliography(c):
     ordered=list(sources.values());y=0
-    intro='以下资料检索日期为 2026 年 10 月 11 日。正文为原创改写与解释，不逐字转录来源。行业材料用于解释工艺和术语，考古研究用于限定证据；自拟实验与类比另行注明。网页未标示年份的条目不推测发布日期。链接是原始资料入口，网页日后可能更新。'
+    intro='首版资料检索于 2026 年 10 月 11 日，新增资料检索于 10 月 12 日。正文为原创改写与解释。行业材料用于工艺和术语，生产者配方用于展示其具体做法，不推广为全球标准；考古资料限定证据，自拟实验与类比另行注明。原文链接日后可能更新。'
     def start():
         nonlocal y
         newpage(c);frame(c,'参考资料')
@@ -269,7 +311,7 @@ count=build(target,collect=False)
 (OUT/'first-pass.pdf').unlink()
 (OUT/'layout-check.json').write_text(json.dumps(dict(total_pages=count,pages=diagnostics),ensure_ascii=False,indent=2))
 
-allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 完整首版\n']
+allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图解修订版\n']
 for p in pages:
     body=p['body']
     def mdtable(m):
@@ -285,10 +327,12 @@ for p in pages:
         rows=v.splitlines();n=len(rows[0].split('|'))
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
+    body=re.sub(r'@art (\w+) [\d.]+',lambda m:'（配图 '+m.group(1)+' 见 PDF 与写作工程中的图像资源）',body)
+    body=body.replace('@composition coffee','| 成杯方向 | 组成关系 |\n| --- | --- |\n| 浓缩 | 咖啡基底 |\n| 美式 | 浓缩加水 |\n| 奶咖 | 浓缩加奶与相应奶泡 |\n\n仅示意组成，不表示标准比例。')
     allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
     if not p['refs']:allmd.append('本页为原创阅读说明或自拟观察方法。\n')
-allmd.append('\n资料检索日期 2026年10月11日。插画由 AI 生成；完整图表、目录与当页排版见 PDF。\n')
+allmd.append('\n资料检索日期 2026年10月11日至12日。插画由 AI 生成；完整配图与当页排版见 PDF。\n')
 (OUT/'杯中世界可编辑稿.md').write_text('\n'.join(allmd))
 print(json.dumps(dict(pdf=str(target),pages=count,chapters=20,source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))

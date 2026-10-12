@@ -498,5 +498,255 @@
     "url": "https://pdg.lbl.gov/2026/AtomicNuclearProperties/HTML/ethanol.html",
     "type": "公共研究机构数据",
     "accessed": "2026-10-11"
+  },
+  {
+    "id": "51",
+    "publisher": "Brewers Association",
+    "title": "Craft Brewer Definition",
+    "short": "美国精酿生产者定义",
+    "url": "https://www.brewersassociation.org/statistics-and-data/craft-brewer-definition/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "52",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines American IPA",
+    "short": "美式 IPA 风格",
+    "url": "https://www.bjcp.org/style/2021/21/21A/american-ipa/",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "53",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines Hazy IPA",
+    "short": "浑浊 IPA 风格",
+    "url": "https://www.bjcp.org/style/2021/21/21C/hazy-ipa/",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "54",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines Weissbier",
+    "short": "德式小麦风格",
+    "url": "https://styles.bjcp.org/bjcp-2021-beer/10/10a-weissbier",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "55",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines Saison",
+    "short": "赛松风格",
+    "url": "https://www.bjcp.org/style/2021/25/25B/saison/",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "56",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines Irish Stout",
+    "short": "爱尔兰世涛风格",
+    "url": "https://www.bjcp.org/style/2021/15/15B/irish-stout/",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "57",
+    "publisher": "BJCP",
+    "title": "2021 Beer Style Guidelines Berliner Weisse",
+    "short": "柏林酸小麦风格",
+    "url": "https://www.bjcp.org/style/2021/23/23A/berliner-weisse/",
+    "year": "2021",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "58",
+    "publisher": "WSET",
+    "title": "What is dry hopping",
+    "short": "干投酒花",
+    "url": "https://www.wsetglobal.com/knowledge-centre/blog/2026/what-is-dry-hopping",
+    "year": "2026",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "59",
+    "publisher": "IBA",
+    "title": "Old Fashioned",
+    "short": "古典鸡尾酒配方",
+    "url": "https://iba-world.com/iba-cocktail/old-fashioned/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "60",
+    "publisher": "IBA",
+    "title": "Negroni",
+    "short": "尼格罗尼配方",
+    "url": "https://iba-world.com/iba-cocktail/negroni/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "61",
+    "publisher": "IBA",
+    "title": "Dry Martini",
+    "short": "干马天尼配方",
+    "url": "https://iba-world.com/iba-cocktail/dry-martini/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "62",
+    "publisher": "IBA",
+    "title": "Margarita",
+    "short": "玛格丽特配方",
+    "url": "https://iba-world.com/iba-cocktail/margarita/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "63",
+    "publisher": "IBA",
+    "title": "Mojito",
+    "short": "莫吉托配方",
+    "url": "https://iba-world.com/iba-cocktail/mojito/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "64",
+    "publisher": "UK Tea and Infusions Association",
+    "title": "Creating the Perfect Blend",
+    "short": "茶叶拼配",
+    "url": "https://www.tea.co.uk/tea-processing-and-blending",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "65",
+    "publisher": "Twinings",
+    "title": "Spice Chai Tea Recipe",
+    "short": "香料奶茶原厂示例",
+    "url": "https://twinings-tea.jp/enjoy/milktea/recipe/spicy-chai.html",
+    "year": "网页",
+    "type": "生产者配方或教育资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "66",
+    "publisher": "Twinings",
+    "title": "Rich Iced Milk Tea Recipe",
+    "short": "冰奶茶原厂示例",
+    "url": "https://www.twinings-tea.jp/enjoy/milktea/recipe/rich-iced-milk-tea.html",
+    "year": "网页",
+    "type": "生产者配方或教育资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "67",
+    "publisher": "National Coffee Association NCA",
+    "title": "Brewing",
+    "short": "咖啡冲煮方法入口",
+    "url": "https://www.aboutcoffee.org/brewing/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "68",
+    "publisher": "National Coffee Association NCA",
+    "title": "French press coffee",
+    "short": "法压壶的浸泡与过滤",
+    "url": "https://www.aboutcoffee.org/brewing/french-press-coffee/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "69",
+    "publisher": "National Coffee Association NCA",
+    "title": "Espresso",
+    "short": "意式浓缩的冲煮",
+    "url": "https://www.aboutcoffee.org/brewing/espresso/",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "70",
+    "publisher": "Specialty Coffee Association SCA",
+    "title": "Cold vs Iced Using Sensory Analysis to Test the Claim that Cold Brew is Sweeter and Less Acidic",
+    "short": "冷萃与冰咖啡的区别",
+    "url": "https://sca.coffee/sca-news/cold-vs-iced-using-sensory-analysis-to-test-the-claim-that-cold-brew-is-sweeter-and-less-acidic-73yf5",
+    "year": "网页",
+    "type": "行业机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "71",
+    "publisher": "Nespresso",
+    "title": "Complete Coffee Guide Coffee Types",
+    "short": "咖啡菜单的组成",
+    "url": "https://www.nespresso.com/hk/en/blog/coffee-type",
+    "year": "网页",
+    "type": "生产者配方或教育资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "72",
+    "publisher": "Nespresso",
+    "title": "Your complete guide to flat white coffee",
+    "short": "馥芮白与奶泡",
+    "url": "https://www.nespresso.com/au/en/news/your-complete-guide-to-flat-white-coffee",
+    "year": "网页",
+    "type": "生产者配方或教育资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "73",
+    "publisher": "Bialetti",
+    "title": "How to use the Moka Express",
+    "short": "摩卡壶的加热与水流",
+    "url": "https://bialetti-cookware.zendesk.com/hc/en-us/articles/5416235346322-How-to-use-the-Moka-Express",
+    "year": "网页",
+    "type": "生产者资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "74",
+    "publisher": "AeroPress",
+    "title": "How AeroPress Works",
+    "short": "浸泡 过滤与手动压力",
+    "url": "https://aeropress.com/pages/how-it-works",
+    "year": "网页",
+    "type": "生产者资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "75",
+    "publisher": "UNESCO",
+    "title": "Turkish coffee culture and tradition",
+    "short": "土耳其咖啡制作与文化",
+    "url": "https://ich.unesco.org/en/RL/turkish-coffee-culture-and-tradition-00645",
+    "year": "2013",
+    "type": "文化遗产档案",
+    "accessed": "2026-10-12"
   }
 ]
