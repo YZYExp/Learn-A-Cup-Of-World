@@ -2,3 +2,4 @@ reportlab
 fonttools
 Pillow
 pypdf
+Markdown>=3.7,<4
