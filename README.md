@@ -28,3 +28,9 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。仓库为�
 ## 重建
 
 使用 Python，依赖 reportlab、fonttools、Pillow、pypdf。在项目目录运行 `python build_book.py`。PDF 为 A5 阅读开本，字体嵌入，页码连续，目录与书签可导航。
+
+## 完整首版
+
+2026年10月11日编写任务完成：57 页、20 章、约 1.8 万汉字、50 项资料。正文各章两页，另有读前说明、插画扉页、三页附录和书末参考资料。源码包保留完整 Git 历史、分章稿件、配图、字体许可与排版程序。
+
+`research/editorial-check.md` 记录内容与版面校订；生成后 `output/layout-check.json` 记录逐页引用与空间检查。最终阅读版和整合的可编辑 Markdown 稿由排版程序生成。字体文件由 Google Fonts 的 Noto Sans SC 变体派生，许可见 `assets/OFL.txt`。

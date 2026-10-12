@@ -129,12 +129,14 @@ def blocks(body):
 
 def short_publisher(s):
     return {'01':'NIDCD','02':'McGovern 等 · PNAS','03':'McGovern 等 · PNAS',
+     '07':'AHA 美国家庭酿酒协会','08':'Brewers Association',
+     '20':'SWA 苏格兰威士忌协会','21':'SWA 苏格兰威士忌协会','22':'SWA 苏格兰威士忌协会',
      '04':'Liu 等 · JAS Reports','14':'Frontiers in Microbiology','18':'Foods',
      '19':'Journal of Ethnic Foods','23':'BNIC','24':'Smithsonian','28':'CRT',
      '30':'IBA','31':'UNESCO','32':'V&A','33':'英国国家档案馆','34':'Food Chemistry X',
      '35':'NCA','36':'WCR','37':'ICO','38':'Foods','39':'SCA','40':'SCA',
      '41':'NCA','42':'WCR','43':'NIAAA','44':'FDA','45':'Lu 等 · Scientific Reports',
-     '46':'NIAAA'}.get(s['id'],s['publisher'].split(' ')[0])
+     '46':'NIAAA','49':'James A. Benn','50':'PDG · LBNL'}.get(s['id'],s['publisher'].split(' ')[0])
 
 def foot_objects(refs):
     ps=[]
@@ -175,16 +177,18 @@ def draw_content(c,page,collect):
     foot_total=sum(heights)+3*max(0,len(foots)-1)
     bottom=39+foot_total+19
     y=H-49
+    content_bottom=y
     for kind,obj in blocks(page['body']):
         ww,hh=obj.wrap(CW,H)
         if y-hh<bottom-0.1:
             raise ValueError(f'Page overflow chapter {ident} / {page["title"]}: y={y:.1f} need={hh:.1f} bottom={bottom:.1f}')
-        obj.drawOn(c,M,y-hh);y-=hh+(obj.getSpaceAfter() if isinstance(obj,Paragraph) else 10)
+        content_bottom=y-hh
+        obj.drawOn(c,M,content_bottom);y-=hh+(obj.getSpaceAfter() if isinstance(obj,Paragraph) else 10)
     c.setStrokeColor(LINE);c.line(M,bottom-9,W-M,bottom-9)
     fy=bottom-18
     for obj,hh in zip(foots,heights):
         obj.drawOn(c,M,fy-hh);fy-=hh+3
-    diagnostics.append(dict(page=P,chapter=ident,title=page['title'],refs=page['refs'],body_bottom=round(y,2),footnote_top=round(bottom,2),gap=round(y-bottom,2)))
+    diagnostics.append(dict(page=P,chapter=ident,title=page['title'],refs=page['refs'],body_bottom=round(content_bottom,2),footnote_top=round(bottom,2),gap=round(content_bottom-bottom,2)))
 
 def cover(c):
     newpage(c);c.setFillColor(HexColor('#F8F5EE'));c.rect(0,0,W,H,fill=1,stroke=0)
@@ -273,7 +277,14 @@ for p in pages:
         n=len(rows[0].split('|'))
         return '\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
     body=re.sub(r'@table\n(.*?)\n@endtable',mdtable,body,flags=re.S)
-    body=re.sub(r'@diagram (\w+)',r'（图表 \1 见 PDF 对应页）',body)
+    md_diagrams={
+     'kinship':'饮品|材料与主要变化|饮用前的呈现\n酒|糖的准备 发酵 部分再蒸馏熟成|温度 稀释或调配\n茶|叶子加工 控制氧化及其他变化|以水冲泡或煮饮\n咖啡|果实处理 种子干燥与烘焙|研磨后冲煮',
+     'evidence':'年代线索|地点与研究解释\n约一万三千年前|Raqefet 洞穴 石臼遗存与谷物酿造解释 [04]\n约公元前第七千纪|河南贾湖 米 蜂蜜与水果混合饮品 [02]\n约公元前 6000—5800 年|格鲁吉亚 葡萄酒相关证据 [03]',
+     'tea':'茶类|入门观察方向\n绿茶|较早控制酶相关变化\n白茶 黄茶|分别关注萎凋干燥与闷黄\n乌龙 红茶|关注氧化与其他工序的安排\n黑茶|关注微生物相关加工过程'}
+    for k,v in md_diagrams.items():
+        rows=v.splitlines();n=len(rows[0].split('|'))
+        value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
+        body=body.replace('@diagram '+k,value)
     allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
