@@ -33,3 +33,13 @@ ART_LABELS = {
     'rice': '米酒酿造的阅读情境',
     'barrels': '木桶与酒杯的熟成情境',
 }
+
+LEAF_PANELS = {
+    'fresh': ('tea-fresh-details.png', (0, 0, 1536, 1024), '原叶与质感观察'),
+    'green': ('tea-dry-wet-details.png', (14, 14, 756, 330), '绿茶'),
+    'white': ('tea-dry-wet-details.png', (780, 14, 1521, 330), '白茶'),
+    'yellow': ('tea-dry-wet-details.png', (14, 352, 756, 658), '黄茶'),
+    'oolong': ('tea-dry-wet-details.png', (780, 352, 1521, 658), '乌龙'),
+    'black': ('tea-dry-wet-details.png', (14, 680, 756, 1009), '红茶'),
+    'dark': ('tea-dry-wet-details.png', (780, 680, 1521, 1009), '黑茶实例：普洱熟茶'),
+}
