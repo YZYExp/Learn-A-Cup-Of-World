@@ -1,8 +1,9 @@
 """Check real build outputs before uploading or deploying them."""
 from html.parser import HTMLParser
+import argparse
 import json
-from pathlib import Path
 import re
+from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from zipfile import ZipFile
 
@@ -66,7 +67,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def check():
+def check(book_only=False):
     layout = json.loads((OUT / 'layout-check.json').read_text(encoding='utf-8'))
     manifest = json.loads((OUT / 'chapter-manifest.json').read_text(encoding='utf-8'))
     book = PdfReader(OUT / '杯中世界.pdf')
@@ -80,6 +81,22 @@ def check():
     require(all(p['gap'] >= -0.1 for p in layout['pages']), 'PDF body overlaps footnotes')
     require(sum(c['pages'] for c in manifest) == len(layout['pages']),
             'Chapter exports do not cover all content pages')
+    main_md=OUT / '杯中世界可编辑稿.md'
+    chapter_mds=[OUT / '逐章阅读' / c['markdown'] for c in manifest]
+    for md in [main_md]+chapter_mds:
+        text=md.read_text(encoding='utf-8')
+        require('配图见 PDF' not in text and '（配图 ' not in text,
+                f'Image placeholder remains: {md.name}')
+        for target in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',text):
+            require((md.parent/target).resolve().is_file(),
+                    f'Broken Markdown figure: {md.name} -> {target}')
+    figures=json.loads((ROOT/'assets/figure-plan.json').read_text(encoding='utf-8'))
+    full_text=main_md.read_text(encoding='utf-8')
+    for f in figures:
+        require(f'图 {f["id"]} 图例。' in full_text,
+                f'Figure has no readable legend: {f["id"]}')
+        require((ROOT/'assets/figures'/f'{f["id"]}.png').is_file(),
+                f'Figure image is missing: {f["id"]}')
 
     with ZipFile(OUT / '杯中世界逐章阅读.zip') as archive:
         require(archive.testzip() is None, 'Chapter ZIP is corrupt')
@@ -93,8 +110,18 @@ def check():
             for key in ('pdf', 'markdown'):
                 require('逐章阅读/' + chapter[key] in archive.namelist(),
                         f'Chapter missing from ZIP: {chapter[key]}')
-            require((SITE / 'chapters' / f'{chapter["id"]}.html').is_file(),
-                    f'Chapter missing from website: {chapter["id"]}')
+            md_path=OUT/'逐章阅读'/chapter['markdown']
+            for target in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',md_path.read_text()):
+                name=(md_path.parent/target).resolve().relative_to(OUT.resolve()).as_posix()
+                require(name in archive.namelist(), f'Chapter image missing from ZIP: {name}')
+            if not book_only:
+                require((SITE / 'chapters' / f'{chapter["id"]}.html').is_file(),
+                        f'Chapter missing from website: {chapter["id"]}')
+
+    if book_only:
+        print(f'Validated {len(book.pages)} PDF pages, {len(manifest)} chapters, '
+              f'{len(figures)} new figures, legends and all Markdown/ZIP image links.')
+        return
 
     require((SITE / 'index.html').is_file(), 'Website has no entrypoint')
     require((SITE / '.nojekyll').is_file(), 'Website has no .nojekyll marker')
@@ -122,6 +149,9 @@ def check():
                     if kind != 'art':
                         key = kind + '-' + key
                     expected_figures.append((key, heading))
+                teaching = re.match(r'^!\[[^\]]+\]\(\.\./assets/figures/([\w-]+)\.png\)$', line)
+                if teaching:
+                    expected_figures.append(('teaching-' + teaching.group(1), heading))
             opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(page.stem)
             if opener:
                 expected_figures.insert(0, (opener, re.search(r'^# (.+)$', raw, re.M).group(1)))
@@ -140,7 +170,7 @@ def check():
             require(bool(image.get('alt', '').strip()) and bool(image.get('src')),
                     f'Image missing source or alt text: {page.relative_to(SITE)}')
         for (key, _), image in zip(parser.figures, parser.images):
-            require(Path(urlsplit(image['src']).path).stem == key,
+            require(Path(urlsplit(image['src']).path).stem == key.removeprefix('teaching-'),
                     f'Wrong image for {key}: {page.relative_to(SITE)}')
         for link in parser.links:
             url = urlsplit(link)
@@ -168,4 +198,6 @@ def check():
 
 
 if __name__ == '__main__':
-    check()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--book-only',action='store_true',help='Validate reading outputs without building HTML')
+    check(book_only=parser.parse_args().book_only)
