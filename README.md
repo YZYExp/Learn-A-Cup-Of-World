@@ -23,7 +23,7 @@
 
 `chapters/` 为按章拆分的可编辑稿件；`research/sources.json` 为参考资料；`build_book.py` 为全书排版程序；`export_chapters.py` 导出独立章节；`assets/` 为插画和字体；`output/` 为成品。
 
-Git 按规划、正文、插画排版、校订交付分阶段提交。仓库为本地版本管理，不预设远程仓库。
+Git 按规划、正文、插画排版、校订交付分阶段提交。远端仓库：[Learn-A-Cup-Of-World](https://github.com/YZYExp/Learn-A-Cup-Of-World)。
 
 ## 重建
 
@@ -42,3 +42,14 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。仓库为�
 2026年10月12日根据阅读反馈修订：81 页，正文与附录约 2.4 万汉字，75 项参考资料。精酿、调酒、调茶和咖啡菜单分别扩展；新增 8 幅章内插画，连同原封面和分部页共有 12 个插画使用位置。正文增加结构与配方表，并将完整章节分别导出为 PDF 和 Markdown。
 
 修订在 `revision-illustrated` 分支进行，保留首版提交和修订提交。阅读版仍采用当页引用；表格的自拟分组、经典配方来源及插画使用边界均在正文注明。
+
+## 直接阅读与历史
+
+- [全书 PDF（81 页）](books/杯中世界.pdf)
+- [可编辑阅读稿](books/杯中世界可编辑稿.md)
+- [24 份独立章节阅读稿](books/逐章阅读/)
+- [原始 Git 历史与恢复方法](history/README.md)
+
+克隆后先运行 `python -m pip install -r requirements.txt`，再执行上述重建命令。仓库包含重建所需字体及字体许可。
+
+GitHub 阅读 PDF 保留全部 81 页、正文、引用链接和导航，插画采用高质量 JPEG 压缩以适应上传接口大小限制；从源文件重建可得到原始无损插画版 PDF。独立章节 PDF 可用 `export_chapters.py` 重建。
