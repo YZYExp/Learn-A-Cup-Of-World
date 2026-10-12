@@ -31,3 +31,19 @@ High resolution editorial illustration sheet with exactly four equal landscape p
 `tea-dry-wet-details.png`：两列三排的六类代表形态，按行依次为绿茶与白茶、黄茶与乌龙、红茶与普洱熟茶。每格左为干茶，右为叶底；PDF 用原始位图的视口显示各格，在位图之外排版中文标签，不改动原始像素。
 
 两图均由内置 imagegen 生成并经视觉核对，完整提示词见 `../research/tea-illustration-manifest.json`。它们帮助辨认形态和提出观察问题，不是植物鉴定、真实样本证据或同批鲜叶分流加工实验。图中比例与色彩不是检测数据。
+
+# 图例增补版：教学图与偶尔出现的外观反例
+
+2026年10月12日新增 24 幅章内教学图，按信息需求分布于 20 个正文章节。20 幅关系、工艺、组成或数量图由 `scripts/render_figures.py` 明确定义；4 幅使用生成插画的视口并叠加可核对标签，其中红茶图为典型加工情境，其余 3 幅为偶尔出现的外观反例。所有原始生成图保持不变，未进行像素编辑。
+
+逐图题名、插入位置、文字图例与引用正文见 `figure-plan.json`；原有情境图的对象说明见 `scene-catalog.json`。图例区分材料颜色、类别、阅读关系、数量比例和不按比例的示意，假想样例不称为真实产品或检测结果。
+
+## counterexamples.png 提示词
+
+Create one high-resolution 1536x1024 2x2 editorial gouache illustration sheet with exactly four equal landscape panels, separated by broad ivory gutters, for a Chinese nonfiction book teaching that beverage appearance cannot determine category. Warm cream paper, restrained forest green, brown and amber, physically realistic vessels, frontal three-quarter perspective. No text, no labels, no logos, no numbers, no watermark. TOP LEFT: two identical straight small beer tasting glasses at the same fill height, left very dark stout with a pale foam head, right clear pale gold IPA with a pale foam head, plain neutral background and nothing else. Do not imply alcohol strength visually. TOP RIGHT: two identical small tulip spirit tasting glasses, both filled with equally colorless transparent liquid to the same height, left intended as unflavored gin and right unflavored vodka; they should look indistinguishable. No botanicals in the glasses or next to them. BOTTOM LEFT: a fresh green tea shoot resting on an ivory saucer on left, a small ceramic dish of dark dried black-tea leaves in middle, and a small transparent glass cup of amber-red black tea on right. The green fresh leaf and dark processed leaf must be separate, same plant transformed through processing, no arrows or text. BOTTOM RIGHT: two identical straight tumblers, same quantity of dark amber-brown black coffee, equal ice cubes, no milk, no foam, no straws; left represents hot-brewed coffee chilled over ice, right cold brew served with ice, visibly indistinguishable. Clean simple teaching composition and generous padding within each panel. These are AI teaching illustrations, not photographs of real samples, not exact recipes, not visual authentication guides. Match the existing warm editorial gouache illustrations of a beverage knowledge book.
+
+## 核对结果与边界
+
+四个面板的对象数量、位置和可见材料已检查。烈酒面板实际生成的是带短脚玻璃杯；文字改为同形无色烈酒杯，不将器具形状当成类别证明。咖啡图没有奶；原有菜单情境图的右侧冰飲可见奶纹理，图注如实写作“带奶纹理冰饮”，不再让画面暗示只有黑咖啡。
+
+啤酒 4.2% 与 6.5% 为构造标签，依据既有 BJCP 风格范围选择，图像不证明真实酒精度。红茶图说明三个观察对象，不用叶形进行茶树或茶类鉴定。数量图使用正文明确给出的毫升量、ABV 和算式；没有数值刻度的图不承担定量测量。

@@ -19,6 +19,8 @@ OUT = ROOT / 'output'
 SITE = ROOT / 'site'
 DOCS = ROOT / 'work' / 'web-docs'
 PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
+SCENES = json.loads((ROOT / 'assets/scene-catalog.json').read_text(encoding='utf-8'))
+TEACHING = {f['id']: f for f in json.loads((ROOT / 'assets/figure-plan.json').read_text(encoding='utf-8'))}
 
 # Navigation, tables, search and responsive layout use Material.
 CSS = """
@@ -57,13 +59,25 @@ def illustration(key, prefix='../', eager=False):
             caption = label + '：左为加工后的干茶，右为冲泡后的叶底。AI 教学示意，不同样本，不按实际尺寸绘制。'
     else:
         label = ART_LABELS[key]
-        caption = label + ' · AI 阅读情境插画；具体分类与制作以正文资料为准。'
+        caption = SCENES[key]['caption'] + ' AI 阅读情境插画。'
     with Image.open(DOCS / 'assets' / f'{key}.webp') as image:
         width, height = image.size
     return (f'<figure data-art="{key}">'
             f'<img src="{prefix}assets/{key}.webp" alt="{escape(label, quote=True)}（AI 生成）" '
             f'width="{width}" height="{height}" loading="{"eager" if eager else "lazy"}" '
             f'decoding="async"><figcaption>{escape(caption)}</figcaption></figure>')
+
+
+def teaching_figure(key):
+    figure = TEACHING[key]
+    label = f'图 {key} {figure["title"]}'
+    with Image.open(DOCS / 'assets/figures' / f'{key}.png') as image:
+        width, height = image.size
+    kind = 'AI 教学插画' if figure['mode'] == 'scene' else '本书绘制的教学示意'
+    return (f'<figure data-art="teaching-{key}">'
+            f'<img src="../assets/figures/{key}.png" alt="{escape(label, quote=True)}" '
+            f'width="{width}" height="{height}" loading="lazy" decoding="async">'
+            f'<figcaption>{escape(label)} · {kind}；完整图例见下文。</figcaption></figure>')
 
 
 def export_composition():
@@ -105,10 +119,12 @@ def chapter_markdown(chapter, sources):
     text = re.sub(r'^@diagram (\w+)$', lambda m: table(DIAGRAMS[m.group(1)]), text, flags=re.M)
     text = re.sub(r'^@art (\w+) [\d.]+$', lambda m: illustration(m.group(1)), text, flags=re.M)
     text = re.sub(r'^@leaf (\w+) [\d.]+$', lambda m: illustration('leaf-' + m.group(1)), text, flags=re.M)
+    text = re.sub(r'^!\[[^\]]+\]\(\.\./assets/figures/([\w-]+)\.png\)$',
+                  lambda m: teaching_figure(m.group(1)), text, flags=re.M)
     text = text.replace('@composition coffee',
         '<figure class="composition"><img src="../assets/composition-coffee.svg" '
         'alt="咖啡组成示意：浓缩、美式、奶咖" width="684" height="216" loading="lazy">'
-        '<figcaption>只示意组成关系；色块不表示标准配方比例。</figcaption></figure>')
+        '<figcaption>图18-C：棕色为咖啡、蓝色为水、米色为奶；只示意组成，色块不表示标准配方比例。</figcaption></figure>')
     refs = set(re.findall(r'\[(\d{2})\]', text))
     extra_refs = {'15', '34', '37'} - refs if '@diagram kinship' in raw else set()
     text = re.sub(r'\[(\d{2})\]', r'[^\1]', text)
@@ -145,6 +161,7 @@ def copy_downloads():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / filename, target)
     shutil.copytree(OUT / '逐章阅读', downloads / '逐章阅读')
+    shutil.copytree(OUT / 'assets', downloads / 'assets', dirs_exist_ok=True)
 
 
 def build():
@@ -161,6 +178,7 @@ def build():
     for key, (filename, rect, _) in LEAF_PANELS.items():
         export_image('leaf-' + key, filename, rect)
     export_composition()
+    shutil.copytree(ROOT / 'assets/figures', DOCS / 'assets/figures')
 
     groups = {}
     contents = []
@@ -190,7 +208,7 @@ def build():
     copy_downloads()
     (SITE / '.nojekyll').touch()
     print(json.dumps({'site': str(SITE), 'chapters': len(manifest),
-                      'renderer': 'MkDocs Material', 'illustrations': len(ART | FRONT_ART) + len(LEAF_PANELS)},
+                      'renderer': 'MkDocs Material', 'illustrations': len(ART | FRONT_ART) + len(LEAF_PANELS) + len(TEACHING)},
                      ensure_ascii=False))
 
 

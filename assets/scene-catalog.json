@@ -1,0 +1,14 @@
+{
+  "craft": {"file":"menu-scenes.png","rect":[18,15,750,474],"number":"04-0","title":"四杯啤酒的外观对照","caption":"图04-0 从左至右：淡金、浑浊金色、琥珀、深色啤酒示意；颜色不确定风格。"},
+  "cocktails": {"file":"menu-scenes.png","rect":[786,15,1518,474],"number":"12-0","title":"短饮、碟形杯与长饮的情境","caption":"图12-0 从左至右：短饮、碟形杯调饮、气泡长饮；杯形不证明具体配方。"},
+  "mixedtea": {"file":"menu-scenes.png","rect":[18,499,750,1001],"number":"15-0","title":"茶底与不同辅料的成杯","caption":"图15-0 从左至右：茶汤、水果茶、奶茶；前景材料不表示精确配方。"},
+  "cafemenu": {"file":"menu-scenes.png","rect":[786,499,1518,1001],"number":"18-0","title":"咖啡菜单的成杯情境","caption":"图18-0 从左至右：小份咖啡、黑咖啡、奶咖、带奶纹理冰饮；非身份鉴定。"},
+  "senses": {"file":"process-scenes.png","rect":[20,18,756,497],"number":"02-0","title":"生活中的香气参照","caption":"图02-0 柑橘、莓果、面包与可可为气味参照，不是杯中添加物清单。"},
+  "origins": {"file":"process-scenes.png","rect":[781,18,1516,497],"number":"03-0","title":"从容器与材料提出历史问题","caption":"图03-0 陶器、谷物与果实构成阅读情境，不复原任何特定遗址。"},
+  "rice": {"file":"process-scenes.png","rect":[20,515,756,1001],"number":"07-0","title":"米与麴的阅读情境","caption":"图07-0 米饭、米粒与麴的阅读情境；不用于菌种辨认或家庭制麴。"},
+  "barrels": {"file":"process-scenes.png","rect":[781,515,1516,1001],"number":"09-0","title":"木桶熟成的阅读情境","caption":"图09-0 木桶与琥珀色酒液示意；外观不能确定年份或烈酒类别。"},
+  "cover": {"file":"illustrations.png","rect":[22,17,751,497],"number":"封面","title":"酒、茶与咖啡的共同阅读情境","caption":"酒杯、茶杯与咖啡杯为主题情境，不用于饮品身份判定。"},
+  "wine": {"file":"illustrations.png","rect":[786,16,1515,497],"number":"酒部扉页","title":"酒的世界","caption":"烈酒、葡萄酒与啤酒的情境示意；植物材料不是精确配方。"},
+  "tea": {"file":"illustrations.png","rect":[22,521,751,1003],"number":"茶部扉页","title":"茶的世界","caption":"茶枝、盖碗与茶杯构成饮茶情境，不作为植物或茶类鉴定图。"},
+  "coffee": {"file":"illustrations.png","rect":[787,521,1515,1003],"number":"咖啡部扉页","title":"咖啡的世界","caption":"咖啡果实、烘焙豆与滤杯构成学习情境，不表示精确工序。"}
+}
