@@ -1,0 +1,1 @@
+本目录提供 24 份独立 Markdown 阅读稿。独立分页 PDF 可运行 export_chapters.py 重建；版式与当页引用请阅读 books/杯中世界.pdf。
