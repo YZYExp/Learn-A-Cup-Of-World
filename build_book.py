@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import HexColor, black, white
 from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
+from illustration_data import ART, FRONT_ART
 
 ROOT = Path(__file__).resolve().parent
 PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
@@ -76,17 +77,6 @@ def table(rows):
        ('TOPPADDING',(0,0),(-1,-1),6),('BOTTOMPADDING',(0,0),(-1,-1),6),
     ]))
     return t
-
-ART={
- 'craft':('menu-scenes.png',(18,15,750,474)),
- 'cocktails':('menu-scenes.png',(786,15,1518,474)),
- 'mixedtea':('menu-scenes.png',(18,499,750,1001)),
- 'cafemenu':('menu-scenes.png',(786,499,1518,1001)),
- 'senses':('process-scenes.png',(20,18,756,497)),
- 'origins':('process-scenes.png',(781,18,1516,497)),
- 'rice':('process-scenes.png',(20,515,756,1001)),
- 'barrels':('process-scenes.png',(781,515,1516,1001)),
-}
 
 class ChapterArt(Flowable):
     def __init__(self,key,height):
@@ -170,13 +160,10 @@ class CompositionSketch(Flowable):
 
 def figure_region(c,key,x,y,w):
     # A PDF viewport into an unmodified generated sheet, not a raster edit.
-    img=ROOT/'assets/illustrations.png'
+    filename,rect=FRONT_ART[key]
+    img=ROOT/'assets'/filename
     iw,ih=Image.open(img).size
-    normalized={'cover':(22/1536,17/1024,751/1536,497/1024),
-       'wine':(786/1536,16/1024,1515/1536,497/1024),
-       'tea':(22/1536,521/1024,751/1536,1003/1024),
-       'coffee':(787/1536,521/1024,1515/1536,1003/1024)}[key]
-    x0,y0,x1,y1=[a*b for a,b in zip(normalized,(iw,ih,iw,ih))]
+    x0,y0,x1,y1=[v*s for v,s in zip(rect,(iw/1536,ih/1024,iw/1536,ih/1024))]
     scale=w/(x1-x0); h=(y1-y0)*scale
     c.saveState(); p=c.beginPath();p.rect(x,y,w,h);c.clipPath(p,stroke=0)
     c.drawImage(str(img),x-x0*scale,y-(ih-y1)*scale,iw*scale,ih*scale)
