@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Build an A5 Chinese reader with explicit page-local references."""
 from pathlib import Path
 import re, json, html
@@ -10,6 +11,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
+PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
 OUT = ROOT / 'output'
 OUT.mkdir(exist_ok=True)
 W, H = 419.53, 595.28
@@ -243,8 +245,33 @@ def cover(c):
     c.drawString(M,119,'从原料与加工开始，读懂一杯饮料。')
     c.drawString(M,99,'短章阅读  当页资料  日常观察')
     c.setFillColor(GRAY);c.setFont(FONT,8)
-    c.drawString(M,55,'图解修订版  2026年10月')
-    c.drawString(M,39,'AI 辅助写作与插画  资料出处见各页及书末')
+    c.setFont(FONT,10);c.drawString(M,76,PUBLICATION['credit'])
+    c.setFont(FONT,8);c.drawString(M,55,'图解修订版  2026年10月  ·  '+PUBLICATION['content_license'])
+    c.drawString(M,39,PUBLICATION['ai_disclosure'])
+
+def publication_notice(c):
+    newpage(c);frame(c,'署名与许可')
+    c.bookmarkPage('publication-notice')
+    c.addOutlineEntry('署名与许可','publication-notice',level=0,closed=False)
+    y=H-63
+    sections=[
+        ('head','署名与许可'),
+        ('sub',PUBLICATION['credit']),
+        ('body',PUBLICATION['ai_disclosure']+PUBLICATION['role_description']),
+        ('sub',PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']),
+        ('body',PUBLICATION['license_summary']),
+        ('body',PUBLICATION['rights_boundary']),
+        ('small',PUBLICATION['third_party_notice']),
+    ]
+    for style,text in sections:
+        q=para(text,style);_,hh=q.wrap(CW,H)
+        assert y-hh>50, 'Publication notice overflow'
+        q.drawOn(c,M,y-hh);y-=hh+STYLES[style].spaceAfter+6
+    for label,url in [('许可全文',PUBLICATION['content_license_url']+'legalcode'),
+                      ('作品出处',PUBLICATION['source_url'])]:
+        q=Paragraph(html.escape(label)+'：<a href="'+html.escape(url,quote=True)+'" color="#526852">'+html.escape(url)+'</a>',STYLES['small'])
+        _,hh=q.wrap(CW,H);assert y-hh>40, 'Publication links overflow'
+        q.drawOn(c,M,y-hh);y-=hh+8
 
 def contents(c):
     for chunk in [list(range(1,13)),list(range(13,21))+['A1','A2','A3']]:
@@ -293,9 +320,10 @@ def build(path,collect=True):
     global P,seen
     P=0;seen=set();diagnostics.clear()
     c=canvas.Canvas(str(path),pagesize=(W,H),pageCompression=1)
-    c.setTitle('杯中世界 酒 茶 咖啡的起源与风味');c.setAuthor('AI 辅助编写 个人兴趣读本')
-    c.setSubject('饮品历史 工艺 风味与日常观察')
-    cover(c);draw_content(c,pages[0],collect);contents(c)
+    c.setTitle('杯中世界 酒 茶 咖啡的起源与风味');c.setAuthor(PUBLICATION['metadata_credit'])
+    c.setSubject('饮品历史 工艺 风味与日常观察；'+PUBLICATION['ai_disclosure']+' '+PUBLICATION['content_license'])
+    c.setKeywords('YZ, 策划与整理, AI 生成, '+PUBLICATION['content_license'])
+    cover(c);publication_notice(c);draw_content(c,pages[0],collect);contents(c)
     prev=None
     for page in pages[1:]:
         if page['ident']=='04' and prev!='04':opener(c,'wine','酒的世界','先问糖从哪里来，再沿着发酵、蒸馏与熟成认识主要酒类。')
@@ -313,6 +341,8 @@ count=build(target,collect=False)
 (OUT/'layout-check.json').write_text(json.dumps(dict(total_pages=count,pages=diagnostics),ensure_ascii=False,indent=2))
 
 allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图解修订版\n']
+allmd.append('\n**'+PUBLICATION['credit']+'**\n\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n')
+allmd.append('\n## 署名与许可\n\n['+PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']+']('+PUBLICATION['content_license_url']+')\n\n'+PUBLICATION['license_summary']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n\n作品出处：'+PUBLICATION['source_url']+'\n\n推荐署名：'+PUBLICATION['attribution']+'\n')
 for p in pages:
     body=p['body']
     def mdtable(m):

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Build a portable static reader from freshly exported book chapters."""
 from html import escape
 import json
@@ -9,6 +10,7 @@ from urllib.parse import quote
 import markdown
 
 ROOT = Path(__file__).resolve().parent
+PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
 OUT = ROOT / 'output'
 SITE = ROOT / 'site'
 
@@ -64,7 +66,9 @@ def document(title, content, prefix=''):
 <a href="{prefix}index.html#contents">章节目录</a>
 <a href="{prefix}downloads/{quote('杯中世界.pdf')}">全书 PDF</a></header>
 <main>{content}</main>
-<footer>个人兴趣读本 · AI 辅助写作与插画 · 资料出处见正文。
+<footer>{escape(PUBLICATION['credit'])} · {escape(PUBLICATION['ai_disclosure'])}
+<a href="{escape(PUBLICATION['content_license_url'], quote=True)}">{escape(PUBLICATION['content_license'])}</a> ·
+<a href="{prefix}downloads/NOTICE.md">署名与许可说明</a> · 资料出处见正文。
 完整插画、当页排版与参考资料总目见全书 PDF。</footer>
 </body>
 </html>
@@ -98,6 +102,10 @@ def build():
     downloads.mkdir()
     for filename in ('杯中世界.pdf', '杯中世界可编辑稿.md', '杯中世界逐章阅读.zip'):
         shutil.copy2(OUT / filename, downloads / filename)
+    for filename in ('LICENSE', 'NOTICE.md', 'licenses/MIT.txt', 'assets/OFL.txt'):
+        target = downloads / filename
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / filename, target)
     shutil.copytree(OUT / '逐章阅读', downloads / '逐章阅读')
     (SITE / '.nojekyll').touch()
     (SITE / 'style.css').write_text(CSS, encoding='utf-8')
