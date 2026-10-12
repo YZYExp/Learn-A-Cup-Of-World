@@ -1,11 +1,14 @@
 """Check real build outputs before uploading or deploying them."""
 from html.parser import HTMLParser
+from collections import Counter
 import json
 from pathlib import Path
+import re
 from urllib.parse import unquote, urlsplit
 from zipfile import ZipFile
 
 from pypdf import PdfReader
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'output'
@@ -16,8 +19,18 @@ class Links(HTMLParser):
     def __init__(self):
         super().__init__()
         self.links = []
+        self.images = []
+        self.art = []
+        self.compositions = 0
 
     def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        if tag == 'img':
+            self.images.append(attributes)
+        if tag == 'figure' and 'data-art' in attributes:
+            self.art.append(attributes['data-art'])
+        if tag == 'figure' and 'composition' in attributes.get('class', '').split():
+            self.compositions += 1
         for key, value in attrs:
             if key in ('href', 'src') and value:
                 self.links.append(value)
@@ -64,7 +77,31 @@ def check():
     require(len(html_files) == len(manifest) + 1, 'Unexpected number of web pages')
     for page in html_files:
         parser = Links()
-        parser.feed(page.read_text(encoding='utf-8'))
+        html = page.read_text(encoding='utf-8')
+        parser.feed(html)
+        require('见 PDF 与写作工程中的图像资源' not in html,
+                f'Unrendered illustration placeholder: {page.relative_to(SITE)}')
+        if page.parent.name == 'chapters':
+            raw = (ROOT / 'chapters' / (page.stem + '.md')).read_text(encoding='utf-8')
+            expected_art = re.findall(r'^@art (\w+) ', raw, re.M)
+            opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(page.stem)
+            if opener:
+                expected_art.append(opener)
+            require(parser.compositions == len(re.findall(r'^@composition coffee$', raw, re.M)),
+                    f'Missing coffee composition diagram: {page.relative_to(SITE)}')
+            chapter = next(c for c in manifest if c['id'] == page.stem)
+            markdown = (OUT / '逐章阅读' / chapter['markdown']).read_text(encoding='utf-8')
+            expected_images = len(expected_art) + len(re.findall(r'^!\[.*\]\(', markdown, re.M))
+        else:
+            expected_art = ['cover']
+            expected_images = 1
+        require(Counter(parser.art) == Counter(expected_art),
+                f'Missing or misplaced illustration: {page.relative_to(SITE)}')
+        require(len(parser.images) == expected_images,
+                f'Missing image element: {page.relative_to(SITE)}')
+        for image in parser.images:
+            require(bool(image.get('alt', '').strip()) and bool(image.get('src')),
+                    f'Image missing source or alt text: {page.relative_to(SITE)}')
         for link in parser.links:
             url = urlsplit(link)
             if url.scheme or url.netloc or not url.path:
@@ -73,6 +110,9 @@ def check():
             target = (page.parent / unquote(url.path)).resolve()
             require(target.is_relative_to(SITE.resolve()) and target.is_file(),
                     f'Broken local link in {page.relative_to(SITE)}: {link}')
+    for image in (SITE / 'assets').glob('*.png'):
+        with Image.open(image) as asset:
+            asset.verify()
     print(f'Validated {len(book.pages)} PDF pages, {len(manifest)} chapters, '
           f'{len(html_files)} web pages and all local links.')
 
