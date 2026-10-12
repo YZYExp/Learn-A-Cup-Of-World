@@ -748,5 +748,125 @@
     "year": "2013",
     "type": "文化遗产档案",
     "accessed": "2026-10-12"
+  },
+  {
+    "id": "76",
+    "publisher": "农业部茶及饮料作物改良场",
+    "title": "臺灣特色茶分類及加工製程簡介",
+    "short": "台湾茶加工与形态",
+    "url": "https://www.tbrs.gov.tw/ws.php?id=4748",
+    "year": "网页",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "77",
+    "publisher": "国家市场监督管理总局",
+    "title": "关于修订公布食品生产许可分类目录的公告",
+    "short": "茶类与紧压茶许可目录",
+    "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/spscs/art/2023/art_b3565d4b5c374b2f91b6c388e593f8f6.html",
+    "year": "2020",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "78",
+    "publisher": "农业农村部常驻联合国粮农机构代表团",
+    "title": "陈香浓郁是普洱——国际茶日系列之九",
+    "short": "普洱生熟加工差别",
+    "url": "https://cnafun.moa.gov.cn/zt/gjcr/202005/t20200513_6343917.html",
+    "year": "2020",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "79",
+    "publisher": "农业农村部",
+    "title": "2022国际茶日云推介 茶故事·福鼎白茶",
+    "short": "福鼎白茶茶款与萎凋",
+    "url": "https://gjcr.moa.gov.cn/cxf/202205/t20220520_6399810.htm",
+    "year": "2022",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "80",
+    "publisher": "农业农村部常驻联合国粮农机构代表团",
+    "title": "安吉白茶（国际茶日系列）",
+    "short": "安吉白茶的原料与绿茶工艺",
+    "url": "https://cnafun.moa.gov.cn/zt/gjcr/202005/t20200519_6344633.html",
+    "year": "2020",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "81",
+    "publisher": "Plants",
+    "title": "Tea Harvesting and Processing Techniques and Its Effect on Phytochemical Profile and Final Quality of Black Tea: A Review",
+    "short": "采摘与红茶加工综述",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10743253/",
+    "year": "2023",
+    "type": "研究综述",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "82",
+    "publisher": "农业部茶及饮料作物改良场",
+    "title": "臺灣常見製茶機具展示說明",
+    "short": "萎凋 揉捻与球形整形",
+    "url": "https://www.tbrs.gov.tw/ws.php?id=5703",
+    "year": "网页",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "83",
+    "publisher": "UNESCO 中国文化和旅游部",
+    "title": "Photos: Traditional tea processing techniques and associated social practices in China",
+    "short": "中国制茶真实影像",
+    "url": "https://ich.unesco.org/en/7b-representative-list-01281/?call=slideshow&id=01884&include=slideshow_inc.php",
+    "year": "2021",
+    "type": "真实影像档案",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "84",
+    "publisher": "农业知识入口网",
+    "title": "白茶—銀針、白牡丹之製造方法",
+    "short": "白毫银针与白牡丹原料",
+    "url": "https://kmweb.moa.gov.tw/knowledgebase.php?func=&id=24310&keyword=&type=13281",
+    "year": "2004",
+    "type": "公共机构技术资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "85",
+    "publisher": "中国非物质文化遗产网",
+    "title": "黄茶制作技艺（君山银针茶制作技艺）",
+    "short": "君山银针闷黄与芽形",
+    "url": "https://www.ihchina.cn/project_details/23581.html",
+    "year": "2021",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "86",
+    "publisher": "农业部茶及饮料作物改良场",
+    "title": "東方美人茶",
+    "short": "东方美人原料与制作",
+    "url": "https://www.tbrs.gov.tw/ws.php?id=3787",
+    "year": "网页",
+    "type": "公共机构资料",
+    "accessed": "2026-10-12"
+  },
+  {
+    "id": "87",
+    "publisher": "农业农村部常驻联合国粮农机构代表团",
+    "title": "六大茶类，1分钟看懂——国际茶日系列之二",
+    "short": "六大茶类代表茶款",
+    "url": "https://cnafun.moa.gov.cn/zt/gjcr/202005/t20200508_6343919.html",
+    "year": "2020",
+    "type": "公共机构教育资料",
+    "accessed": "2026-10-12"
   }
 ]

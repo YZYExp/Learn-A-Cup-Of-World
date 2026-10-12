@@ -53,7 +53,7 @@ for ident,items in groups.items():
                          '/Keywords':'YZ, 策划与整理, AI 生成, '+PUBLICATION['content_license']})
     pdfpath=DEST/(filename+'.pdf')
     with pdfpath.open('wb') as f:writer.write(f)
-    chaptertext='\n\n---\n\n'.join(mdgroups[ident])
+    chaptertext='\n\n---\n\n'.join(mdgroups[ident]).replace('(../assets/', '(assets/')
     credit='> '+PUBLICATION['credit']+'。'+PUBLICATION['ai_disclosure']+'\n>\n> 许可：['+PUBLICATION['content_license']+']('+PUBLICATION['content_license_url']+')；[作品出处]('+PUBLICATION['source_url']+')。分享或改编时保留署名与许可链接，并注明改动；仅对有权许可且依法受保护的部分适用，第三方材料除外。\n\n'
     if chaptertext.startswith('# '):
         heading,_,remainder=chaptertext.partition('\n')
@@ -61,12 +61,19 @@ for ident,items in groups.items():
     else:chaptertext='# '+title+'\n\n'+credit+chaptertext
     (DEST/(filename+'.md')).write_text(chaptertext+'\n')
     manifest.append(dict(id=ident,title=title,pdf=pdfpath.name,markdown=filename+'.md',pages=len(items),full_book_pages=[i['page'] for i in items]))
-(DEST/'阅读说明.txt').write_text('杯中世界 图解修订版\n\n20 个正文章节、读前说明和 3 个附录分别提供独立 PDF 与可编辑 Markdown。每个章节从独立页开始，PDF 页脚同时标出本章页码与全书页码；当页原文引用链接保留。Markdown 中的图片位置对应 PDF 的章内插画，文字与表格完整。\n\n全书 PDF 另行提供，含插画扉页、可点击目录和参考资料总目。\n')
+(DEST/'阅读说明.txt').write_text('杯中世界 图解修订版\n\n20 个正文章节、读前说明和 3 个附录分别提供独立 PDF 与可编辑 Markdown。每个章节从独立页开始，PDF 页脚同时标出本章页码与全书页码；当页原文引用链接保留。Markdown 文字与表格完整；茶叶细节图可直接显示或打开同目录 assets 中的图板，阅读包已包含所需图片。\n\n全书 PDF 另行提供，含插画扉页、可点击目录和参考资料总目。\n')
 with (DEST/'阅读说明.txt').open('a') as f:
     f.write('\n'+PUBLICATION['credit']+'\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n\n'+PUBLICATION['attribution']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n完整条款见随包提供的 LICENSE、NOTICE.md、licenses/MIT.txt 和 assets/OFL.txt。\n')
 (OUT/'chapter-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+from shutil import copy2
+chapter_assets = DEST/'assets'
+chapter_assets.mkdir(exist_ok=True)
+for name in ('tea-fresh-details.png', 'tea-dry-wet-details.png'):
+    copy2(ROOT/'assets'/name, chapter_assets/name)
+
 with ZipFile(OUT/'杯中世界逐章阅读.zip','w',compression=ZIP_DEFLATED,compresslevel=7) as z:
-    for f in sorted(DEST.iterdir()):z.write(f,'逐章阅读/'+f.name)
+    for f in sorted(DEST.rglob('*')):
+        if f.is_file():z.write(f,'逐章阅读/'+str(f.relative_to(DEST)))
     for rel in ['LICENSE','NOTICE.md','licenses/MIT.txt','assets/OFL.txt','publication.json']:
         z.write(ROOT/rel,rel)
 print(json.dumps(dict(chapter_files=len(manifest),pdfs=len(list(DEST.glob('*.pdf'))),markdown_files=len(list(DEST.glob('*.md'))),archive=str(OUT/'杯中世界逐章阅读.zip')),ensure_ascii=False))
