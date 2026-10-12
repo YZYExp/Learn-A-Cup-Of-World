@@ -178,7 +178,8 @@ def short_publisher(s):
      '30':'IBA','31':'UNESCO','32':'V&A','33':'英国国家档案馆','34':'Food Chemistry X',
      '35':'NCA','36':'WCR','37':'ICO','38':'Foods','39':'SCA','40':'SCA',
      '41':'NCA','42':'WCR','43':'NIAAA','44':'FDA','45':'Lu 等 · Scientific Reports',
-     '46':'NIAAA','49':'James A. Benn','50':'PDG · LBNL'}.get(s['id'],s['publisher'].split(' ')[0])
+     '46':'NIAAA','49':'James A. Benn','50':'PDG · LBNL',
+     '64':'UKTIA','67':'NCA','68':'NCA','69':'NCA','70':'SCA'}.get(s['id'],s['publisher'].split(' ')[0])
 
 def foot_objects(refs):
     ps=[]

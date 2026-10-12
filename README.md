@@ -21,7 +21,7 @@
 
 ## 文件
 
-`chapters/` 为按章拆分的可编辑稿件；`research/sources.json` 为参考资料；`build_book.py` 为排版程序；`assets/` 为插画和字体；`output/` 为成品。
+`chapters/` 为按章拆分的可编辑稿件；`research/sources.json` 为参考资料；`build_book.py` 为全书排版程序；`export_chapters.py` 导出独立章节；`assets/` 为插画和字体；`output/` 为成品。
 
 Git 按规划、正文、插画排版、校订交付分阶段提交。仓库为本地版本管理，不预设远程仓库。
 
@@ -29,8 +29,16 @@ Git 按规划、正文、插画排版、校订交付分阶段提交。仓库为�
 
 使用 Python，依赖 reportlab、fonttools、Pillow、pypdf。在项目目录运行 `python build_book.py`。PDF 为 A5 阅读开本，字体嵌入，页码连续，目录与书签可导航。
 
+之后运行 `python export_chapters.py`，得到 24 组独立 PDF 与 Markdown 以及逐章阅读压缩包。20 章正文之外的读前说明和 3 个附录也单独成文件；每章 PDF 页脚标示本章页码与全书页码。
+
 ## 完整首版
 
 2026年10月11日编写任务完成：57 页、20 章、约 1.8 万汉字、50 项资料。正文各章两页，另有读前说明、插画扉页、三页附录和书末参考资料。源码包保留完整 Git 历史、分章稿件、配图、字体许可与排版程序。
 
 `research/editorial-check.md` 记录内容与版面校订；生成后 `output/layout-check.json` 记录逐页引用与空间检查。最终阅读版和整合的可编辑 Markdown 稿由排版程序生成。字体文件由 Google Fonts 的 Noto Sans SC 变体派生，许可见 `assets/OFL.txt`。
+
+## 图解修订版
+
+2026年10月12日根据阅读反馈修订：81 页，正文与附录约 2.4 万汉字，75 项参考资料。精酿、调酒、调茶和咖啡菜单分别扩展；新增 8 幅章内插画，连同原封面和分部页共有 12 个插画使用位置。正文增加结构与配方表，并将完整章节分别导出为 PDF 和 Markdown。
+
+修订在 `revision-illustrated` 分支进行，保留首版提交和修订提交。阅读版仍采用当页引用；表格的自拟分组、经典配方来源及插画使用边界均在正文注明。
