@@ -1,0 +1,29 @@
+site_name: 杯中世界
+site_description: 酒、茶、咖啡的起源、发展、制作与风味。
+site_url: https://yzyexp.github.io/Learn-A-Cup-Of-World/
+use_directory_urls: false
+theme:
+  name: material
+  language: zh
+  font: false
+  palette:
+    primary: green
+    accent: green
+  features:
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - toc.follow
+plugins:
+  - search:
+      lang: zh
+      separator: '[\s\u200b\u3000\-、。，．？！；：]+'
+markdown_extensions:
+  - tables
+  - sane_lists
+  - footnotes
+  - attr_list
+  - toc:
+      permalink: true
+extra:
+  generator: false

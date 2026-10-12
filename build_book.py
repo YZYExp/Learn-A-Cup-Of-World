@@ -9,7 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import HexColor, black, white
 from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
-from illustration_data import ART, FRONT_ART
+from illustration_data import ART, FRONT_ART, LEAF_PANELS
 
 ROOT = Path(__file__).resolve().parent
 PUBLICATION = json.loads((ROOT / 'publication.json').read_text(encoding='utf-8'))
@@ -92,16 +92,6 @@ class ChapterArt(Flowable):
         c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,7)
         c.drawCentredString(CW/2,3,'阅读情境插画  具体分类与制作以正文资料为准')
 
-
-LEAF_PANELS = {
-    'fresh': ('tea-fresh-details.png', (0, 0, 1536, 1024), '原叶与质感观察'),
-    'green': ('tea-dry-wet-details.png', (14, 14, 756, 330), '绿茶'),
-    'white': ('tea-dry-wet-details.png', (780, 14, 1521, 330), '白茶'),
-    'yellow': ('tea-dry-wet-details.png', (14, 352, 756, 658), '黄茶'),
-    'oolong': ('tea-dry-wet-details.png', (780, 352, 1521, 658), '乌龙'),
-    'black': ('tea-dry-wet-details.png', (14, 680, 756, 1009), '红茶'),
-    'dark': ('tea-dry-wet-details.png', (780, 680, 1521, 1009), '黑茶实例：普洱熟茶'),
-}
 
 class LeafDetail(Flowable):
     """Show a viewport of the original illustration; do not alter raster bytes."""
