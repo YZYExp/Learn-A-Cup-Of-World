@@ -1,8 +1,8 @@
-# 署名、AI 生成与开放许可
+# 署名、来源与开放许可
 
 **策划与整理：YZ**
 
-正文由 AI 编写，插画由 AI 生成。YZ 负责选题、需求设定与成稿整理。“策划与整理”是角色署名，不表示正文由 YZ 逐字撰写，也不表示所有事实经过人工核验。
+YZ 负责选题、需求设定与成稿整理。书稿使用 AI 辅助编写，情境插画与茶叶细节图为生成图像；工艺及数量图解由绘图脚本定义。茶叶细节图是教学示意，没有对应的真实样本。
 
 ## 许可范围
 
@@ -21,7 +21,7 @@
 
 推荐署名：
 
-> 《杯中世界》，策划与整理：YZ；正文由 AI 编写，插画由 AI 生成；[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[作品出处](https://github.com/YZYExp/Learn-A-Cup-Of-World)。如有改动，请注明。
+> 《杯中世界》，策划与整理：YZ；[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。[作品出处](https://github.com/YZYExp/Learn-A-Cup-Of-World)。如有改动，请注明。
 
 上述文字是阅读说明，具体条款以 [CC BY 4.0 完整法律文本](LICENSE)为准；[官方简体中文说明](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)便于阅读。
 
@@ -35,4 +35,4 @@ YZ 仅就有权许可且依法受保护的部分提供授权。纯 AI 生成内�
 
 选择 CC BY 4.0 是因为本项目以知识书稿和教学图像为主，希望读者能自由分享、改编和商用，同时保留来源。脚本使用 MIT，便于复用构建工具；字体保留其既有许可。
 
-`publication.json` 是构建程序使用的署名及许可元数据。全书封面、署名与许可页、整合 Markdown、独立章节与阅读包从中读取相同信息。
+`publication.json` 是构建程序使用的署名及许可元数据。全书封面、署名与许可页、整合 Markdown 与独立章节从中读取相同信息。
