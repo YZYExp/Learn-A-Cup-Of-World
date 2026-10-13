@@ -1,0 +1,101 @@
+{
+  "ref": "11ecfe5",
+  "commit": "11ecfe51bbd2b5734fc7a8469f25d2c57a2af395",
+  "scope": "The selected ref and its ancestors, excluding other branches",
+  "size_units": "bytes; blob sizes are uncompressed, not clone traffic or Git pack size",
+  "tracked_tree_bytes": 102725735,
+  "categories": {
+    "books": {
+      "current_files": 30,
+      "current_bytes": 48869169,
+      "historical_unique_blobs": 109,
+      "historical_uncompressed_blob_bytes": 119150901
+    },
+    "figure_pdf_masters": {
+      "current_files": 21,
+      "current_bytes": 320478,
+      "historical_unique_blobs": 42,
+      "historical_uncompressed_blob_bytes": 779024
+    },
+    "redundant_history_bundle": {
+      "current_files": 1,
+      "current_bytes": 8669711,
+      "historical_unique_blobs": 1,
+      "historical_uncompressed_blob_bytes": 8669711
+    }
+  },
+  "historical_artifact_unique_blobs": 152,
+  "historical_artifact_uncompressed_blob_bytes": 128599636,
+  "largest_historical_artifacts": [
+    {
+      "oid": "c82fdd1990efb6a16f52ec10b512f6e6b33f828a",
+      "size": 41214890,
+      "paths": [
+        "books/杯中世界逐章阅读.zip"
+      ]
+    },
+    {
+      "oid": "c80caa5addac8c332cbb69ed3a1d4ed00812137e",
+      "size": 38669156,
+      "paths": [
+        "books/杯中世界逐章阅读.zip"
+      ]
+    },
+    {
+      "oid": "7be7d6cd7d29558f1481da4994bbe710d0ed904d",
+      "size": 23010190,
+      "paths": [
+        "books/杯中世界.pdf"
+      ]
+    },
+    {
+      "oid": "78328b995353c4d5fec8dcdbf2b264c50eb55c66",
+      "size": 8669711,
+      "paths": [
+        "history/cup-world-original.bundle"
+      ]
+    },
+    {
+      "oid": "7dbf7f86154bc2a405164a40b4990909ae341ea9",
+      "size": 6511445,
+      "paths": [
+        "books/杯中世界.pdf"
+      ]
+    },
+    {
+      "oid": "697d72c4b6b786c3bb840ecea2c99fbfce3fee36",
+      "size": 4669284,
+      "paths": [
+        "books/杯中世界.pdf"
+      ]
+    },
+    {
+      "oid": "a314753b6ece2f771e7cc5afdfc3a1a6b2a7da15",
+      "size": 1944226,
+      "paths": [
+        "books/杯中世界.pdf"
+      ]
+    },
+    {
+      "oid": "276d701b700d8f27a68420dc4cfedc106f6a6922",
+      "size": 1915780,
+      "paths": [
+        "books/杯中世界.pdf"
+      ]
+    },
+    {
+      "oid": "621527fa344511272c16564f275fc1e0bd4cd456",
+      "size": 154669,
+      "paths": [
+        "books/杯中世界可编辑稿.md"
+      ]
+    },
+    {
+      "oid": "98a87377761e6bbe0cef75c4ffed7d927b3c2d95",
+      "size": 153295,
+      "paths": [
+        "books/杯中世界可编辑稿.md"
+      ]
+    }
+  ]
+}

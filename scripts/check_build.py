@@ -3,9 +3,9 @@ from html.parser import HTMLParser
 import argparse
 import json
 import re
+import subprocess
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
-from zipfile import ZipFile
 
 from pypdf import PdfReader
 from PIL import Image
@@ -69,6 +69,10 @@ def require(condition, message):
 
 
 def check(book_only=False):
+    if (ROOT / '.git').exists():
+        tracked = subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
+        artifacts = [p for p in tracked if p.startswith('books/') or p.endswith(('.pdf','.zip','.bundle'))]
+        require(not artifacts, f'Generated artifacts must not be tracked: {artifacts}')
     layout = json.loads((OUT / 'layout-check.json').read_text(encoding='utf-8'))
     manifest = json.loads((OUT / 'chapter-manifest.json').read_text(encoding='utf-8'))
     book = PdfReader(OUT / '杯中世界.pdf')
@@ -111,31 +115,28 @@ def check(book_only=False):
                 require(re.sub(r'\s+','',forbidden) not in normalized,
                         f'Caption prose is baked into figure {f["id"]}: {forbidden}')
 
-    with ZipFile(OUT / '杯中世界逐章阅读.zip') as archive:
-        require(archive.testzip() is None, 'Chapter ZIP is corrupt')
-        for chapter in manifest:
-            reader = PdfReader(OUT / '逐章阅读' / chapter['pdf'])
-            require(len(reader.pages) == chapter['pages'], f'Chapter page count: {chapter["id"]}')
-            require(bool(reader.outline), f'Chapter has no bookmark: {chapter["id"]}')
-            require(len(chapter['full_book_pages']) == chapter['pages'] and
-                    all(1 <= p <= len(book.pages) for p in chapter['full_book_pages']),
-                    f'Invalid chapter page mapping: {chapter["id"]}')
-            for key in ('pdf', 'markdown'):
-                require('逐章阅读/' + chapter[key] in archive.namelist(),
-                        f'Chapter missing from ZIP: {chapter[key]}')
-            md_path=OUT/'逐章阅读'/chapter['markdown']
-            for target in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',md_path.read_text()):
-                name=(md_path.parent/target).resolve().relative_to(OUT.resolve()).as_posix()
-                require(name in archive.namelist(), f'Chapter image missing from ZIP: {name}')
-            if not book_only:
-                require((SITE / 'chapters' / f'{chapter["id"]}.html').is_file(),
-                        f'Chapter missing from website: {chapter["id"]}')
+    pdfs = list(OUT.rglob('*.pdf'))
+    require(pdfs == [OUT / '杯中世界.pdf'], 'Build must produce only one full-book PDF')
+    require(not list(OUT.rglob('*.zip')), 'Obsolete chapter ZIP remains in build output')
+    for chapter in manifest:
+        require('pdf' not in chapter, 'Chapter manifest must not advertise a chapter PDF')
+        require(len(chapter['full_book_pages']) == chapter['pages'] and
+                all(1 <= p <= len(book.pages) for p in chapter['full_book_pages']),
+                f'Invalid chapter page mapping: {chapter["id"]}')
+        require((OUT / '逐章阅读' / chapter['markdown']).is_file(),
+                f'Missing chapter Markdown: {chapter["id"]}')
+        if not book_only:
+            require((SITE / 'chapters' / f'{chapter["id"]}.html').is_file(),
+                    f'Chapter missing from website: {chapter["id"]}')
 
     if book_only:
         print(f'Validated {len(book.pages)} PDF pages, {len(manifest)} chapters, '
-              f'{len(figures)} new figures, legends and all Markdown/ZIP image links.')
+              f'{len(figures)} new figures, legends and all Markdown image links; only one PDF.')
         return
 
+    require(not (SITE / 'downloads').exists(), 'Website must use Release downloads')
+    require(not list(SITE.rglob('*.pdf')) and not list(SITE.rglob('*.zip')),
+            'Website includes generated PDFs or archives')
     require((SITE / 'index.html').is_file(), 'Website has no entrypoint')
     require((SITE / '.nojekyll').is_file(), 'Website has no .nojekyll marker')
     html_files = list(SITE.rglob('*.html'))

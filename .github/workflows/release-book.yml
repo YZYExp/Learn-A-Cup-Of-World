@@ -1,0 +1,43 @@
+name: Attach full-book PDF to Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Build and validate the full book
+        run: |
+          set -eu
+          python scripts/render_figures.py
+          python build_book.py
+          python export_chapters.py
+          python scripts/check_build.py --book-only
+
+      - name: Attach only the full-book PDF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" "output/杯中世界.pdf" --repo "$GITHUB_REPOSITORY" --clobber

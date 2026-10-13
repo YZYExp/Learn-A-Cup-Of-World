@@ -4,3 +4,6 @@ output/
 assets/NotoSansSC.ttf
 site/
 work/
+books/
+assets/figures/*.pdf
+history/*.bundle

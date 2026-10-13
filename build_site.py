@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 import re
 import shutil
-from urllib.parse import quote
 
 from mkdocs.commands.build import build as mkdocs_build
 from mkdocs.config import load_config
@@ -102,27 +101,14 @@ def chapter_markdown(chapter, sources):
     if not heading:
         text = f'# {chapter["title"]}\n\n' + text
         heading = re.search(r'^# .+$', text, re.M)
-    pdf = '../downloads/' + quote('逐章阅读/' + chapter['pdf'], safe='/')
-    intro = (f'\n\n<p class="downloads"><a href="{pdf}">下载本章 PDF</a>'
-             f'<a href="../downloads/{quote("杯中世界.pdf")}">下载全书 PDF</a></p>\n\n')
+    releases = PUBLICATION['source_url'].rstrip('/') + '/releases'
+    intro = (f'\n\n<p class="downloads"><a href="{escape(releases, quote=True)}">'
+             '下载全书 PDF（Release）</a></p>\n\n')
     opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(chapter['id'])
     if opener:
         intro += illustration(opener, eager=True) + '\n\n'
     text = text[:heading.end()] + intro + text[heading.end():]
     return text, pieces[2]
-
-
-def copy_downloads():
-    downloads = SITE / 'downloads'
-    downloads.mkdir()
-    for filename in ('杯中世界.pdf', '杯中世界可编辑稿.md', '杯中世界逐章阅读.zip'):
-        shutil.copy2(OUT / filename, downloads / filename)
-    for filename in ('LICENSE', 'NOTICE.md', 'licenses/MIT.txt', 'assets/OFL.txt'):
-        target = downloads / filename
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / filename, target)
-    shutil.copytree(OUT / '逐章阅读', downloads / '逐章阅读')
-    shutil.copytree(OUT / 'assets', downloads / 'assets', dirs_exist_ok=True)
 
 
 def build():
@@ -136,7 +122,9 @@ def build():
     (DOCS / stylesheet).write_text(CSS, encoding='utf-8')
     for key, (filename, rect) in FRONT_ART.items():
         export_image(key, filename, rect)
-    shutil.copytree(ROOT / 'assets/figures', DOCS / 'assets/figures')
+    (DOCS / 'assets/figures').mkdir()
+    for image in (ROOT / 'assets/figures').glob('*.png'):
+        shutil.copy2(image, DOCS / 'assets/figures' / image.name)
 
     groups = {}
     contents = []
@@ -146,14 +134,13 @@ def build():
         (DOCS / path).write_text(text, encoding='utf-8')
         groups.setdefault(part, []).append({chapter['title']: path})
         contents.append(f'- [{chapter["title"]}]({path})')
-    links = ''.join(f'<a href="downloads/{quote(filename)}">{label}</a>' for filename, label in (
-        ('杯中世界.pdf', '全书 PDF'), ('杯中世界逐章阅读.zip', '逐章阅读 ZIP'),
-        ('杯中世界可编辑稿.md', '可编辑 Markdown')))
+    releases = PUBLICATION['source_url'].rstrip('/') + '/releases'
+    links = f'<a href="{escape(releases, quote=True)}">下载全书 PDF（Release）</a>'
     index = ('# 杯中世界\n\n酒、茶、咖啡的起源与风味 · 个人兴趣阅读与学习\n\n'
              '从原料与加工开始，读懂一杯饮料。可以顺读，也可以先挑喜欢的一章。\n\n'
              + illustration('cover', prefix='', eager=True)
              + f'\n\n<p class="downloads">{links}</p>\n\n'
-             '网页版提供完整文字、插画、图解、表格和原文引用链接；需要当页排版可下载 PDF。\n\n'
+             '网页版提供完整文字、插画、图解、表格和原文引用链接；需要分页阅读可在 Release 下载全书 PDF。\n\n'
              '## 章节目录\n\n' + '\n'.join(contents))
     (DOCS / 'index.md').write_text(index, encoding='utf-8')
     credit = (escape(PUBLICATION['credit']) + ' · ' + escape(PUBLICATION['ai_disclosure'])
@@ -163,7 +150,6 @@ def build():
                          nav=[{'阅读首页': 'index.md'}] + [{part: entries} for part, entries in groups.items()],
                          copyright=credit, extra_css=[stylesheet], strict=True)
     mkdocs_build(config)
-    copy_downloads()
     (SITE / '.nojekyll').touch()
     print(json.dumps({'site': str(SITE), 'chapters': len(manifest),
                       'renderer': 'MkDocs Material', 'illustrations': len(FRONT_ART) + sum(len(IMAGE_RE.findall(p.read_text())) for p in (ROOT / 'chapters').glob('*.md'))},
