@@ -10,7 +10,8 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import HexColor, black, white
 from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
-from illustration_data import ART, FRONT_ART, LEAF_PANELS
+from illustration_data import FRONT_ART
+from figure_markup import frontmatter_captions
 import fitz
 
 ROOT = Path(__file__).resolve().parent
@@ -29,6 +30,8 @@ ACCENT = HexColor('#526852')
 STYLES = {
     'body': ParagraphStyle('body', fontName=FONT, fontSize=10.25, leading=16.3,
        textColor=INK, wordWrap='CJK', spaceAfter=8, splitLongWords=True),
+    'caption': ParagraphStyle('caption', fontName=FONT, fontSize=8.3, leading=12.2,
+       textColor=GRAY, wordWrap='CJK', spaceAfter=5),
     'small': ParagraphStyle('small', fontName=FONT, fontSize=7.6, leading=11,
        textColor=GRAY, wordWrap='CJK', splitLongWords=True),
     'head': ParagraphStyle('head', fontName=FONT, fontSize=18.5, leading=25,
@@ -41,7 +44,7 @@ STYLES = {
        textColor=INK, wordWrap='CJK', spaceAfter=10, splitLongWords=True),
 }
 sources = {s['id']:s for s in json.loads((ROOT/'research/sources.json').read_text())}
-SCENES = json.loads((ROOT/'assets/scene-catalog.json').read_text())
+FRONT_CAPTIONS = frontmatter_captions(ROOT)
 pages = []
 for file in sorted((ROOT/'chapters').glob('*.md')):
     text = file.read_text()
@@ -83,72 +86,15 @@ def table(rows):
 
 
 class TeachingFigure(Flowable):
-    def __init__(self,path):
+    def __init__(self,path,height=None):
         Flowable.__init__(self)
         self.path=(ROOT/'chapters'/path).resolve()
         assert self.path.is_relative_to(ROOT/'assets/figures'), self.path
         iw,ih=Image.open(self.path).size
-        self.width=CW;self.height=CW*ih/iw
+        self.width=CW;self.height=min(float(height),CW*ih/iw) if height else CW*ih/iw
+        self.image_width=self.height*iw/ih
     def draw(self):
-        self.canv.drawImage(str(self.path),0,0,CW,self.height)
-
-class ChapterArt(Flowable):
-    def __init__(self,key,height):
-        Flowable.__init__(self);self.key=key;self.height=float(height)+17;self.width=CW
-    def draw(self):
-        filename,rect=ART[self.key];img=ROOT/'assets'/filename
-        iw,ih=Image.open(img).size
-        x0,y0,x1,y1=[v*s for v,s in zip(rect,(iw/1536,ih/1024,iw/1536,ih/1024))]
-        h=self.height-17;w=h*(x1-x0)/(y1-y0);x=(CW-w)/2;y=17
-        scale=w/(x1-x0);c=self.canv
-        c.saveState();p=c.beginPath();p.rect(x,y,w,h);c.clipPath(p,stroke=0)
-        c.drawImage(str(img),x-x0*scale,y-(ih-y1)*scale,iw*scale,ih*scale)
-        c.restoreState();c.setFillColor(GRAY);c.setFont(FONT,6.8)
-        c.drawCentredString(CW/2,10,SCENES[self.key]['caption'])
-        c.drawCentredString(CW/2,1,'AI 阅读情境插画；图中物体和颜色不用于身份、配方或年份鉴定。')
-
-
-class LeafDetail(Flowable):
-    """Show a viewport of the original illustration; do not alter raster bytes."""
-    def __init__(self, key, height):
-        Flowable.__init__(self)
-        self.key = key
-        self.width = CW
-        self.height = float(height) + 30
-
-    def draw(self):
-        filename, rect, label = LEAF_PANELS[self.key]
-        img = ROOT / 'assets' / filename
-        iw, ih = Image.open(img).size
-        x0, y0, x1, y1 = [v*s for v,s in zip(rect, (iw/1536, ih/1024, iw/1536, ih/1024))]
-        h = min(self.height-30, CW*(y1-y0)/(x1-x0))
-        w = h*(x1-x0)/(y1-y0)
-        x = (CW-w)/2
-        scale = w/(x1-x0)
-        c = self.canv
-        c.saveState()
-        path = c.beginPath(); path.rect(x, 30, w, h); c.clipPath(path, stroke=0)
-        c.drawImage(str(img), x-x0*scale, 30-(ih-y1)*scale, iw*scale, ih*scale)
-        c.restoreState()
-        c.setFillColor(INK); c.setFont(FONT, 8)
-        if self.key == 'fresh':
-            c.drawCentredString(CW/2, 17, label)
-        else:
-            c.drawCentredString(CW*.25, 17, '加工后的干茶')
-            c.drawCentredString(CW*.75, 17, '冲泡后的叶底')
-        c.setFillColor(GRAY); c.setFont(FONT, 7)
-        c.drawCentredString(CW/2, 3, 'AI 教学示意  不同样本 不按实际尺寸绘制')
-
-
-def leaf_markdown(match):
-    key = match.group(1)
-    filename, _, label = LEAF_PANELS[key]
-    position = {'green':'上排左', 'white':'上排右', 'yellow':'中排左', 'oolong':'中排右', 'black':'下排左', 'dark':'下排右'}
-    if key == 'fresh':
-        return f'![原叶、嫩叶与成熟叶、失水及干湿质感的 AI 教学示意](../assets/{filename})'
-    if key == 'green':
-        return f'![六类代表形态的干茶与叶底 AI 教学对照](../assets/{filename})\n\n对照图依次为：上排绿茶、白茶；中排黄茶、乌龙；下排红茶、普洱熟茶。每格左侧为干茶，右侧为叶底。本节阅读上排左格；图像不按实际尺寸绘制。'
-    return f'[查看{label}的干茶与叶底教学对照：{position[key]}格，左干右湿](../assets/{filename})'
+        self.canv.drawImage(str(self.path),(CW-self.image_width)/2,0,self.image_width,self.height)
 
 class CompositionSketch(Flowable):
     def __init__(self):Flowable.__init__(self);self.width=CW;self.height=92
@@ -160,9 +106,7 @@ class CompositionSketch(Flowable):
             if col:c.setFillColor(HexColor(col));c.rect(x,y+14,42,31,fill=1,stroke=0)
             c.setStrokeColor(GRAY);c.rect(x,y,42,45,fill=0,stroke=1)
             c.setFont(FONT,9);c.setFillColor(INK);c.drawCentredString(x+21,78,name)
-            c.setFont(FONT,7.4);c.drawCentredString(x+21,15,extra)
-        c.setFont(FONT,6.8);c.setFillColor(GRAY)
-        c.drawCentredString(CW/2,0,'图18-C 棕色：咖啡；蓝色：水；米色：奶。只示意组成，不表示配方比例。')
+
 
 def figure_region(c,key,x,y,w):
     # A PDF viewport into an unmodified generated sheet, not a raster edit.
@@ -177,19 +121,18 @@ def figure_region(c,key,x,y,w):
     return h
 
 def blocks(body):
-    lines=body.splitlines(); result=[];i=0
+    lines=body.splitlines(); result=[];i=0;figure_height=None
     while i<len(lines):
         line=lines[i].strip()
         if not line:i+=1;continue
-        if line.startswith('@leaf '):
-            _,key,height=line.split();result.append(('flow',LeafDetail(key,height)));i+=1;continue
+        height_marker=re.fullmatch(r'<!-- figure-height: ([\d.]+) -->',line)
+        if height_marker:
+            figure_height=height_marker.group(1);i+=1;continue
+        if line.startswith('**图 ') or line.startswith('**图例。**'):
+            result.append(('flow',para(line,'caption')));i+=1;continue
         figure=re.fullmatch(r'!\[([^\]]+)\]\(([^)]+)\)',line)
         if figure:
-            result.append(('flow',TeachingFigure(figure.group(2))));i+=1;continue
-        if line.startswith('@art '):
-            _,key,height=line.split();result.append(('flow',ChapterArt(key,height)));i+=1;continue
-        if line.startswith('@composition '):
-            result.append(('flow',CompositionSketch()));i+=1;continue
+            result.append(('flow',TeachingFigure(figure.group(2),figure_height)));figure_height=None;i+=1;continue
         if line=='@table':
             rows=[];i+=1
             while lines[i].strip()!='@endtable':
@@ -292,7 +235,7 @@ def cover(c):
     c.setFont(FONT,15);c.drawString(M,H-124,'酒 茶 咖啡的起源与风味')
     c.setFont(FONT,10);c.setFillColor(GRAY);c.drawString(M,H-153,'个人兴趣阅读与学习')
     figure_region(c,'cover',M,174,CW)
-    note=Paragraph('图例：酒杯、茶杯与咖啡杯呈现全书主题；AI 情境插画，不用于身份判定。',STYLES['small'])
+    note=para(FRONT_CAPTIONS['cover'],'caption')
     ww,hh=note.wrap(CW,H);note.drawOn(c,M,164-hh)
     c.setFillColor(INK);c.setFont(FONT,10)
     c.drawString(M,119,'从原料与加工开始，读懂一杯饮料。')
@@ -350,7 +293,7 @@ def opener(c,key,title,subtitle):
     c.setFillColor(black);c.setFont(FONT,24);c.drawString(M,H-91,title)
     obj=para(subtitle);ww,hh=obj.wrap(CW,H);obj.drawOn(c,M,H-119-hh)
     figure_region(c,key,M,152,CW)
-    obj=Paragraph('图例：'+SCENES[key]['caption']+' AI 阅读情境插画，不是历史复原或工艺操作图。',STYLES['small'])
+    obj=para(FRONT_CAPTIONS[key],'caption')
     ww,hh=obj.wrap(CW,H);obj.drawOn(c,M,113-hh)
 
 def bibliography(c):
@@ -400,7 +343,7 @@ with fitz.open(target) as doc:
 optimized.replace(target)
 (OUT/'layout-check.json').write_text(json.dumps(dict(total_pages=count,pages=diagnostics),ensure_ascii=False,indent=2))
 
-allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图例增补版\n\n![封面主题插画](assets/figures/scene-cover.png)\n\n图例：'+SCENES['cover']['caption']+' AI 阅读情境插画。\n']
+allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图例增补版\n\n![封面主题插画](assets/figures/scene-cover.png)\n\n'+FRONT_CAPTIONS['cover']+'\n']
 allmd.append('\n**'+PUBLICATION['credit']+'**\n\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n')
 allmd.append('\n## 署名与许可\n\n['+PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']+']('+PUBLICATION['content_license_url']+')\n\n'+PUBLICATION['license_summary']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n\n作品出处：'+PUBLICATION['source_url']+'\n\n推荐署名：'+PUBLICATION['attribution']+'\n')
 for p in pages:
@@ -418,12 +361,6 @@ for p in pages:
         rows=v.splitlines();n=len(rows[0].split('|'))
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
-    body=re.sub(r'@leaf (\w+) [\d.]+',leaf_markdown,body)
-    def mdart(m):
-        key=m.group(1);s=SCENES[key]
-        return f'![图{s["number"]} {s["title"]}](assets/figures/scene-{key}.png)\n\n图例：{s["caption"]} AI 阅读情境插画。'
-    body=re.sub(r'@art (\w+) [\d.]+',mdart,body)
-    body=body.replace('@composition coffee','![图18-C 咖啡成杯组成](assets/figures/composition-coffee.png)\n\n图18-C 图例：棕色为咖啡，蓝色为水，米色为奶；仅示意组成，不表示标准比例或实际分层。')
     body=body.replace('../assets/','assets/')
     allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
     for r in p['refs']:
@@ -440,7 +377,14 @@ for name in ('tea-fresh-details.png','tea-dry-wet-details.png'):
 cp=ROOT/'assets/figures/composition-coffee.pdf'
 cc=canvas.Canvas(str(cp),pagesize=(CW,92),invariant=1);CompositionSketch().drawOn(cc,0,0);cc.save()
 with fitz.open(cp) as doc:
-    doc[0].get_pixmap(matrix=fitz.Matrix(4,4)).save(ROOT/'assets/figures/composition-coffee.png')
+    bounds=fitz.Rect()
+    for _, rect, *_ in doc[0].get_bboxlog():
+        bounds |= fitz.Rect(rect)
+    bounds=fitz.Rect(bounds.x0-5,bounds.y0-5,bounds.x1+5,bounds.y1+5)&doc[0].rect
+    fitted=fitz.open();page=fitted.new_page(width=bounds.width,height=bounds.height)
+    page.show_pdf_page(page.rect,doc,0,clip=bounds)
+    page.get_pixmap(matrix=fitz.Matrix(4,4)).save(ROOT/'assets/figures/composition-coffee.png')
+    fitted.close()
 for suffix in ('pdf','png'):
     shutil.copy2(ROOT/f'assets/figures/composition-coffee.{suffix}',OUT/f'assets/figures/composition-coffee.{suffix}')
 print(json.dumps(dict(pdf=str(target),pages=count,chapters=20,source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))
