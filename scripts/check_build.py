@@ -10,6 +10,7 @@ from zipfile import ZipFile
 from pypdf import PdfReader
 from PIL import Image
 from yaml import safe_load
+import fitz
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'output'
@@ -93,10 +94,22 @@ def check(book_only=False):
     figures=json.loads((ROOT/'assets/figure-plan.json').read_text(encoding='utf-8'))
     full_text=main_md.read_text(encoding='utf-8')
     for f in figures:
-        require(f'图 {f["id"]} 图例。' in full_text,
-                f'Figure has no readable legend: {f["id"]}')
+        require(f'**图 {f["id"]}　' in full_text,
+                f'Figure has no Markdown caption: {f["id"]}')
+        raw=(ROOT/'chapters'/f'{f["chapter"]}.md').read_text()
+        image=re.search(r'!\[[^\]]+\]\(\.\./assets/figures/'+re.escape(f['id'])+r'\.png\)',raw)
+        require(image is not None, f'Figure missing from manuscript: {f["id"]}')
+        caption_block=raw[image.end():].split('<!-- page:')[0]
+        require('**图例。**' in caption_block,f'Figure has no Markdown legend: {f["id"]}')
         require((ROOT/'assets/figures'/f'{f["id"]}.png').is_file(),
                 f'Figure image is missing: {f["id"]}')
+        if f['mode'] != 'scene':
+            with fitz.open(ROOT/'assets/figures'/f'{f["id"]}.pdf') as master:
+                visible=''.join(page.get_text() for page in master)
+            normalized=re.sub(r'\s+','',visible)
+            for forbidden in (f'图{f["id"]}',f['title'],'本书绘制的教学示意','AI教学插画','含义与边界见图例'):
+                require(re.sub(r'\s+','',forbidden) not in normalized,
+                        f'Caption prose is baked into figure {f["id"]}: {forbidden}')
 
     with ZipFile(OUT / '杯中世界逐章阅读.zip') as archive:
         require(archive.testzip() is None, 'Chapter ZIP is corrupt')
@@ -143,19 +156,13 @@ def check(book_only=False):
                 title = re.match(r'^#{1,6} (.+)$', line)
                 if title:
                     heading = title.group(1)
-                marker = re.match(r'^@(art|leaf|composition) (\w+)', line)
-                if marker:
-                    kind, key = marker.groups()
-                    if kind != 'art':
-                        key = kind + '-' + key
-                    expected_figures.append((key, heading))
                 teaching = re.match(r'^!\[[^\]]+\]\(\.\./assets/figures/([\w-]+)\.png\)$', line)
                 if teaching:
-                    expected_figures.append(('teaching-' + teaching.group(1), heading))
+                    expected_figures.append((teaching.group(1), heading))
             opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(page.stem)
             if opener:
                 expected_figures.insert(0, (opener, re.search(r'^# (.+)$', raw, re.M).group(1)))
-            require(parser.compositions == len(re.findall(r'^@composition coffee$', raw, re.M)),
+            require(parser.compositions == len(re.findall(r'!\[[^\]]+\]\(\.\./assets/figures/composition-coffee\.png\)', raw)),
                     f'Missing coffee composition diagram: {page.relative_to(SITE)}')
         elif page.name == 'index.html':
             expected_figures = [('cover', '杯中世界')]
