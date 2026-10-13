@@ -868,5 +868,105 @@
     "year": "2020",
     "type": "公共机构教育资料",
     "accessed": "2026-10-12"
+  },
+  {
+    "id": "88",
+    "publisher": "Cafe Imports",
+    "title": "Washed Process (aka Wet Process)",
+    "short": "水洗与机械去黏液",
+    "url": "https://www.cafeimports.com/north-america/blog/washed-process/",
+    "year": "网页",
+    "type": "生产者教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "89",
+    "publisher": "Cafe Imports",
+    "title": "Honey Process",
+    "short": "蜜处理与黏液保留",
+    "url": "https://www.cafeimports.com/north-america/blog/honey-process/",
+    "year": "网页",
+    "type": "生产者教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "90",
+    "publisher": "Cafe Imports",
+    "title": "Wet-Hulled (aka Semi-Washed, Sumatra Process, Giling Basah)",
+    "short": "湿刨与羊皮层脱除时机",
+    "url": "https://www.cafeimports.com/north-america/wet-hulled-process",
+    "year": "网页",
+    "type": "生产者教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "91",
+    "publisher": "Cafe Imports",
+    "title": "Anaerobic Fermentation",
+    "short": "厌氧发酵与后续处理路线",
+    "url": "https://www.cafeimports.com/north-america/blog/2023/01/30/anaerobic-fermentation/",
+    "year": "2023",
+    "type": "生产者教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "92",
+    "publisher": "North Star Coffee Roasters",
+    "title": "Coffee Processing Explained Part III – The Honey Process (aka semi-washed/pulped natural)",
+    "short": "半水洗名称的另一种用法",
+    "url": "https://www.northstarroast.com/en-gb/blogs/all-blogs/coffee-processing-explained-part-iii-the-honey-process-aka-semi-washed-pulped-natural",
+    "year": "网页",
+    "type": "生产者教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "93",
+    "publisher": "Simon Difford / Difford’s Guide",
+    "title": "Fat-washing",
+    "short": "脂洗与培根脂洗波本案例",
+    "url": "https://www.diffordsguide.com/encyclopedia/328/cocktails/fat-washing",
+    "year": "网页",
+    "type": "调酒专业资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "94",
+    "publisher": "Campari Academy",
+    "title": "Milk Punch Guide and Recipes",
+    "short": "乳洗与凝乳过滤",
+    "url": "https://www.campariacademy.com/en-us/training/tools-techniques/milk-punch-guide-and-recipes/",
+    "year": "网页",
+    "type": "生产者调酒教育资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "95",
+    "publisher": "ICHA TEA",
+    "title": "To Rinse or Not to Rinse Your Tea Leaves?",
+    "short": "茶叶润泡与直接冲泡选择",
+    "url": "https://ichateashop.com/blogs/news/guide-to-rinsing-tea-leaves",
+    "year": "2025",
+    "type": "茶商冲泡实践资料",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "96",
+    "publisher": "Xinru Wang 等 / Food Research International",
+    "title": "Transfer of pesticide residue during tea brewing: Understanding the effects of pesticide’s physico-chemical parameters on its transfer behavior",
+    "short": "农药理化性质与向茶汤的转移",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31108808/",
+    "year": "2019",
+    "type": "研究论文摘要",
+    "accessed": "2026-10-13"
+  },
+  {
+    "id": "97",
+    "publisher": "中国非物质文化遗产网",
+    "title": "知节气 识茶事 和天下丨惊蛰：春雷初响，茶始新",
+    "short": "醒茶的干醒与湿醒用语",
+    "url": "https://www.ihchina.cn/project_details/26695.html",
+    "year": "2023",
+    "type": "公共机构文化资料",
+    "accessed": "2026-10-13"
   }
 ]
