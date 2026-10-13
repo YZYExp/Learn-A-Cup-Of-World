@@ -61,7 +61,7 @@ for ident,items in groups.items():
     else:chaptertext='# '+title+'\n\n'+credit+chaptertext
     (DEST/(filename+'.md')).write_text(chaptertext+'\n')
     manifest.append(dict(id=ident,title=title,pdf=pdfpath.name,markdown=filename+'.md',pages=len(items),full_book_pages=[i['page'] for i in items]))
-(DEST/'阅读说明.txt').write_text('杯中世界 图例增补版\n\n20 个正文章节、读前说明和 3 个附录分别提供独立 PDF 与可编辑 Markdown。每个章节从独立页开始，PDF 页脚同时标出本章页码与全书页码；当页原文引用链接保留。Markdown 配图与图例完整；相邻 assets 目录包含全部图片，请保留目录结构。\n\n全书 PDF 另行提供，含插画扉页、可点击目录和参考资料总目。\n')
+(DEST/'阅读说明.txt').write_text('杯中世界 图例增补版\n\n20 个正文章节、读前说明和 3 个附录分别提供独立 PDF 与可编辑 Markdown。每个章节从独立页开始，PDF 页脚同时标出本章页码与全书页码；当页原文引用链接保留。Markdown 配图、独立文字图注与图例完整；相邻 assets 目录包含全部图片，请保留目录结构。\n\n全书 PDF 另行提供，含插画扉页、可点击目录和参考资料总目。\n')
 with (DEST/'阅读说明.txt').open('a') as f:
     f.write('\n'+PUBLICATION['credit']+'\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n\n'+PUBLICATION['attribution']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n完整条款见随包提供的 LICENSE、NOTICE.md、licenses/MIT.txt 和 assets/OFL.txt。\n')
 (OUT/'chapter-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
