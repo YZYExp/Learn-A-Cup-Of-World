@@ -370,7 +370,9 @@ allmd.append('\n资料检索日期 2026年10月11日至12日。图例已区分 A
 (OUT/'杯中世界可编辑稿.md').write_text('\n'.join(allmd))
 if (OUT/'assets/figures').exists():
     shutil.rmtree(OUT/'assets/figures')
-shutil.copytree(ROOT/'assets/figures',OUT/'assets/figures',dirs_exist_ok=True)
+(OUT/'assets/figures').mkdir(parents=True,exist_ok=True)
+for image in (ROOT/'assets/figures').glob('*.png'):
+    shutil.copy2(image,OUT/'assets/figures'/image.name)
 for name in ('tea-fresh-details.png','tea-dry-wet-details.png'):
     shutil.copy2(ROOT/'assets'/name,OUT/'assets'/name)
 # Export the existing composition diagram with exactly the PDF's labels.
@@ -385,6 +387,5 @@ with fitz.open(cp) as doc:
     page.show_pdf_page(page.rect,doc,0,clip=bounds)
     page.get_pixmap(matrix=fitz.Matrix(4,4)).save(ROOT/'assets/figures/composition-coffee.png')
     fitted.close()
-for suffix in ('pdf','png'):
-    shutil.copy2(ROOT/f'assets/figures/composition-coffee.{suffix}',OUT/f'assets/figures/composition-coffee.{suffix}')
+shutil.copy2(ROOT/'assets/figures/composition-coffee.png',OUT/'assets/figures/composition-coffee.png')
 print(json.dumps(dict(pdf=str(target),pages=count,chapters=20,source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))
