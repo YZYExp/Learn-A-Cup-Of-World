@@ -366,7 +366,8 @@ for p in pages:
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
     if not p['refs']:allmd.append('本页为原创阅读说明或自拟观察方法。\n')
-allmd.append('\n资料检索日期 2026年10月11日至12日。图例已区分 AI 插画与本书绘制的工艺、数量示意；当页排版见 PDF。\n')
+access_dates=sorted({s['accessed'] for s in sources.values()})
+allmd.append(f'\n资料检索日期 {access_dates[0]} 至 {access_dates[-1]}。图例已区分 AI 插画与本书绘制的工艺、数量示意；当页排版见 PDF。\n')
 (OUT/'杯中世界可编辑稿.md').write_text('\n'.join(allmd))
 if (OUT/'assets/figures').exists():
     shutil.rmtree(OUT/'assets/figures')
