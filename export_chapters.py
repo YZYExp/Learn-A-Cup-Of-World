@@ -33,7 +33,7 @@ def export():
         if ident == '00':
             filename = '00-' + filename
         text = '\n\n---\n\n'.join(chunk for _, chunk in items).replace('](assets/', '](../assets/')
-        credit = ('> ' + PUBLICATION['credit'] + '。' + PUBLICATION['ai_disclosure'] + '\n>\n'
+        credit = ('> ' + PUBLICATION['credit'] + '。\n>\n'
                   '> 许可：[' + PUBLICATION['content_license'] + ']('
                   + PUBLICATION['content_license_url'] + ')；[作品出处]('
                   + PUBLICATION['source_url'] + ')。分享或改编时保留署名与许可链接，并注明改动；仅对有权许可且依法受保护的部分适用，第三方材料除外。\n\n')

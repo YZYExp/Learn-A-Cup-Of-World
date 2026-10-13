@@ -143,7 +143,7 @@ def build():
              '网页版提供完整文字、插画、图解、表格和原文引用链接；需要分页阅读可在 Release 下载全书 PDF。\n\n'
              '## 章节目录\n\n' + '\n'.join(contents))
     (DOCS / 'index.md').write_text(index, encoding='utf-8')
-    credit = (escape(PUBLICATION['credit']) + ' · ' + escape(PUBLICATION['ai_disclosure'])
+    credit = (escape(PUBLICATION['credit'])
               + f' <a href="{PUBLICATION["content_license_url"]}">{PUBLICATION["content_license"]}</a>'
               + f' · <a href="{PUBLICATION["source_url"]}/blob/main/NOTICE.md">署名与许可说明</a>')
     config = load_config(str(ROOT / 'mkdocs.yml'), docs_dir=str(DOCS), site_dir=str(SITE),

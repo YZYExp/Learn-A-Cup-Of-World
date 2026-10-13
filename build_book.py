@@ -184,8 +184,6 @@ def foot_objects(refs):
             s=sources[r]
             value=f'[{r}] {short_publisher(s)} · {s["short"]} · {s["year"]}　<a href="{html.escape(s["url"],quote=True)}" color="#526852">原文</a>'
             ps.append(Paragraph(html.escape(value) if False else value,STYLES['small']))
-    else:
-        ps.append(Paragraph('本页为原创阅读说明或自拟观察方法，无新增外部事实引用。',STYLES['small']))
     return ps
 
 toc={}
@@ -223,7 +221,8 @@ def draw_content(c,page,collect):
             raise ValueError(f'Page overflow chapter {ident} / {page["title"]}: y={y:.1f} need={hh:.1f} bottom={bottom:.1f}')
         content_bottom=y-hh
         obj.drawOn(c,M,content_bottom);y-=hh+(obj.getSpaceAfter() if isinstance(obj,Paragraph) else 10)
-    c.setStrokeColor(LINE);c.line(M,bottom-9,W-M,bottom-9)
+    if foots:
+        c.setStrokeColor(LINE);c.line(M,bottom-9,W-M,bottom-9)
     fy=bottom-18
     for obj,hh in zip(foots,heights):
         obj.drawOn(c,M,fy-hh);fy-=hh+3
@@ -243,7 +242,6 @@ def cover(c):
     c.setFillColor(GRAY);c.setFont(FONT,8)
     c.setFont(FONT,10);c.drawString(M,76,PUBLICATION['credit'])
     c.setFont(FONT,8);c.drawString(M,55,'图解修订版  2026年10月  ·  '+PUBLICATION['content_license'])
-    c.drawString(M,39,PUBLICATION['ai_disclosure'])
 
 def publication_notice(c):
     newpage(c);frame(c,'署名与许可')
@@ -253,7 +251,6 @@ def publication_notice(c):
     sections=[
         ('head','署名与许可'),
         ('sub',PUBLICATION['credit']),
-        ('body',PUBLICATION['ai_disclosure']+PUBLICATION['role_description']),
         ('sub',PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']),
         ('body',PUBLICATION['license_summary']),
         ('body',PUBLICATION['rights_boundary']),
@@ -298,7 +295,8 @@ def opener(c,key,title,subtitle):
 
 def bibliography(c):
     ordered=list(sources.values());y=0
-    intro='首版资料检索于 2026 年 10 月 11 日，新增资料检索于 10 月 12 日。正文为原创改写与解释。行业材料用于工艺和术语，生产者配方用于展示其具体做法，不推广为全球标准；考古资料限定证据，自拟实验与类比另行注明。原文链接日后可能更新。'
+    dates=sorted({s['accessed'] for s in sources.values()})
+    intro=f'资料检索日期：{dates[0]} 至 {dates[-1]}。行业资料用于解释工艺与术语，生产者配方展示具体做法；考古结论按证据范围表述。原文链接可能更新。'
     def start():
         nonlocal y
         newpage(c);frame(c,'参考资料')
@@ -317,8 +315,8 @@ def build(path,collect=True):
     P=0;seen=set();diagnostics.clear()
     c=canvas.Canvas(str(path),pagesize=(W,H),pageCompression=1)
     c.setTitle('杯中世界 酒 茶 咖啡的起源与风味');c.setAuthor(PUBLICATION['metadata_credit'])
-    c.setSubject('饮品历史 工艺 风味与日常观察；'+PUBLICATION['ai_disclosure']+' '+PUBLICATION['content_license'])
-    c.setKeywords('YZ, 策划与整理, AI 生成, '+PUBLICATION['content_license'])
+    c.setSubject('饮品历史 工艺 风味与日常观察；'+PUBLICATION['content_license'])
+    c.setKeywords('YZ, 策划与整理, '+PUBLICATION['content_license'])
     cover(c);publication_notice(c);draw_content(c,pages[0],collect);contents(c)
     prev=None
     for page in pages[1:]:
@@ -343,8 +341,8 @@ with fitz.open(target) as doc:
 optimized.replace(target)
 (OUT/'layout-check.json').write_text(json.dumps(dict(total_pages=count,pages=diagnostics),ensure_ascii=False,indent=2))
 
-allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n个人兴趣读本 图例增补版\n\n![封面主题插画](assets/figures/scene-cover.png)\n\n'+FRONT_CAPTIONS['cover']+'\n']
-allmd.append('\n**'+PUBLICATION['credit']+'**\n\n'+PUBLICATION['ai_disclosure']+PUBLICATION['role_description']+'\n')
+allmd=['# 杯中世界\n\n酒 茶 咖啡的起源与风味\n\n酒、茶、咖啡图解读本\n\n![封面主题插画](assets/figures/scene-cover.png)\n\n'+FRONT_CAPTIONS['cover']+'\n']
+allmd.append('\n**'+PUBLICATION['credit']+'**\n')
 allmd.append('\n## 署名与许可\n\n['+PUBLICATION['content_license']+' · '+PUBLICATION['content_license_name']+']('+PUBLICATION['content_license_url']+')\n\n'+PUBLICATION['license_summary']+'\n\n'+PUBLICATION['rights_boundary']+'\n\n'+PUBLICATION['third_party_notice']+'\n\n作品出处：'+PUBLICATION['source_url']+'\n\n推荐署名：'+PUBLICATION['attribution']+'\n')
 for p in pages:
     body=p['body']
@@ -362,12 +360,11 @@ for p in pages:
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
     body=body.replace('../assets/','assets/')
-    allmd.append('\n---\n\n'+body+'\n\n本页资料：\n')
+    allmd.append('\n---\n\n'+body+('\n\n本页资料：\n' if p['refs'] else '\n'))
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
-    if not p['refs']:allmd.append('本页为原创阅读说明或自拟观察方法。\n')
 access_dates=sorted({s['accessed'] for s in sources.values()})
-allmd.append(f'\n资料检索日期 {access_dates[0]} 至 {access_dates[-1]}。图例已区分 AI 插画与本书绘制的工艺、数量示意；当页排版见 PDF。\n')
+allmd.append(f'\n资料检索日期 {access_dates[0]} 至 {access_dates[-1]}。出处与链接见各页资料；分页排版见 PDF。\n')
 (OUT/'杯中世界可编辑稿.md').write_text('\n'.join(allmd))
 if (OUT/'assets/figures').exists():
     shutil.rmtree(OUT/'assets/figures')
