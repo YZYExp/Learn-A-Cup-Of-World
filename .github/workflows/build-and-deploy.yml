@@ -28,6 +28,7 @@ jobs:
 
       - name: Build full book and individual chapters
         run: |
+          python scripts/render_figures.py
           python build_book.py
           python export_chapters.py
 
