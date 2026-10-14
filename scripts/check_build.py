@@ -97,6 +97,12 @@ def check(book_only=False):
                     f'Broken Markdown figure: {md.name} -> {target}')
     figures=json.loads((ROOT/'assets/figure-plan.json').read_text(encoding='utf-8'))
     full_text=main_md.read_text(encoding='utf-8')
+    for manuscript in (ROOT / 'chapters').glob('*.md'):
+        raw = manuscript.read_text(encoding='utf-8')
+        for body in re.split(r'<!-- page: [^>]+ -->\s*', raw)[1:]:
+            for image in re.finditer(r'!\[[^\]]+\]\([^)]*\)', body):
+                require(re.match(r'\s*\*\*图 ', body[image.end():]) is not None,
+                        f'Image and caption are separated in {manuscript.name}: {image.group()}')
     for f in figures:
         require(f'**图 {f["id"]}　' in full_text,
                 f'Figure has no Markdown caption: {f["id"]}')
@@ -131,7 +137,7 @@ def check(book_only=False):
 
     if book_only:
         print(f'Validated {len(book.pages)} PDF pages, {len(manifest)} chapters, '
-              f'{len(figures)} new figures, legends and all Markdown image links; only one PDF.')
+              f'{len(figures)} teaching figures, legends and all Markdown image links; only one PDF.')
         return
 
     require(not (SITE / 'downloads').exists(), 'Website must use Release downloads')
