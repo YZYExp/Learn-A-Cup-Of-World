@@ -9,6 +9,7 @@ import math
 import sys
 
 import fitz
+from PIL import Image
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -17,6 +18,7 @@ from reportlab.lib.colors import HexColor
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from illustration_data import LEAF_PANELS
+from enriched_figures import render_enriched
 DEST = ROOT / 'assets/figures'
 FONT = 'FigureSans'
 pdfmetrics.registerFont(TTFont(FONT, str(ROOT / 'assets/NotoSansSC-Regular.ttf')))
@@ -84,7 +86,20 @@ def numbered(c, number, x, y):
 
 def render(c, f):
     mode = f['mode']
-    if mode == 'lanes':
+    if mode == 'viewport':
+        source = ROOT / 'assets' / f['file']
+        with Image.open(source) as img:
+            iw, ih = img.size
+        x0, y0, x1, y1 = [v * s for v, s in zip(
+            f['rect'], (iw / 1536, ih / 1024, iw / 1536, ih / 1024))]
+        scale = min(696 / (x1 - x0), 406 / (y1 - y0))
+        w, h = (x1 - x0) * scale, (y1 - y0) * scale
+        x, y = (W - w) / 2, (H - h) / 2
+        c.saveState(); p = c.beginPath(); p.rect(x, y, w, h); c.clipPath(p, stroke=0)
+        c.drawImage(str(source), x - x0 * scale, y - (ih - y1) * scale, iw * scale, ih * scale)
+        c.restoreState()
+        return x, y, w, h
+    elif mode == 'lanes':
         for index, row in enumerate(f['rows']):
             top = 350-index*105
             text(c, row[0], 22, top, 21)
@@ -200,7 +215,7 @@ def render(c, f):
             text(c,name,25,y+54,24)
             box(c,25,y,amount/15*565,39,'',col)
             text(c,f'{amount:.1f} 克',25+amount/15*565+12,y+10,23,120)
-    else:
+    elif not render_enriched(c, f, {'text': text, 'box': box, 'arrow': arrow, 'cup': cup}):
         raise ValueError('Unknown figure mode: '+mode)
 
 
@@ -213,10 +228,13 @@ def main():
         path=(scratch if f['mode']=='scene' else DEST)/(f['id']+'.pdf')
         c=canvas.Canvas(str(path),pagesize=(W,H),invariant=1)
         c.setTitle('图 '+f['id']+' '+f['title'])
-        render(c,f)
+        viewport = render(c,f)
         c.save()
         with fitz.open(path) as doc:
-            if f['mode']=='scene':
+            if viewport:
+                x, y, w, h = viewport
+                bounds = fitz.Rect(x, H - y - h, x + w, H - y)
+            elif f['mode']=='scene':
                 bounds=fitz.Rect(120,H-377,600,H-87)
             else:
                 bounds=fitz.Rect()
@@ -231,7 +249,7 @@ def main():
         if f['mode']!='scene':
             path.write_bytes(compact.read_bytes())
         with fitz.open(compact) as doc:
-            zoom=1.5 if f['mode']=='scene' else 3
+            zoom=1 if f['mode']=='viewport' else (1.5 if f['mode']=='scene' else 3)
             doc[0].get_pixmap(matrix=fitz.Matrix(zoom,zoom)).save(DEST/(f['id']+'.png'))
     scenes=json.loads((ROOT/'assets/scene-catalog.json').read_text())
     views={key:(s['file'],s['rect']) for key,s in scenes.items()}
