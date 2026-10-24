@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-24",
+  "chapters": [
+    "13",
+    "14",
+    "15"
+  ],
+  "images": [
+    {
+      "file": "assets/tea-fresh-details.png",
+      "prompt": "Redraw and correct the attached tea botanical teaching plate. Landscape 1536x1024 composition, exactly 2x2 equal panels, ivory background, delicate restrained realistic botanical illustration, no text. Top left a REAL Camellia sinensis tender shoot: one slender closed terminal bud at tip of one stem, two tender alternate leaves attached at TWO DIFFERENT nodes below bud, never opposite symmetrical leaves at same node; short natural internodes, small petioles. Tip bud short subtle microscopic pubescence NOT long wool. Tea leaves elliptic lanceolate, small fine serrations mostly upper portion, subtle veins, naturally soft tiny asymmetric leaves. Top right two detached tea leaves lying side by side, smaller light green young leaf and larger darker mature leaf; no ruler, no implied same scale across panels. Bottom left two picked tender tea shoots with one bud and two leaves each, mildly wilted with limp folded leaves but naturally intact stem nodes and attachment. Wilted tea remains green, NOT bare twig topped by limp flowers, avoid long naked stems. Bottom right ONE fresh green tea leaf beside ONE strongly wrinkled curled dry tea leaf, dry one clearly smaller and irregular, green one with small subtle reddish brown bruised patch near edge, no multicolor decorative leaf. Leaf venation is pinnate and natural, no geometric fishbone, no rigid serrated spearheads. All material lays on surface, not standing planted upright. Neutral diffuse light, subtle paper texture, no cast dramatic shadows, no tea cups flowers logos labels or arrows. Generous gutters centered x768/y512. Prioritize botanical believability over ornamental symmetry.",
+      "purpose": "芽叶互生节点、短毫与失水质感",
+      "review": "人工逐图检查后选用；生成教学示意，不是真实样本。"
+    },
+    {
+      "file": "assets/tea-dry-wet-details.png",
+      "prompt": "Create a completely new realistic botanical tea teaching specimen plate on plain ivory paper, landscape 1536x1024, SIX equal panels two columns three rows. Diffuse photographic macro natural material rendered in delicate watercolor. Every panel LEFT small heap of DRY tea, RIGHT small scattered WET tea sample. All leaves naturally irregular, no symmetrical ornaments, no decorative shine. Row1 left flat Longjing tea: small thin flat yellow-green pressed bud-leaf units, wet tender leaves still attached to small shoots. Row1 right Bai Mudan white tea: grey green crinkled irregular dry leaves and a few CLOSED SLENDER BUDS smooth silver grey surface fine down nearly invisible; wet dull olive soft leaves plus slender buds. Row2 left Junshan Yinzhen yellow tea: dry slender closed pale olive yellow tea buds with nearly invisible fine down, wet slightly plump closed buds. Row2 right Taiwan ball rolled oolong: small compact ANGULAR folded and knotted dark olive leaves with irregular tails and thin stem ends, different sizes, rolled cloth-like creases visible, asymmetrical leaf knots, NO round spheres NO berries NO seeds NO broccoli. Wet sample irregular flexible broad olive leaves with bent tips, wrinkles and a few tears, sparse reddish patches. Row3 left orthodox black tea: very fine twisted almost black narrow dry strands, few gold tips, wet copper brown folded partial leaves and broken soft fragments. Row3 right ripe puerh tea: dry irregular dark brown crinkled coarse broken leaves with short thin stems, wet soft irregular dark brown leaf fragments and several folded partial leaves, no wooden texture. Tea pubescence ALWAYS microscopic, no long hair, no feathers, no fur, no floating fluff. Leaves thin soft plant tissue, fine serrations, plausible pinnate veins. Wet leaves not overscaled relative to dry heap. No text no vessels no arrows no numbers. Clean 24px ivory gutters at x768 y341 y683.",
+      "purpose": "六类代表干茶与叶底形态",
+      "review": "人工逐图检查后选用；生成教学示意，不是真实样本。"
+    },
+    {
+      "file": "assets/expanded-tea.png",
+      "prompt": "An entirely new landscape educational tea book illustration sheet with FOUR panels in 2x2 grid, 1536x1024 composition. Warm ivory background, restrained fine realistic watercolor, all objects at natural scale. No text. Top left accurate simple white porcelain gaiwan with lid set NEXT TO bowl and saucer, small cup, small brown Chinese teapot, tall empty glass with removable metal mesh infuser set beside it. Top right four white shallow dishes in horizontal row, overhead view: silvery thin closed tea buds (not white furry feathers), thin pressed flat green Longjing tea, dark olive green tightly folded angular rolled oolong leaf knots with visible leafy creases and stem tails (never spherical berries, broccoli or seeds), fine dark twisted black tea strands. Bottom left two white shallow dishes viewed overhead: left small irregular angular folded oolong leaf knots with stem tails, right wet brewed thin soft broad olive green tea leaves partly folded, wrinkled, some tears, short slender stems, NOT long thick woody branches. Real tea looks like plant tissue not plastic toys. Bottom right overhead two white dishes: left dry dark twisted tea strands and beside dish a few loose tiny DOUBLE-PETALLED JASMINE flowers Jasminum sambac, MANY overlapping small WHITE petals like tiny white rose rosettes with NO visible yellow center, NO five-petalled cherry or apple blossoms; right dish dried yellow chrysanthemum flower heads and beside it small mint sprig with paired textured green leaves. No flowers attached to flowering branches, tiny scattered picked jasmine flowers only. Delicate matte textures, natural asymmetry, no rigid glossy leaves. Wide 24px ivory gutters centered x768/y512. NO labels titles arrows numbers logos.",
+      "purpose": "器具、四种外形、揉卷展开和茉莉草本比较",
+      "review": "人工逐图检查后选用；生成教学示意，不是真实样本。"
+    }
+  ],
+  "rejected": "保留旧图形态过多的首轮干湿图和器具图未入书；从头重绘后选用。"
+}
