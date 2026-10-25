@@ -103,17 +103,21 @@
     }
   ],
   "entry_count": 75,
-  "status": "75条已入书；已对齐咖啡扩展b0ea92d，232页全书构建及引用、图片校验通过",
+  "status": "75条完整保留，按茶类及世界茶饮分布于新章节；32章233页全书构建与引用、图片校验通过",
   "verification": {
-    "book_pages": 232,
+    "book_pages": 233,
     "catalog_pages": 29,
     "sources": 169,
-    "image_uses": 87,
-    "page_range": [
-      106,
-      134
-    ]
+    "image_uses": 87
   },
   "upstream": "b0ea92d16d6933d4786c62b136df455965ff067d",
-  "reference_ids": "113—169；上游01—112保留"
+  "reference_ids": "113—169；上游01—112保留",
+  "chapter_ids": [
+    "tea-green",
+    "tea-white-yellow",
+    "tea-oolong",
+    "tea-red",
+    "tea-dark-puerh",
+    "tea-world"
+  ]
 }

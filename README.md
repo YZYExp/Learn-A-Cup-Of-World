@@ -1,6 +1,6 @@
 # 杯中世界
 
-面向个人兴趣的中文图解读本，介绍酒、茶、咖啡的起源、制作与风味。目前全书 232 页、20 个正文章节、读前说明与 3 个附录，引用 169 项资料，含 87 处配图。
+面向个人兴趣的中文图解读本，介绍酒、茶、咖啡的起源、制作与风味。目前全书 233 页、32 个正文章节、读前说明与 3 个附录，引用 169 项资料，含 87 处配图。
 
 **策划与整理：YZ**。工艺、组成与数量图解由项目绘图脚本定义。
 
@@ -8,9 +8,54 @@
 
 - [在线逐章阅读](https://yzyexp.github.io/Learn-A-Cup-Of-World/)
 - [Release 全书 PDF](https://github.com/YZYExp/Learn-A-Cup-Of-World/releases)
-- [24 份章节 Markdown 源稿](chapters/)
+- [36 份章节 Markdown 源稿](chapters/)
 
 发布版本时，Release 只附一个 `杯中世界.pdf`。网页按章阅读并链接 Release；不再默认生成、上传或在 Git 中保存逐章 PDF、阅读 ZIP 及重复的整合稿。首个 Release 发布后，其构建流程会自动附上 PDF。
+
+## 分章目录
+
+<!-- chapter-catalog:start -->
+
+| 阅读顺序 | 章节源稿 |
+| --- | --- |
+| — | [读前的话](chapters/00.md) |
+| 1 | [01 酒 茶 咖啡的亲缘关系](chapters/01.md) |
+| 2 | [02 舌头之外的风味](chapters/02.md) |
+| 3 | [03 起源常常没有发明人](chapters/03.md) |
+| 4 | [04 啤酒是一种会变化的谷物饮品](chapters/04.md) |
+| 5 | [05 葡萄酒从果实进入时间](chapters/05.md) |
+| 6 | [06 气泡酒与加强酒](chapters/06.md) |
+| 7 | [07 黄酒与清酒](chapters/07.md) |
+| 8 | [08 白酒与微生物的房间](chapters/08.md) |
+| 9 | [09 威士忌与时间的容器](chapters/09.md) |
+| 10 | [10 白兰地与朗姆](chapters/10.md) |
+| 11 | [11 金酒 伏特加与龙舌兰酒](chapters/11.md) |
+| 12 | [12 鸡尾酒与一杯里的平衡](chapters/12.md) |
+| 13 | [13 茶从植物走向习惯](chapters/13.md) |
+| 14 | [14 从鲜叶到六类茶](chapters/14.md) |
+| 15 | [15 绿茶的形态与常见茶款](chapters/tea-green.md) |
+| 16 | [16 白茶与黄茶：芽叶和工序](chapters/tea-white-yellow.md) |
+| 17 | [17 乌龙：品种、做青与焙火](chapters/tea-oolong.md) |
+| 18 | [18 红茶的氧化与地方风格](chapters/tea-red.md) |
+| 19 | [19 黑茶与普洱：生熟和存放](chapters/tea-dark-puerh.md) |
+| 20 | [20 花香、拼配与世界茶饮](chapters/tea-world.md) |
+| 21 | [21 把茶泡得合口味](chapters/15.md) |
+| 22 | [22 从茶底到奶茶与果茶](chapters/tea-mixing.md) |
+| 23 | [23 咖啡怎样走进城市](chapters/16.md) |
+| 24 | [24 咖啡原料、品种与标签](chapters/coffee-origins.md) |
+| 25 | [25 果实怎样变成生豆](chapters/17.md) |
+| 26 | [26 烘焙、排气与保存](chapters/coffee-roasting.md) |
+| 27 | [27 浓度与萃取分别在说什么](chapters/18.md) |
+| 28 | [28 把第一杯手冲做完整](chapters/coffee-pourover.md) |
+| 29 | [29 从浓缩读懂咖啡菜单](chapters/coffee-menu.md) |
+| 30 | [30 冰咖啡与冷萃的两条路线](chapters/coffee-cold.md) |
+| 31 | [31 时间 标签与自己的预算](chapters/19.md) |
+| 32 | [32 兴趣的节奏与边界](chapters/20.md) |
+| — | [附录一 酒类入口速查](chapters/A1.md) |
+| — | [附录二 常见词语](chapters/A2.md) |
+| — | [附录三 个人杯中笔记](chapters/A3.md) |
+
+<!-- chapter-catalog:end -->
 
 ## 开放许可
 
@@ -28,6 +73,8 @@
 
 图号、图题、图注与图例写在 `chapters/*.md`，封面和分部页说明写在 [frontmatter/illustrations.md](frontmatter/illustrations.md)。图片保留读图必需的名称、坐标、数值与箭头；大多数是典型例子，少量外观反例提醒分类边界。引用位于对应正文附近，PDF 保留当页资料与可点击链接。
 
+`book.json` 是章节顺序、显示章号、源文件、稳定网址与图号的唯一清单；PDF 目录与书签、逐章导出和网页导航均从它生成。`book_structure.py` 提供共用读取与检查，`python scripts/update_catalog.py` 更新上面的源稿目录。源稿标题不手写显示章号；旧文件 ID 与网址保留，新拆出的文件使用语义名称。图片文件名保持稳定，图注与文内图号按新章重新编号。
+
 `assets/` 保存实际配图、原始插画及字体；`research/` 保存引用、覆盖与校订记录。可重建的矢量 PDF 图稿、全书 PDF、合稿、章节导出和网页写入已忽略的构建目录，不进入 Git。
 
 ## 本地重建
@@ -42,7 +89,7 @@ python export_chapters.py
 python scripts/check_build.py --book-only
 ```
 
-得到 `output/杯中世界.pdf`、可编辑合稿、24 份章节 Markdown、导航清单和排版检查记录。`export_chapters.py` 只生成文字导出与导航信息；构建输出中只有一个全书 PDF，没有逐章 PDF 和 ZIP。
+得到 `output/杯中世界.pdf`、可编辑合稿、36 份章节 Markdown、导航清单和排版检查记录。`export_chapters.py` 只生成文字导出与导航信息；构建输出中只有一个全书 PDF，没有逐章 PDF 和 ZIP。
 
 图注改动直接编辑 Markdown；更改图形关系时再修改绘图数据或脚本并重绘。修订 AI 图板后须保留提示词与审校记录，再重建对应章内图。`<!-- figure-height: 160 -->` 这类注释只控制 PDF 中图片的最大高度。
 
@@ -105,3 +152,9 @@ git clone --depth 1 --single-branch https://github.com/YZYExp/Learn-A-Cup-Of-Wor
 第十四章增加 75 条实际短介绍，涵盖中国常见茶款、黑茶产品家族、花香及调香茶、日本茶、海外红茶产区，以及单列的花草谷物代用茶。每条说明产地或原料、制作特点、形态与典型风味；合并介绍的相邻名称按一条计，不把产区、品种和拼配冒充成新的基础茶类。
 
 新增约 9,500 字与四种绿茶外形对照图，新增 57 项资料并就近引用。对齐上游咖啡三章扩展后，全书为 232 页、169 项资料、87 处配图；保留咖啡资料编号 98—112，茶款新资料使用 113—169。沿用上游三位数引用解析，并补充当页可点击链接校验。[逐款覆盖表](research/tea-catalog-coverage.json)、[资料核对](research/tea-catalog-evidence.md)、[配图记录](research/tea-catalog-illustration.json)与[编号映射](research/tea-reference-remap.json)保留在工程中。
+
+## 茶与咖啡按阅读主题拆章（2026年10月25日）
+
+茶部由3章拆为10章，咖啡部由3章拆为8章；全书由20个正文章节调整为32章，加读前说明和三个附录共36份源稿。原有204个页单元、75条茶名介绍、169项资料和87处配图保留，新增一页目录后全书为233页。最长的茶类章由54页拆为7个5—9页的主题章，咖啡冲煮与菜单章拆为萃取、手冲、菜单、冷饮四章。
+
+内容按主题合并工艺解释与对应茶款，不按固定页数截断；低因选择移入咖啡原料章，手冲连续步骤保持成组。跨章链接、附录章号、图注与图内引用同步更新。原始文件与图片地址稳定保留，新章使用语义文件名。[完整迁移清单](research/chapter-restructure-map.json)与[拆章说明和验证](research/chapter-restructure.md)记录具体边界。

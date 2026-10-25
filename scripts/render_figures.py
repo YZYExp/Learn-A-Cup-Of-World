@@ -18,6 +18,7 @@ from reportlab.lib.colors import HexColor
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from illustration_data import LEAF_PANELS
+from book_structure import figure_number
 from enriched_figures import render_enriched
 from coffee_figures import render_coffee_figure
 DEST = ROOT / 'assets/figures'
@@ -233,7 +234,7 @@ def main():
         # coffee drawings use it to request a taller drawing canvas (18-7).
         canvas_height = f.get('height', H) if f['mode'] == 'coffee' else H
         c=canvas.Canvas(str(path),pagesize=(W,canvas_height),invariant=1)
-        c.setTitle('图 '+f['id']+' '+f['title'])
+        c.setTitle('图 '+figure_number(f['id'])+' '+f['title'])
         viewport = render(c,f)
         if viewport:
             x, y, w, h = viewport

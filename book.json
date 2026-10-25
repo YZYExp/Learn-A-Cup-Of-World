@@ -1,0 +1,954 @@
+{
+  "title": "杯中世界",
+  "description": "面向兴趣读者的酒、茶、咖啡图解读本",
+  "language": "zh-CN",
+  "cover": "assets/figures/scene-cover.png",
+  "chapters": [
+    {
+      "id": "00",
+      "number": null,
+      "title": "读前的话",
+      "part": "读前的话",
+      "kind": "frontmatter",
+      "order": 0,
+      "source": "chapters/00.md",
+      "slug": "00"
+    },
+    {
+      "id": "01",
+      "number": 1,
+      "title": "酒 茶 咖啡的亲缘关系",
+      "part": "第一部 共同基础",
+      "kind": "chapter",
+      "order": 1,
+      "source": "chapters/01.md",
+      "slug": "01"
+    },
+    {
+      "id": "02",
+      "number": 2,
+      "title": "舌头之外的风味",
+      "part": "第一部 共同基础",
+      "kind": "chapter",
+      "order": 2,
+      "source": "chapters/02.md",
+      "slug": "02"
+    },
+    {
+      "id": "03",
+      "number": 3,
+      "title": "起源常常没有发明人",
+      "part": "第一部 共同基础",
+      "kind": "chapter",
+      "order": 3,
+      "source": "chapters/03.md",
+      "slug": "03"
+    },
+    {
+      "id": "04",
+      "number": 4,
+      "title": "啤酒是一种会变化的谷物饮品",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 4,
+      "source": "chapters/04.md",
+      "slug": "04",
+      "opener": "wine"
+    },
+    {
+      "id": "05",
+      "number": 5,
+      "title": "葡萄酒从果实进入时间",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 5,
+      "source": "chapters/05.md",
+      "slug": "05"
+    },
+    {
+      "id": "06",
+      "number": 6,
+      "title": "气泡酒与加强酒",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 6,
+      "source": "chapters/06.md",
+      "slug": "06"
+    },
+    {
+      "id": "07",
+      "number": 7,
+      "title": "黄酒与清酒",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 7,
+      "source": "chapters/07.md",
+      "slug": "07"
+    },
+    {
+      "id": "08",
+      "number": 8,
+      "title": "白酒与微生物的房间",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 8,
+      "source": "chapters/08.md",
+      "slug": "08"
+    },
+    {
+      "id": "09",
+      "number": 9,
+      "title": "威士忌与时间的容器",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 9,
+      "source": "chapters/09.md",
+      "slug": "09"
+    },
+    {
+      "id": "10",
+      "number": 10,
+      "title": "白兰地与朗姆",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 10,
+      "source": "chapters/10.md",
+      "slug": "10"
+    },
+    {
+      "id": "11",
+      "number": 11,
+      "title": "金酒 伏特加与龙舌兰酒",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 11,
+      "source": "chapters/11.md",
+      "slug": "11"
+    },
+    {
+      "id": "12",
+      "number": 12,
+      "title": "鸡尾酒与一杯里的平衡",
+      "part": "第二部 酒的世界",
+      "kind": "chapter",
+      "order": 12,
+      "source": "chapters/12.md",
+      "slug": "12"
+    },
+    {
+      "id": "13",
+      "number": 13,
+      "title": "茶从植物走向习惯",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 13,
+      "source": "chapters/13.md",
+      "slug": "13",
+      "opener": "tea"
+    },
+    {
+      "id": "14",
+      "number": 14,
+      "title": "从鲜叶到六类茶",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 14,
+      "source": "chapters/14.md",
+      "slug": "14"
+    },
+    {
+      "id": "tea-green",
+      "number": 15,
+      "title": "绿茶的形态与常见茶款",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 15,
+      "source": "chapters/tea-green.md",
+      "slug": "tea-green"
+    },
+    {
+      "id": "tea-white-yellow",
+      "number": 16,
+      "title": "白茶与黄茶：芽叶和工序",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 16,
+      "source": "chapters/tea-white-yellow.md",
+      "slug": "tea-white-yellow"
+    },
+    {
+      "id": "tea-oolong",
+      "number": 17,
+      "title": "乌龙：品种、做青与焙火",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 17,
+      "source": "chapters/tea-oolong.md",
+      "slug": "tea-oolong"
+    },
+    {
+      "id": "tea-red",
+      "number": 18,
+      "title": "红茶的氧化与地方风格",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 18,
+      "source": "chapters/tea-red.md",
+      "slug": "tea-red"
+    },
+    {
+      "id": "tea-dark-puerh",
+      "number": 19,
+      "title": "黑茶与普洱：生熟和存放",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 19,
+      "source": "chapters/tea-dark-puerh.md",
+      "slug": "tea-dark-puerh"
+    },
+    {
+      "id": "tea-world",
+      "number": 20,
+      "title": "花香、拼配与世界茶饮",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 20,
+      "source": "chapters/tea-world.md",
+      "slug": "tea-world"
+    },
+    {
+      "id": "15",
+      "number": 21,
+      "title": "把茶泡得合口味",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 21,
+      "source": "chapters/15.md",
+      "slug": "15"
+    },
+    {
+      "id": "tea-mixing",
+      "number": 22,
+      "title": "从茶底到奶茶与果茶",
+      "part": "第三部 茶的世界",
+      "kind": "chapter",
+      "order": 22,
+      "source": "chapters/tea-mixing.md",
+      "slug": "tea-mixing"
+    },
+    {
+      "id": "16",
+      "number": 23,
+      "title": "咖啡怎样走进城市",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 23,
+      "source": "chapters/16.md",
+      "slug": "16",
+      "opener": "coffee"
+    },
+    {
+      "id": "coffee-origins",
+      "number": 24,
+      "title": "咖啡原料、品种与标签",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 24,
+      "source": "chapters/coffee-origins.md",
+      "slug": "coffee-origins"
+    },
+    {
+      "id": "17",
+      "number": 25,
+      "title": "果实怎样变成生豆",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 25,
+      "source": "chapters/17.md",
+      "slug": "17"
+    },
+    {
+      "id": "coffee-roasting",
+      "number": 26,
+      "title": "烘焙、排气与保存",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 26,
+      "source": "chapters/coffee-roasting.md",
+      "slug": "coffee-roasting"
+    },
+    {
+      "id": "18",
+      "number": 27,
+      "title": "浓度与萃取分别在说什么",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 27,
+      "source": "chapters/18.md",
+      "slug": "18"
+    },
+    {
+      "id": "coffee-pourover",
+      "number": 28,
+      "title": "把第一杯手冲做完整",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 28,
+      "source": "chapters/coffee-pourover.md",
+      "slug": "coffee-pourover"
+    },
+    {
+      "id": "coffee-menu",
+      "number": 29,
+      "title": "从浓缩读懂咖啡菜单",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 29,
+      "source": "chapters/coffee-menu.md",
+      "slug": "coffee-menu"
+    },
+    {
+      "id": "coffee-cold",
+      "number": 30,
+      "title": "冰咖啡与冷萃的两条路线",
+      "part": "第四部 咖啡的世界",
+      "kind": "chapter",
+      "order": 30,
+      "source": "chapters/coffee-cold.md",
+      "slug": "coffee-cold"
+    },
+    {
+      "id": "19",
+      "number": 31,
+      "title": "时间 标签与自己的预算",
+      "part": "第五部 带回日常",
+      "kind": "chapter",
+      "order": 31,
+      "source": "chapters/19.md",
+      "slug": "19"
+    },
+    {
+      "id": "20",
+      "number": 32,
+      "title": "兴趣的节奏与边界",
+      "part": "第五部 带回日常",
+      "kind": "chapter",
+      "order": 32,
+      "source": "chapters/20.md",
+      "slug": "20"
+    },
+    {
+      "id": "A1",
+      "number": null,
+      "title": "附录一 酒类入口速查",
+      "part": "附录",
+      "kind": "appendix",
+      "order": 33,
+      "source": "chapters/A1.md",
+      "slug": "A1"
+    },
+    {
+      "id": "A2",
+      "number": null,
+      "title": "附录二 常见词语",
+      "part": "附录",
+      "kind": "appendix",
+      "order": 34,
+      "source": "chapters/A2.md",
+      "slug": "A2"
+    },
+    {
+      "id": "A3",
+      "number": null,
+      "title": "附录三 个人杯中笔记",
+      "part": "附录",
+      "kind": "appendix",
+      "order": 35,
+      "source": "chapters/A3.md",
+      "slug": "A3"
+    }
+  ],
+  "figures": [
+    {
+      "id": "01-2",
+      "display_id": "01-2",
+      "chapter": "01",
+      "asset": "assets/figures/01-2.png",
+      "page_title": "三种饮品为什么能放在一起"
+    },
+    {
+      "id": "01-1",
+      "display_id": "01-1",
+      "chapter": "01",
+      "asset": "assets/figures/01-1.png",
+      "page_title": "原料、加工与成杯，是三个问题"
+    },
+    {
+      "id": "01-3",
+      "display_id": "01-3",
+      "chapter": "01",
+      "asset": "assets/figures/01-3.png",
+      "page_title": "共同框架也有边界"
+    },
+    {
+      "id": "02-1",
+      "display_id": "02-1",
+      "chapter": "02",
+      "asset": "assets/figures/02-1.png",
+      "page_title": "把“味道”拆成三个观察位置"
+    },
+    {
+      "id": "02-2",
+      "display_id": "02-2",
+      "chapter": "02",
+      "asset": "assets/figures/02-2.png",
+      "page_title": "先在生活里收集香气"
+    },
+    {
+      "id": "03-1",
+      "display_id": "03-1",
+      "chapter": "03",
+      "asset": "assets/figures/03-1.png",
+      "page_title": "从器物到历史判断，中间还有证据"
+    },
+    {
+      "id": "03-2",
+      "display_id": "03-2",
+      "chapter": "03",
+      "asset": "assets/figures/03-2.png",
+      "page_title": "时间线不是排行榜"
+    },
+    {
+      "id": "03-0",
+      "display_id": "03-0",
+      "chapter": "03",
+      "asset": "assets/figures/scene-origins.png",
+      "page_title": "一只容器能让我们知道什么"
+    },
+    {
+      "id": "04-3",
+      "display_id": "04-3",
+      "chapter": "04",
+      "asset": "assets/figures/04-3.png",
+      "page_title": "啤酒为何有面包和果香"
+    },
+    {
+      "id": "04-1",
+      "display_id": "04-1",
+      "chapter": "04",
+      "asset": "assets/figures/04-1.png",
+      "page_title": "两杯啤酒，先别把颜色当成强度"
+    },
+    {
+      "id": "04-0",
+      "display_id": "04-0",
+      "chapter": "04",
+      "asset": "assets/figures/scene-craft.png",
+      "page_title": "精酿是一种风格吗"
+    },
+    {
+      "id": "04-2",
+      "display_id": "04-2",
+      "chapter": "04",
+      "asset": "assets/figures/04-2.png",
+      "page_title": "一杯啤酒里的三条风味线索"
+    },
+    {
+      "id": "05-2",
+      "display_id": "05-2",
+      "chapter": "05",
+      "asset": "assets/figures/05-2.png",
+      "page_title": "葡萄皮改变了什么"
+    },
+    {
+      "id": "05-1",
+      "display_id": "05-1",
+      "chapter": "05",
+      "asset": "assets/figures/05-1.png",
+      "page_title": "同一颗深色葡萄，酿法会让路线分叉"
+    },
+    {
+      "id": "06-2",
+      "display_id": "06-2",
+      "chapter": "06",
+      "asset": "assets/figures/06-2.png",
+      "page_title": "气泡并不是装饰"
+    },
+    {
+      "id": "06-1",
+      "display_id": "06-1",
+      "chapter": "06",
+      "asset": "assets/figures/06-1.png",
+      "page_title": "气泡与加强，发生在不同工艺问题上"
+    },
+    {
+      "id": "07-2",
+      "display_id": "07-2",
+      "chapter": "07",
+      "asset": "assets/figures/07-2.png",
+      "page_title": "谷物需要有人先把糖打开"
+    },
+    {
+      "id": "07-1",
+      "display_id": "07-1",
+      "chapter": "07",
+      "asset": "assets/figures/07-1.png",
+      "page_title": "同一酒醪中，糖化和发酵可以并行"
+    },
+    {
+      "id": "07-0",
+      "display_id": "07-0",
+      "chapter": "07",
+      "asset": "assets/figures/scene-rice.png",
+      "page_title": "把糖化与发酵放在同一张图里"
+    },
+    {
+      "id": "08-2",
+      "display_id": "08-2",
+      "chapter": "08",
+      "asset": "assets/figures/08-2.png",
+      "page_title": "白酒的关键不只有高酒精度"
+    },
+    {
+      "id": "08-1",
+      "display_id": "08-1",
+      "chapter": "08",
+      "asset": "assets/figures/08-1.png",
+      "page_title": "白酒工艺，沿着关键变化来读"
+    },
+    {
+      "id": "09-2",
+      "display_id": "09-2",
+      "chapter": "09",
+      "asset": "assets/figures/09-2.png",
+      "page_title": "谷物为什么能变成木桶里的香气"
+    },
+    {
+      "id": "09-1",
+      "display_id": "09-1",
+      "chapter": "09",
+      "asset": "assets/figures/09-1.png",
+      "page_title": "单一麦芽与年龄数字分别在回答什么"
+    },
+    {
+      "id": "09-3",
+      "display_id": "09-3",
+      "chapter": "09",
+      "asset": "assets/figures/09-3.png",
+      "page_title": "桶是工艺条件而不是年份装饰"
+    },
+    {
+      "id": "09-0",
+      "display_id": "09-0",
+      "chapter": "09",
+      "asset": "assets/figures/scene-barrels.png",
+      "page_title": "木桶熟成的阅读情境"
+    },
+    {
+      "id": "10-1",
+      "display_id": "10-1",
+      "chapter": "10",
+      "asset": "assets/figures/10-1.png",
+      "page_title": "水果与甘蔗，分别走向哪条烈酒路线"
+    },
+    {
+      "id": "10-2",
+      "display_id": "10-2",
+      "chapter": "10",
+      "asset": "assets/figures/10-2.png",
+      "page_title": "甘蔗的故事不只有甜"
+    },
+    {
+      "id": "11-1",
+      "display_id": "11-1",
+      "chapter": "11",
+      "asset": "assets/figures/11-1.png",
+      "page_title": "外观相同，类别仍可能不同"
+    },
+    {
+      "id": "11-2",
+      "display_id": "11-2",
+      "chapter": "11",
+      "asset": "assets/figures/11-2.png",
+      "page_title": "龙舌兰不是仙人掌"
+    },
+    {
+      "id": "12-2",
+      "display_id": "12-2",
+      "chapter": "12",
+      "asset": "assets/figures/12-2.png",
+      "page_title": "补水改变浓度，酒精不会自动消失"
+    },
+    {
+      "id": "12-0",
+      "display_id": "12-0",
+      "chapter": "12",
+      "asset": "assets/figures/scene-cocktails.png",
+      "page_title": "先把鸡尾酒菜单分成几种结构"
+    },
+    {
+      "id": "12-5",
+      "display_id": "12-5",
+      "chapter": "12",
+      "asset": "assets/figures/12-5.png",
+      "page_title": "摇和搅拌在做什么"
+    },
+    {
+      "id": "12-4",
+      "display_id": "12-4",
+      "chapter": "12",
+      "asset": "assets/figures/12-4.png",
+      "page_title": "量取、混合与分离的器具"
+    },
+    {
+      "id": "12-3",
+      "display_id": "12-3",
+      "chapter": "12",
+      "asset": "assets/figures/12-3.png",
+      "page_title": "脂洗与乳洗，分离的材料不同"
+    },
+    {
+      "id": "12-1",
+      "display_id": "12-1",
+      "chapter": "12",
+      "asset": "assets/figures/12-1.png",
+      "page_title": "三杯经典调酒，把量与职责分开看"
+    },
+    {
+      "id": "13-2",
+      "display_id": "13-1",
+      "chapter": "13",
+      "asset": "assets/figures/13-2.png",
+      "page_title": "一片叶子怎样进入生活"
+    },
+    {
+      "id": "13-1",
+      "display_id": "13-2",
+      "chapter": "13",
+      "asset": "assets/figures/13-1.png",
+      "page_title": "茶叶再加工与草本浸泡，先分原料"
+    },
+    {
+      "id": "14-3",
+      "display_id": "14-1",
+      "chapter": "14",
+      "asset": "assets/figures/14-3.png",
+      "page_title": "先把茶类与茶名分开"
+    },
+    {
+      "id": "14-1",
+      "display_id": "14-2",
+      "chapter": "14",
+      "asset": "assets/figures/14-1.png",
+      "page_title": "鲜叶、干茶与茶汤，不是同一种观察对象"
+    },
+    {
+      "id": "14-L1",
+      "display_id": "14-3",
+      "chapter": "14",
+      "asset": "assets/figures/leaf-fresh.png",
+      "page_title": "原叶到底可以看什么"
+    },
+    {
+      "id": "14-2",
+      "display_id": "14-4",
+      "chapter": "14",
+      "asset": "assets/figures/14-2.png",
+      "page_title": "叶子怎样从鲜变干"
+    },
+    {
+      "id": "14-4",
+      "display_id": "14-5",
+      "chapter": "14",
+      "asset": "assets/figures/14-4.png",
+      "page_title": "把三种状态连成一次观察"
+    },
+    {
+      "id": "14-L2",
+      "display_id": "15-1",
+      "chapter": "tea-green",
+      "asset": "assets/figures/leaf-green.png",
+      "page_title": "绿茶的形状也不只有一种"
+    },
+    {
+      "id": "14-6",
+      "display_id": "15-2",
+      "chapter": "tea-green",
+      "asset": "assets/figures/14-6.png",
+      "page_title": "常见茶款图鉴从四种绿茶外形开始"
+    },
+    {
+      "id": "14-L3",
+      "display_id": "16-1",
+      "chapter": "tea-white-yellow",
+      "asset": "assets/figures/leaf-white.png",
+      "page_title": "白茶不等于白色茶叶"
+    },
+    {
+      "id": "14-L4",
+      "display_id": "16-2",
+      "chapter": "tea-white-yellow",
+      "asset": "assets/figures/leaf-yellow.png",
+      "page_title": "黄茶的关键是闷黄"
+    },
+    {
+      "id": "14-L5",
+      "display_id": "17-1",
+      "chapter": "tea-oolong",
+      "asset": "assets/figures/leaf-oolong.png",
+      "page_title": "乌龙需要分开看氧化与焙火"
+    },
+    {
+      "id": "14-L6",
+      "display_id": "18-1",
+      "chapter": "tea-red",
+      "asset": "assets/figures/leaf-black.png",
+      "page_title": "红茶看氧化也看叶形"
+    },
+    {
+      "id": "14-L7",
+      "display_id": "19-1",
+      "chapter": "tea-dark-puerh",
+      "asset": "assets/figures/leaf-dark.png",
+      "page_title": "黑茶与紧压茶不是一回事"
+    },
+    {
+      "id": "14-5",
+      "display_id": "19-2",
+      "chapter": "tea-dark-puerh",
+      "asset": "assets/figures/14-5.png",
+      "page_title": "普洱先问生茶还是熟茶"
+    },
+    {
+      "id": "15-5",
+      "display_id": "21-1",
+      "chapter": "15",
+      "asset": "assets/figures/15-5.png",
+      "page_title": "冲泡是在控制哪些事情"
+    },
+    {
+      "id": "15-4",
+      "display_id": "21-2",
+      "chapter": "15",
+      "asset": "assets/figures/15-4.png",
+      "page_title": "水与杯子先当工具看"
+    },
+    {
+      "id": "15-1",
+      "display_id": "21-3",
+      "chapter": "15",
+      "asset": "assets/figures/15-1.png",
+      "page_title": "三杯泡茶小样，只让一个条件变化"
+    },
+    {
+      "id": "15-7",
+      "display_id": "21-4",
+      "chapter": "15",
+      "asset": "assets/figures/15-7.png",
+      "page_title": "先选一个要调整的问题"
+    },
+    {
+      "id": "15-3",
+      "display_id": "21-5",
+      "chapter": "15",
+      "asset": "assets/figures/15-3.png",
+      "page_title": "润茶可以比较，不能代替安全判断"
+    },
+    {
+      "id": "15-0",
+      "display_id": "22-1",
+      "chapter": "tea-mixing",
+      "asset": "assets/figures/scene-mixedtea.png",
+      "page_title": "调茶其实涉及几个层次"
+    },
+    {
+      "id": "15-6",
+      "display_id": "22-2",
+      "chapter": "tea-mixing",
+      "asset": "assets/figures/15-6.png",
+      "page_title": "为什么加奶以后茶消失了"
+    },
+    {
+      "id": "15-2",
+      "display_id": "22-3",
+      "chapter": "tea-mixing",
+      "asset": "assets/figures/15-2.png",
+      "page_title": "调茶先有茶底，再安排辅料的角色"
+    },
+    {
+      "id": "16-2",
+      "display_id": "23-1",
+      "chapter": "16",
+      "asset": "assets/figures/16-2.png",
+      "page_title": "果实里的种子怎样走遍世界"
+    },
+    {
+      "id": "16-1",
+      "display_id": "24-1",
+      "chapter": "coffee-origins",
+      "asset": "assets/figures/16-1.png",
+      "page_title": "咖啡“豆”来自果实里面"
+    },
+    {
+      "id": "16-3",
+      "display_id": "24-2",
+      "chapter": "coffee-origins",
+      "asset": "assets/figures/16-3.png",
+      "page_title": "把标签拆成几条独立线索"
+    },
+    {
+      "id": "17-1",
+      "display_id": "25-1",
+      "chapter": "17",
+      "asset": "assets/figures/17-1.png",
+      "page_title": "三种处理方式，主要在什么状态下干燥"
+    },
+    {
+      "id": "17-4",
+      "display_id": "25-2",
+      "chapter": "17",
+      "asset": "assets/figures/17-4.png",
+      "page_title": "水洗究竟洗的是哪一层"
+    },
+    {
+      "id": "17-2",
+      "display_id": "25-3",
+      "chapter": "17",
+      "asset": "assets/figures/17-2.png",
+      "page_title": "湿刨法的关键是提前去羊皮层"
+    },
+    {
+      "id": "17-3",
+      "display_id": "26-1",
+      "chapter": "coffee-roasting",
+      "asset": "assets/figures/17-3.png",
+      "page_title": "烘焙不是把颜色加深这么简单"
+    },
+    {
+      "id": "17-5",
+      "display_id": "26-2",
+      "chapter": "coffee-roasting",
+      "asset": "assets/figures/17-5.png",
+      "page_title": "烘焙中的几个路标"
+    },
+    {
+      "id": "18-6",
+      "display_id": "27-1",
+      "chapter": "18",
+      "asset": "assets/figures/18-6.png",
+      "page_title": "浓度和萃取不是同一回事"
+    },
+    {
+      "id": "18-1",
+      "display_id": "27-2",
+      "chapter": "18",
+      "asset": "assets/figures/18-1.png",
+      "page_title": "浓度与萃取率，是两条不同的轴"
+    },
+    {
+      "id": "18-8",
+      "display_id": "27-3",
+      "chapter": "18",
+      "asset": "assets/figures/18-8.png",
+      "page_title": "用一组数字看懂补水"
+    },
+    {
+      "id": "18-7",
+      "display_id": "28-1",
+      "chapter": "coffee-pourover",
+      "asset": "assets/figures/18-7.png",
+      "page_title": "三段注水怎样接起来"
+    },
+    {
+      "id": "18-10",
+      "display_id": "28-2",
+      "chapter": "coffee-pourover",
+      "asset": "assets/figures/18-10.png",
+      "page_title": "研磨为什么同时改变流动与接触"
+    },
+    {
+      "id": "18-0",
+      "display_id": "29-1",
+      "chapter": "coffee-menu",
+      "asset": "assets/figures/scene-cafemenu.png",
+      "page_title": "菜单其实混合了两套名称"
+    },
+    {
+      "id": "18-4",
+      "display_id": "29-2",
+      "chapter": "coffee-menu",
+      "asset": "assets/figures/18-4.png",
+      "page_title": "黑咖啡并不只有美式"
+    },
+    {
+      "id": "18-C",
+      "display_id": "29-3",
+      "chapter": "coffee-menu",
+      "asset": "assets/figures/composition-coffee.png",
+      "page_title": "咖啡的成杯组成"
+    },
+    {
+      "id": "18-5",
+      "display_id": "29-4",
+      "chapter": "coffee-menu",
+      "asset": "assets/figures/18-5.png",
+      "page_title": "奶咖里哪一项发生了变化"
+    },
+    {
+      "id": "18-2",
+      "display_id": "30-1",
+      "chapter": "coffee-cold",
+      "asset": "assets/figures/18-2.png",
+      "page_title": "都有冰，冲煮路线仍可能不同"
+    },
+    {
+      "id": "18-3",
+      "display_id": "30-2",
+      "chapter": "coffee-cold",
+      "asset": "assets/figures/18-3.png",
+      "page_title": "冰与器具让路线继续分叉"
+    },
+    {
+      "id": "18-9",
+      "display_id": "30-3",
+      "chapter": "coffee-cold",
+      "asset": "assets/figures/18-9.png",
+      "page_title": "冰块也是用水的一部分"
+    },
+    {
+      "id": "19-2",
+      "display_id": "31-1",
+      "chapter": "19",
+      "asset": "assets/figures/19-2.png",
+      "page_title": "保存也是体验的一部分"
+    },
+    {
+      "id": "19-1",
+      "display_id": "31-2",
+      "chapter": "19",
+      "asset": "assets/figures/19-1.png",
+      "page_title": "三类标签，把最有用的信息放在前面"
+    },
+    {
+      "id": "20-1",
+      "display_id": "32-1",
+      "chapter": "20",
+      "asset": "assets/figures/20-1.png",
+      "page_title": "杯子大小不同，换成酒精克数再比较"
+    },
+    {
+      "id": "20-2",
+      "display_id": "32-2",
+      "chapter": "20",
+      "asset": "assets/figures/20-2.png",
+      "page_title": "这本书怎样在日常里继续"
+    },
+    {
+      "id": "A3-1",
+      "display_id": "A3-1",
+      "chapter": "A3",
+      "asset": "assets/figures/A3-1.png",
+      "page_title": "留下一条自己的观察"
+    }
+  ]
+}

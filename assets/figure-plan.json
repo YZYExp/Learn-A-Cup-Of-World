@@ -326,7 +326,7 @@
   },
   {
     "id": "15-2",
-    "chapter": "15",
+    "chapter": "tea-mixing",
     "after": 5,
     "title": "调茶先有茶底，再安排辅料的角色",
     "mode": "teacups",
@@ -336,7 +336,7 @@
   },
   {
     "id": "16-1",
-    "chapter": "16",
+    "chapter": "coffee-origins",
     "after": 1,
     "title": "咖啡“豆”来自果实里面",
     "mode": "seed",
@@ -386,7 +386,7 @@
   },
   {
     "id": "18-2",
-    "chapter": "18",
+    "chapter": "coffee-cold",
     "after": 5,
     "title": "都有冰，冲煮路线仍可能不同",
     "mode": "scene",
@@ -827,7 +827,7 @@
   },
   {
     "id": "15-6",
-    "chapter": "15",
+    "chapter": "tea-mixing",
     "title": "香料奶茶先拆成材料",
     "caption_title": "香料奶茶先拆成材料",
     "mode": "viewport",
@@ -867,7 +867,7 @@
   },
   {
     "id": "17-3",
-    "chapter": "17",
+    "chapter": "coffee-roasting",
     "title": "生豆与两种烘焙外观",
     "caption_title": "生豆与两种烘焙外观",
     "mode": "viewport",
@@ -887,7 +887,7 @@
   },
   {
     "id": "18-3",
-    "chapter": "18",
+    "chapter": "coffee-cold",
     "title": "四种冲煮器具的外形",
     "caption_title": "四种冲煮器具的外形",
     "mode": "viewport",
@@ -907,7 +907,7 @@
   },
   {
     "id": "18-4",
-    "chapter": "18",
+    "chapter": "coffee-menu",
     "title": "小份浓缩与一杯滤泡",
     "caption_title": "小份浓缩与一杯滤泡",
     "mode": "viewport",
@@ -927,7 +927,7 @@
   },
   {
     "id": "18-5",
-    "chapter": "18",
+    "chapter": "coffee-menu",
     "title": "三种奶咖的杯量与奶泡情境",
     "caption_title": "三种奶咖的杯量与奶泡情境",
     "mode": "viewport",
@@ -1052,7 +1052,7 @@
   },
   {
     "id": "14-5",
-    "chapter": "14",
+    "chapter": "tea-dark-puerh",
     "title": "晒青原料之后的生熟分岔",
     "caption_title": "晒青原料之后的生熟分岔",
     "mode": "puerh_branch",
@@ -1104,19 +1104,19 @@
   },
   {
     "id": "16-3",
-    "chapter": "16",
+    "chapter": "coffee-origins",
     "title": "咖啡标签中的物种、品种与制作信息",
     "mode": "coffee"
   },
   {
     "id": "17-5",
-    "chapter": "17",
+    "chapter": "coffee-roasting",
     "title": "从生豆到烘焙结束的变化路标",
     "mode": "coffee"
   },
   {
     "id": "18-7",
-    "chapter": "18",
+    "chapter": "coffee-pourover",
     "title": "15 克咖啡的三段注水练习",
     "mode": "coffee",
     "height": 580
@@ -1129,13 +1129,13 @@
   },
   {
     "id": "18-9",
-    "chapter": "18",
+    "chapter": "coffee-cold",
     "title": "冰手冲的热水与冰质量预算",
     "mode": "coffee"
   },
   {
     "id": "18-10",
-    "chapter": "18",
+    "chapter": "coffee-pourover",
     "title": "粗、中、细三种咖啡粉外观",
     "mode": "viewport",
     "file": "coffee-grind-study.png",
@@ -1172,7 +1172,7 @@
   },
   {
     "id": "14-6",
-    "chapter": "14",
+    "chapter": "tea-green",
     "title": "四种绿茶的干茶外形",
     "mode": "viewport",
     "file": "tea-variety-green.png",

@@ -7,12 +7,11 @@ from pathlib import Path
 import re
 import shutil
 
-from mkdocs.commands.build import build as mkdocs_build
-from mkdocs.config import load_config
 from PIL import Image
 
 from illustration_data import FRONT_ART, ART_LABELS
 from figure_markup import IMAGE_RE, frontmatter_captions
+from book_structure import BY_ID, chapter_text
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / 'output'
@@ -77,7 +76,7 @@ def table(text):
 
 
 def chapter_markdown(chapter, sources):
-    raw = (ROOT / 'chapters' / f'{chapter["id"]}.md').read_text(encoding='utf-8')
+    raw = chapter_text(BY_ID[chapter['id']])
     pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', raw)
     bodies = [pieces[i + 3].strip() for i in range(1, len(pieces), 4)]
     text = '\n\n'.join(bodies)
@@ -104,7 +103,7 @@ def chapter_markdown(chapter, sources):
     releases = PUBLICATION['source_url'].rstrip('/') + '/releases'
     intro = (f'\n\n<p class="downloads"><a href="{escape(releases, quote=True)}">'
              '下载全书 PDF（Release）</a></p>\n\n')
-    opener = {'04': 'wine', '13': 'tea', '16': 'coffee'}.get(chapter['id'])
+    opener = BY_ID[chapter['id']].get('opener')
     if opener:
         intro += illustration(opener, eager=True) + '\n\n'
     text = text[:heading.end()] + intro + text[heading.end():]
@@ -112,6 +111,8 @@ def chapter_markdown(chapter, sources):
 
 
 def build():
+    from mkdocs.commands.build import build as mkdocs_build
+    from mkdocs.config import load_config
     manifest = json.loads((OUT / 'chapter-manifest.json').read_text(encoding='utf-8'))
     sources = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text(encoding='utf-8'))}
     if DOCS.exists():

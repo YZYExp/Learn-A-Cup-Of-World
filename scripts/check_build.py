@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -13,6 +14,9 @@ from yaml import safe_load
 import fitz
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from book_structure import CHAPTERS, BY_ID, BOOK, chapter_text, chapter_title, chapter_link_id, figure_number, validate_structure
+from scripts.update_catalog import catalog as source_catalog
 OUT = ROOT / 'output'
 SITE = ROOT / 'site'
 SITE_BASE = urlsplit(safe_load((ROOT / 'mkdocs.yml').read_text(encoding='utf-8'))['site_url']).path
@@ -69,6 +73,8 @@ def require(condition, message):
 
 
 def check(book_only=False):
+    validate_structure()
+    require(source_catalog() in (ROOT / 'README.md').read_text(), 'Source-reading catalog differs from book manifest')
     if (ROOT / '.git').exists():
         tracked = subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
         artifacts = [p for p in tracked if p.startswith('books/') or p.endswith(('.pdf','.zip','.bundle'))]
@@ -83,18 +89,27 @@ def check(book_only=False):
     actual_ids = {c['id'] for c in manifest}
     require(actual_ids == expected_ids and len(actual_ids) == len(manifest),
             'Missing or duplicate exported chapters')
+    require([c['id'] for c in manifest] == [c['id'] for c in CHAPTERS], 'Chapter order differs from book manifest')
+    require(all(c['title'] == chapter_title(BY_ID[c['id']]) for c in manifest), 'Chapter display title differs from book manifest')
+    require([entry['/Title'] for entry in book.outline] == ['署名与许可']+[chapter_title(c) for c in CHAPTERS],
+            'PDF bookmarks differ from chapter reading order')
+    for destination,chapter in zip(book.outline[1:], manifest):
+        require(book.get_destination_page_number(destination)+1 == chapter['full_book_pages'][0],
+                f'Chapter bookmark points to the wrong page: {chapter["id"]}')
     require(all(p['gap'] >= -0.1 for p in layout['pages']), 'PDF body overlaps footnotes')
     require(sum(c['pages'] for c in manifest) == len(layout['pages']),
             'Chapter exports do not cover all content pages')
     # Compare manuscript citations with each physical page, including 3-digit IDs.
     catalog = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text())}
     manuscript_pages = []
-    for manuscript in sorted((ROOT / 'chapters').glob('*.md')):
-        pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', manuscript.read_text())
+    chapter_links = {}
+    for chapter in CHAPTERS:
+        pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', chapter_text(chapter))
         for index in range(1, len(pieces), 4):
             ident, _, title, body = pieces[index:index + 4]
             refs = set(re.findall(r'\[(\d{2,3})\]', body))
             manuscript_pages.append((ident, title, refs))
+            chapter_links[(ident,title)] = [chapter_link_id(target) for target in re.findall(r'(?<!!)\[[^\]]+\]\(([^)\s]+\.md)\)',body)]
     require(len(manuscript_pages) == len(layout['pages']), 'Manuscript page count differs from layout')
     for (ident, title, refs), page in zip(manuscript_pages, layout['pages']):
         require((ident, title) == (page['chapter'], page['title']), 'Manuscript page order differs from layout')
@@ -106,11 +121,19 @@ def check(book_only=False):
                     f'Citation or footnote missing from PDF page {page["page"]}: [{ref}]')
     # Three-digit references must survive pagination and remain clickable.
     sources = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text())}
+    chapter_destinations = {c['id']:c['full_book_pages'][0]-1 for c in manifest}
     with fitz.open(OUT / '杯中世界.pdf') as rendered:
         for item in layout['pages']:
             page = rendered[item['page'] - 1]
             visible = re.sub(r'\s+', '', page.get_text())
             destinations = {link.get('uri') for link in page.get_links()}
+            internal_pages = {link.get('page') for link in page.get_links() if link['kind']==fitz.LINK_GOTO}
+            # ReportLab /Fit destinations can be exposed as named, 1-based pages.
+            internal_pages.update(int(link['page'])-1 for link in page.get_links()
+                                  if link['kind']==fitz.LINK_NAMED and str(link.get('page','')).isdigit())
+            for target in chapter_links[(item['chapter'],item['title'])]:
+                require(chapter_destinations[target] in internal_pages,
+                        f'Chapter link missing or misdirected on PDF page {item["page"]}: {target}')
             for ident in item['refs']:
                 require(ident in sources, f'Unknown reference: {ident}')
                 if len(ident) >= 3:
@@ -125,6 +148,17 @@ def check(book_only=False):
         for target in re.findall(r'!\[[^\]]*\]\(([^)]+)\)',text):
             require((md.parent/target).resolve().is_file(),
                     f'Broken Markdown figure: {md.name} -> {target}')
+        for target in re.findall(r'(?<!!)\[[^\]]*\]\(([^)]+\.md)\)', text):
+            if not urlsplit(target).scheme:
+                require((md.parent/target).resolve().is_file(),
+                        f'Broken Markdown chapter link: {md.name} -> {target}')
+    require(sum(len(re.findall(r'!\[', (ROOT / c['source']).read_text())) for c in CHAPTERS) == len(BOOK['figures']),
+            'Chapter illustration manifest differs from manuscripts')
+    full_text=main_md.read_text(encoding='utf-8')
+    for figure in BOOK['figures']:
+        owner=(ROOT / BY_ID[figure['chapter']]['source']).read_text()
+        require('../'+figure['asset'] in owner and f'**图 {figure["display_id"]}　' in owner and f'**图 {figure["display_id"]}　' in full_text,
+                f'Illustration owner or displayed number differs from manifest: {figure["id"]}')
     figures=json.loads((ROOT/'assets/figure-plan.json').read_text(encoding='utf-8'))
     full_text=main_md.read_text(encoding='utf-8')
     for manuscript in (ROOT / 'chapters').glob('*.md'):
@@ -134,7 +168,8 @@ def check(book_only=False):
                 require(re.match(r'\s*\*\*图 ', body[image.end():]) is not None,
                         f'Image and caption are separated in {manuscript.name}: {image.group()}')
     for f in figures:
-        require(f'**图 {f["id"]}　' in full_text,
+        display_id=figure_number(f['id'])
+        require(f'**图 {display_id}　' in full_text,
                 f'Figure has no Markdown caption: {f["id"]}')
         raw=(ROOT/'chapters'/f'{f["chapter"]}.md').read_text()
         image=re.search(r'!\[[^\]]+\]\(\.\./assets/figures/'+re.escape(f['id'])+r'\.png\)',raw)
@@ -152,7 +187,7 @@ def check(book_only=False):
                     for label in row:
                         require(re.sub(r'\s+', '', label) in normalized,
                                 f'Tea adjustment label clipped from figure {f["id"]}: {label}')
-            for forbidden in (f'图{f["id"]}',f['title'],'本书绘制的教学示意','AI教学插画','含义与边界见图例'):
+            for forbidden in (f'图{display_id}',f['title'],'本书绘制的教学示意','AI教学插画','含义与边界见图例'):
                 require(re.sub(r'\s+','',forbidden) not in normalized,
                         f'Caption prose is baked into figure {f["id"]}: {forbidden}')
 
@@ -191,7 +226,7 @@ def check(book_only=False):
                 f'Unrendered illustration placeholder: {page.relative_to(SITE)}')
         require('art-viewport' not in html, 'Legacy positioned image viewport remains')
         if page.parent.name == 'chapters':
-            raw = (ROOT / 'chapters' / (page.stem + '.md')).read_text(encoding='utf-8')
+            raw = chapter_text(BY_ID[page.stem])
             expected_figures = []
             heading = ''
             for line in raw.splitlines():
