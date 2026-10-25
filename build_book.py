@@ -12,6 +12,7 @@ from reportlab.platypus import Paragraph, Table, TableStyle, Flowable
 from PIL import Image
 from illustration_data import FRONT_ART
 from figure_markup import frontmatter_captions
+from book_structure import CHAPTERS, BY_ID, chapter_text, chapter_title, chapter_link_id, validate_structure
 import fitz
 
 ROOT = Path(__file__).resolve().parent
@@ -46,8 +47,10 @@ STYLES = {
 sources = {s['id']:s for s in json.loads((ROOT/'research/sources.json').read_text())}
 FRONT_CAPTIONS = frontmatter_captions(ROOT)
 pages = []
-for file in sorted((ROOT/'chapters').glob('*.md')):
-    text = file.read_text()
+validate_structure()
+for chapter in CHAPTERS:
+    file = ROOT / chapter['source']
+    text = chapter_text(chapter)
     pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', text)
     for i in range(1,len(pieces),4):
         ident,part,title,body = pieces[i:i+4]
@@ -62,6 +65,8 @@ for file in sorted((ROOT/'chapters').glob('*.md')):
 def rich(text):
     text=html.escape(text)
     text=re.sub(r'\*\*(.+?)\*\*',r'<b>\1</b>',text)
+    text=re.sub(r'\[([^\]]+)\]\(([^)\s]+\.md)\)',
+                lambda m:f'<link href="#chapter-{chapter_link_id(m[2])}" color="#526852">{m[1]}</link>',text)
     def ref(m):
         r=m.group(1)
         return f'<super><link href="{html.escape(sources[r]["url"],quote=True)}" color="#526852">[{r}]</link></super>'
@@ -207,7 +212,7 @@ def draw_content(c,page,collect):
     if ident not in toc and collect:toc[ident]=P
     if ident not in seen:
         seen.add(ident);c.bookmarkPage('chapter-'+ident)
-        title=next((l[2:] for l in page['body'].splitlines() if l.startswith('# ')),page['title'])
+        title=chapter_title(BY_ID[ident])
         c.addOutlineEntry(title,'chapter-'+ident,level=0,closed=False)
     foots=foot_objects(page['refs'])
     heights=[p.wrap(CW,100)[1] for p in foots]
@@ -267,16 +272,23 @@ def publication_notice(c):
         q.drawOn(c,M,y-hh);y-=hh+8
 
 def contents(c):
-    for chunk in [list(range(1,13)),list(range(13,21))+['A1','A2','A3']]:
+    chunks=[]; chunk=[]; y=H-104; lastpart=None
+    for chapter in (item for item in CHAPTERS if item['kind'] != 'frontmatter'):
+        required=27+(25 if chapter['part']!=lastpart else 0)
+        if y-required<89:
+            chunks.append(chunk);chunk=[];y=H-104;lastpart=None
+        chunk.append(chapter);y-=27+(25 if chapter['part']!=lastpart else 0);lastpart=chapter['part']
+    if chunk:chunks.append(chunk)
+    for index,chunk in enumerate(chunks):
         newpage(c);frame(c,'目录')
-        c.setFillColor(black);c.setFont(FONT,19);c.drawString(M,H-69,'目录' if chunk[0]==1 else '目录 续')
+        c.setFillColor(black);c.setFont(FONT,19);c.drawString(M,H-69,'目录' if index==0 else '目录 续')
         y=H-104;lastpart=None
-        for v in chunk:
-            ident=f'{v:02}' if isinstance(v,int) else v
+        for chapter in chunk:
+            ident=chapter['id']
             p=next(p for p in pages if p['ident']==ident)
             if p['part']!=lastpart:
                 c.setFillColor(GRAY);c.setFont(FONT,9);c.drawString(M,y,p['part']);y-=25;lastpart=p['part']
-            title=next(l[2:] for l in p['body'].splitlines() if l.startswith('# '))
+            title=chapter_title(chapter)
             c.setFillColor(INK);c.setFont(FONT,10)
             c.drawString(M,y,title);c.drawRightString(W-M,y,str(toc.get(ident,' ')))
             c.linkRect('', 'chapter-'+ident, (M,y-4,W-M,y+12),relative=0,thickness=0)
@@ -320,9 +332,12 @@ def build(path,collect=True):
     cover(c);publication_notice(c);draw_content(c,pages[0],collect);contents(c)
     prev=None
     for page in pages[1:]:
-        if page['ident']=='04' and prev!='04':opener(c,'wine','酒的世界','先问糖从哪里来，再沿着发酵、蒸馏与熟成认识主要酒类。')
-        if page['ident']=='13' and prev!='13':opener(c,'tea','茶的世界','把一片叶子的加工，与它进入日常生活的历史放在一起。')
-        if page['ident']=='16' and prev!='16':opener(c,'coffee','咖啡的世界','从果实中的种子，走到烘焙与冲煮；把“浓”拆成具体问题。')
+        key=BY_ID[page['ident']].get('opener')
+        if key and prev!=page['ident']:
+            title,subtitle={'wine':('酒的世界','先问糖从哪里来，再沿着发酵、蒸馏与熟成认识主要酒类。'),
+                            'tea':('茶的世界','把一片叶子的加工，与它进入日常生活的历史放在一起。'),
+                            'coffee':('咖啡的世界','从果实中的种子，走到烘焙与冲煮；把“浓”拆成具体问题。')}[key]
+            opener(c,key,title,subtitle)
         draw_content(c,page,collect);prev=page['ident']
     bibliography(c);c.save()
     return P
@@ -360,6 +375,8 @@ for p in pages:
         value='\n'.join(['| '+rows[0]+' |','| '+' | '.join(['---']*n)+' |']+['| '+r+' |' for r in rows[1:]])
         body=body.replace('@diagram '+k,value)
     body=body.replace('../assets/','assets/')
+    body=re.sub(r'\[([^\]]+)\]\(([^)\s]+\.md)\)',
+                lambda m:f'[{m[1]}](逐章阅读/{chapter_link_id(m[2])}.md)',body)
     allmd.append('\n---\n\n'+body+('\n\n本页资料：\n' if p['refs'] else '\n'))
     for r in p['refs']:
         s=sources[r];allmd.append(f'- [{r}] {s["publisher"]}，《{s["title"]}》，{s["year"]}。[原文]({s["url"]})\n')
@@ -386,4 +403,4 @@ with fitz.open(cp) as doc:
     page.get_pixmap(matrix=fitz.Matrix(4,4)).save(ROOT/'assets/figures/composition-coffee.png')
     fitted.close()
 shutil.copy2(ROOT/'assets/figures/composition-coffee.png',OUT/'assets/figures/composition-coffee.png')
-print(json.dumps(dict(pdf=str(target),pages=count,chapters=20,source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))
+print(json.dumps(dict(pdf=str(target),pages=count,chapters=sum(c['kind']=='chapter' for c in CHAPTERS),source_count=len(sources),body_pages=len(pages)),ensure_ascii=False))

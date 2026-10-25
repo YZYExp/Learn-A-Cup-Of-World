@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 import re
 import shutil
+from book_structure import BY_ID, chapter_title
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / 'output'
@@ -26,13 +27,10 @@ def export():
         groups[page['chapter']].append((page, text.strip()))
     manifest = []
     for ident, items in groups.items():
-        raw = (ROOT / 'chapters' / f'{ident}.md').read_text(encoding='utf-8')
-        match = re.search(r'^# (.+)$', raw, re.M)
-        title = match.group(1) if match else '读前的话'
-        filename = re.sub(r'\s+', '', title)
-        if ident == '00':
-            filename = '00-' + filename
-        text = '\n\n---\n\n'.join(chunk for _, chunk in items).replace('](assets/', '](../assets/')
+        chapter = BY_ID[ident]
+        title = chapter_title(chapter)
+        filename = ident
+        text = '\n\n---\n\n'.join(chunk for _, chunk in items).replace('](assets/', '](../assets/').replace('](逐章阅读/', '](')
         credit = ('> ' + PUBLICATION['credit'] + '。\n>\n'
                   '> 许可：[' + PUBLICATION['content_license'] + ']('
                   + PUBLICATION['content_license_url'] + ')；[作品出处]('
@@ -43,7 +41,7 @@ def export():
         else:
             text = '# ' + title + '\n\n' + credit + text
         (DEST / (filename + '.md')).write_text(text + '\n', encoding='utf-8')
-        manifest.append(dict(id=ident, title=title, markdown=filename + '.md',
+        manifest.append(dict(chapter, title=title, markdown=filename + '.md',
                              pages=len(items), full_book_pages=[page['page'] for page, _ in items]))
     (OUT / 'chapter-manifest.json').write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
