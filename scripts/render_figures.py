@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from illustration_data import LEAF_PANELS
 from enriched_figures import render_enriched
+from coffee_figures import render_coffee_figure
 DEST = ROOT / 'assets/figures'
 FONT = 'FigureSans'
 pdfmetrics.registerFont(TTFont(FONT, str(ROOT / 'assets/NotoSansSC-Regular.ttf')))
@@ -86,7 +87,9 @@ def numbered(c, number, x, y):
 
 def render(c, f):
     mode = f['mode']
-    if mode == 'viewport':
+    if mode == 'coffee':
+        render_coffee_figure(c, f)
+    elif mode == 'viewport':
         source = ROOT / 'assets' / f['file']
         with Image.open(source) as img:
             iw, ih = img.size
@@ -226,7 +229,7 @@ def main():
     assert len({f['id'] for f in figures})==len(figures)
     for f in figures:
         path=(scratch if f['mode']=='scene' else DEST)/(f['id']+'.pdf')
-        c=canvas.Canvas(str(path),pagesize=(W,H),invariant=1)
+        c=canvas.Canvas(str(path),pagesize=(W,f.get('height',H)),invariant=1)
         c.setTitle('图 '+f['id']+' '+f['title'])
         viewport = render(c,f)
         c.save()

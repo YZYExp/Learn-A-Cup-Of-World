@@ -51,10 +51,10 @@ for file in sorted((ROOT/'chapters').glob('*.md')):
     pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', text)
     for i in range(1,len(pieces),4):
         ident,part,title,body = pieces[i:i+4]
-        refs = set(re.findall(r'\[(\d\d)\]',body))
+        refs = set(re.findall(r'\[(\d{2,3})\]',body))
         for kind,extra in {'kinship':['15','34','37'],'evidence':['02','03','04'],'tea':['34']}.items():
             if '@diagram '+kind in body:refs.update(extra)
-        refs=sorted(refs)
+        refs=sorted(refs, key=int)
         for r in refs:
             assert r in sources, (file,r)
         pages.append(dict(ident=ident,part=part,title=title,body=body.strip(),refs=refs))
@@ -65,7 +65,7 @@ def rich(text):
     def ref(m):
         r=m.group(1)
         return f'<super><link href="{html.escape(sources[r]["url"],quote=True)}" color="#526852">[{r}]</link></super>'
-    return re.sub(r'\[(\d\d)\]',ref,text)
+    return re.sub(r'\[(\d{2,3})\]',ref,text)
 
 def para(text,style='body'):
     return Paragraph(rich(text),STYLES[style])

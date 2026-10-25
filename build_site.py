@@ -85,15 +85,15 @@ def chapter_markdown(chapter, sources):
                   text, flags=re.S | re.M)
     text = re.sub(r'^@diagram (\w+)$', lambda m: table(DIAGRAMS[m.group(1)]), text, flags=re.M)
     text = IMAGE_RE.sub(chapter_figure, text)
-    refs = set(re.findall(r'\[(\d{2})\]', text))
+    refs = set(re.findall(r'\[(\d{2,3})\]', text))
     extra_refs = {'15', '34', '37'} - refs if '@diagram kinship' in raw else set()
-    text = re.sub(r'\[(\d{2})\]', r'[^\1]', text)
+    text = re.sub(r'\[(\d{2,3})\]', r'[^\1]', text)
     if extra_refs:
         text += '\n\n补充资料：' + ' '.join(f'[^{ident}]' for ident in sorted(extra_refs))
     refs |= extra_refs
     if refs:
         text += '\n\n## 资料与原文\n\n'
-        for ident in sorted(refs):
+        for ident in sorted(refs, key=int):
             source = sources[ident]
             text += (f'[^{ident}]: {source["publisher"]}，《{source["title"]}》，'
                      f'{source["year"]}。[原文]({source["url"]})\n\n')
