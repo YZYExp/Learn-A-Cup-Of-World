@@ -92,6 +92,18 @@ def render_enriched(c, figure, helpers):
                     arrow(c, x + 207, y - 7, x + 230, y - 7)
         return True
 
+    if mode == 'tea_adjustment':
+        for i, (question, action) in enumerate((
+            ('太浓或太淡', '先改茶水比例'),
+            ('偏苦或偏涩', '先改时间'),
+            ('前后差异大', '先记展开与续泡'),
+        )):
+            x = 22 + i * 236
+            box(c, x, 250, 205, 66, question, green, 23)
+            arrow(c, x + 102, 241, x + 102, 194)
+            box(c, x, 111, 205, 72, action, blue, 22)
+        return True
+
     if mode == 'tea_routes':
         rows = [
             ('绿茶', ['杀青', '整形', '干燥']),

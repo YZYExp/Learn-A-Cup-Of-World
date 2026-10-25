@@ -229,9 +229,15 @@ def main():
     assert len({f['id'] for f in figures})==len(figures)
     for f in figures:
         path=(scratch if f['mode']=='scene' else DEST)/(f['id']+'.pdf')
-        c=canvas.Canvas(str(path),pagesize=(W,f.get('height',H)),invariant=1)
+        # Existing height metadata limits the image in the book layout. Only
+        # coffee drawings use it to request a taller drawing canvas (18-7).
+        canvas_height = f.get('height', H) if f['mode'] == 'coffee' else H
+        c=canvas.Canvas(str(path),pagesize=(W,canvas_height),invariant=1)
         c.setTitle('图 '+f['id']+' '+f['title'])
         viewport = render(c,f)
+        if viewport:
+            x, y, w, h = viewport
+            assert 0 <= y and y + h <= canvas_height, (f['id'], viewport, canvas_height)
         c.save()
         with fitz.open(path) as doc:
             if viewport:
