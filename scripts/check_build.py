@@ -104,6 +104,18 @@ def check(book_only=False):
         for ref in refs:
             require(rendered.count(f'[{ref}]') >= 2,
                     f'Citation or footnote missing from PDF page {page["page"]}: [{ref}]')
+    # Three-digit references must survive pagination and remain clickable.
+    sources = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text())}
+    with fitz.open(OUT / '杯中世界.pdf') as rendered:
+        for item in layout['pages']:
+            page = rendered[item['page'] - 1]
+            visible = re.sub(r'\s+', '', page.get_text())
+            destinations = {link.get('uri') for link in page.get_links()}
+            for ident in item['refs']:
+                require(ident in sources, f'Unknown reference: {ident}')
+                if len(ident) >= 3:
+                    require(f'[{ident}]' in visible and sources[ident]['url'] in destinations,
+                            f'Reference {ident} missing text or link on PDF page {item["page"]}')
     main_md=OUT / '杯中世界可编辑稿.md'
     chapter_mds=[OUT / '逐章阅读' / c['markdown'] for c in manifest]
     for md in [main_md]+chapter_mds:
@@ -135,6 +147,11 @@ def check(book_only=False):
             with fitz.open(ROOT/'assets/figures'/f'{f["id"]}.pdf') as master:
                 visible=''.join(page.get_text() for page in master)
             normalized=re.sub(r'\s+','',visible)
+            if f['mode'] == 'tea_adjustment':
+                for row in f['steps']:
+                    for label in row:
+                        require(re.sub(r'\s+', '', label) in normalized,
+                                f'Tea adjustment label clipped from figure {f["id"]}: {label}')
             for forbidden in (f'图{f["id"]}',f['title'],'本书绘制的教学示意','AI教学插画','含义与边界见图例'):
                 require(re.sub(r'\s+','',forbidden) not in normalized,
                         f'Caption prose is baked into figure {f["id"]}: {forbidden}')
