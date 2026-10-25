@@ -968,5 +968,155 @@
     "year": "2023",
     "type": "公共机构文化资料",
     "accessed": "2026-10-13"
+  },
+  {
+    "id": "98",
+    "publisher": "Nina Foster / Plant Humanities Lab",
+    "title": "Arabica Coffee: Cultivating Connection and Climate Resilience",
+    "short": "咖啡植株传播与殖民种植背景",
+    "year": "2025，2026更新",
+    "url": "https://lab.plant-humanities.org/coffee",
+    "type": "植物人文史资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "99",
+    "publisher": "World Coffee Research WCR",
+    "title": "Typica",
+    "short": "铁皮卡与适种海拔的纬度条件",
+    "year": "网页",
+    "url": "https://varieties.worldcoffeeresearch.org/varieties/typica",
+    "type": "农业研究机构品种档案",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "100",
+    "publisher": "World Coffee Research WCR",
+    "title": "Caturra",
+    "short": "卡杜拉的波旁来源与紧凑株型",
+    "year": "网页",
+    "url": "https://varieties.worldcoffeeresearch.org/varieties/caturra",
+    "type": "农业研究机构品种档案",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "101",
+    "publisher": "World Coffee Research WCR",
+    "title": "Geisha (Panama)",
+    "short": "巴拿马瑰夏与同名材料的区别",
+    "year": "网页",
+    "url": "https://varieties.worldcoffeeresearch.org/varieties/geisha-panama",
+    "type": "农业研究机构品种档案",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "102",
+    "publisher": "International Journal of Environmental Research and Public Health",
+    "title": "Thermal Contaminants in Coffee Induced by Roasting: A Review",
+    "short": "烘焙的失水、热反应与一爆机制",
+    "year": "2023",
+    "url": "https://doi.org/10.3390/ijerph20085586",
+    "type": "研究综述",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "103",
+    "publisher": "Specialty Coffee Association SCA",
+    "title": "Preserving Freshness: A Race Against Time — 25 Magazine: Issue 4",
+    "short": "烘后排气与香气新鲜度",
+    "year": "2018",
+    "url": "https://sca.coffee/sca-news/25-magazine/issue-4/preserving-freshness-race-time-25-magazine-issue-4-2spkp",
+    "type": "研究介绍",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "104",
+    "publisher": "World Coffee Research WCR",
+    "title": "History of Robusta",
+    "short": "罗布斯塔的环境、组成与遗传多样性",
+    "year": "网页",
+    "url": "https://varieties.worldcoffeeresearch.org/robusta-2/history-of-robusta",
+    "type": "农业研究机构资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "105",
+    "publisher": "Hario UK",
+    "title": "Intermediate V60 Brew Guide",
+    "short": "单杯手冲的准备与注水",
+    "year": "网页",
+    "url": "https://www.hario.co.uk/pages/brew-guides-v60-intermediate",
+    "type": "生产者教学资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "106",
+    "publisher": "Hario UK",
+    "title": "Find Your Perfect Grind: A Hario Coffee Grinder Guide",
+    "short": "研磨与冲煮调整",
+    "year": "网页",
+    "url": "https://www.hario.co.uk/blogs/news/find-your-perfect-grind-a-hario-coffee-grinder-guide",
+    "type": "生产者教学资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "107",
+    "publisher": "Specialty Coffee Association SCA",
+    "title": "Water and Coffee Acidity: How to Adapt Your Water for Different Extraction Methods",
+    "short": "水的碱度与咖啡酸感",
+    "year": "网页",
+    "url": "https://sca.coffee/sca-news/25/issue-9/english/water-and-coffee-acidity-how-to-adapt-your-water-for-different-extraction-methods-25-magazine-issue-9-pxjby",
+    "type": "行业机构资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "108",
+    "publisher": "La Marzocco Home",
+    "title": "Basic Espresso Theory",
+    "short": "意式粉液比与制作变量",
+    "year": "网页",
+    "url": "https://home.lamarzoccousa.com/basic-espresso-theory/",
+    "type": "生产者教学资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "109",
+    "publisher": "HARIO Europe",
+    "title": "Cold Brew Coffee Recipes",
+    "short": "冷藏浸泡冷萃示例",
+    "year": "网页",
+    "url": "https://www.hario-europe.com/blogs/hario-community/cold-brew-recipes",
+    "type": "生产者教学资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "110",
+    "publisher": "Hario USA",
+    "title": "Cold Brew Recipes and Guides",
+    "short": "热提取与冰降温的配方示例",
+    "year": "网页",
+    "url": "https://www.hario-usa.com/blogs/cold-brew-recipes-and-guides",
+    "type": "生产者教学资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "111",
+    "publisher": "National Coffee Association NCA",
+    "title": "Decaf coffee",
+    "short": "低因咖啡与脱咖啡因处理",
+    "year": "网页",
+    "url": "https://www.aboutcoffee.org/beans/decaf-coffee/",
+    "type": "行业机构资料",
+    "accessed": "2026-10-24"
+  },
+  {
+    "id": "112",
+    "publisher": "Münchow 等 / Beverages",
+    "title": "Roasting Conditions and Coffee Flavor: A Multi-Study Empirical Investigation",
+    "short": "一爆后发展时间与烘焙风味研究",
+    "year": "2020",
+    "url": "https://doi.org/10.3390/beverages6020029",
+    "type": "感官实验研究",
+    "accessed": "2026-10-25"
   }
 ]

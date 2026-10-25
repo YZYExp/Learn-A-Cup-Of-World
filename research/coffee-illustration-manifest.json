@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-25",
+  "tool": "image_gen.imagegen",
+  "image": "assets/coffee-grind-study.png",
+  "chapter": "18",
+  "figure": "18-10",
+  "prompt": "One wide landscape original educational gouache illustration for a Chinese nonfiction book about coffee. Restrained realistic gouache with fine pencil contours, warm ivory paper background, coffee brown palette, soft daylight. Three identical shallow white porcelain saucers in one evenly spaced horizontal row, close-up from above at a slight angle. Each contains roasted coffee grounds from the SAME medium brown roast. LEFT visibly coarse irregular granules, CENTER visibly medium granules, RIGHT visibly fine powder. A small scattered pinch in front of each saucer. Obvious progression in particle size; exact same brown color in all three samples, NOT different roast darkness. No beans, brewing tools, food, humans or plants; generous margin. NO TEXT, LETTERS, NUMBERS, LABELS, LOGOS OR ARROWS. Illustrative relative grind comparison, not measured sizes.",
+  "purpose": "固定烘焙颜色，以三个白碟比较粗、中、细研磨的外观方向。",
+  "review": "已逐图查看，颗粒由左至右明显变细，色泽接近，未使用尺寸标尺或器具刻度。AI教学示意，不代表实测粒径。",
+  "originals_preserved": true
+}

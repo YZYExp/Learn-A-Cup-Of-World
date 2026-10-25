@@ -86,6 +86,24 @@ def check(book_only=False):
     require(all(p['gap'] >= -0.1 for p in layout['pages']), 'PDF body overlaps footnotes')
     require(sum(c['pages'] for c in manifest) == len(layout['pages']),
             'Chapter exports do not cover all content pages')
+    # Compare manuscript citations with each physical page, including 3-digit IDs.
+    catalog = {s['id']: s for s in json.loads((ROOT / 'research/sources.json').read_text())}
+    manuscript_pages = []
+    for manuscript in sorted((ROOT / 'chapters').glob('*.md')):
+        pieces = re.split(r'<!-- page: ([^|]+)\|([^|]+)\|(.+?) -->\s*', manuscript.read_text())
+        for index in range(1, len(pieces), 4):
+            ident, _, title, body = pieces[index:index + 4]
+            refs = set(re.findall(r'\[(\d{2,3})\]', body))
+            manuscript_pages.append((ident, title, refs))
+    require(len(manuscript_pages) == len(layout['pages']), 'Manuscript page count differs from layout')
+    for (ident, title, refs), page in zip(manuscript_pages, layout['pages']):
+        require((ident, title) == (page['chapter'], page['title']), 'Manuscript page order differs from layout')
+        require(refs <= set(page['refs']) and refs <= catalog.keys(),
+                f'Missing page-local citations: {ident} / {title}')
+        rendered = book.pages[page['page'] - 1].extract_text()
+        for ref in refs:
+            require(rendered.count(f'[{ref}]') >= 2,
+                    f'Citation or footnote missing from PDF page {page["page"]}: [{ref}]')
     main_md=OUT / '杯中世界可编辑稿.md'
     chapter_mds=[OUT / '逐章阅读' / c['markdown'] for c in manifest]
     for md in [main_md]+chapter_mds:
